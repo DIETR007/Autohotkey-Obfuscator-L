@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Autohotkey Script Obfuscator is Free and Open Source</title>
+<meta name="Description" content="Obfuscate Your Autohotkey scripts with this free and open source application written in Autohotkey. Output example: k%k#k#fkfkffk#f%@f@%#fkkff@kffkfkf%#f()">
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+<iframe style="border-width:0px;float:left" src="iFrames/topnote-updated.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1>Autohotkey Dynamic Obfuscator Documentation</h1>
+
+<h2>Table Of Content</h2>
+<div>
+<a href="index.htm">Introduction</a> is this index of documentation. Read first to have an overview.
+</br><a href="obfuscationprocess.htm">Obfuscation Process</a> contains the concrete process to follow to obfuscate your program sucessfully.
+</br><a href="documentation.htm">User Manual</a> contains the complete documentation index with all details.
+</br>-
+</br><a href="downloadobfuscator.htm">Download</a> has links to last versions
+</br><a href="whatsnew.htm">Whats new</a> indicates major changes since brought by Dynamic Obfuscator L vs original version.
+</br><a href="obfuscationtypes.htm">Dynamic Obfuscation</a> explains in more details the 2 available modes: Dynamic vs Straight Obfuscation
+</br><a href="autohotkeyscript.htm">Example</a> contains a snippet of an actual program obfuscated by AHK Dynamic Obfuscator.
+</div>
+
+<h2>Autohotkey Dynamic Obfuscator is Free and Open Source</h2>
+<div>
+Use this free open source program written in Autohotkey to obfuscate your Autohotkey scripts. Download includes all script files for the program. Check out this example of an <a href="autohotkeyscript.htm">Autohotkey program that is obfuscated with this program</a>.
+</br>
+</div>
+
+<div class="indexwrap">
+<a href="#basic_concept">Basic concept</a>
+<a href="#basic_obf">Understanding Obfuscation</a>
+<a href="#hidestr">Hide Sensitive Strings With hidestr()</a>
+<a href="#scramble">Scramble the Order of Functions and Label Sections</a>
+<a href="#strip">Strip comments and whitespaces</a>
+<a href="#doesntdo">What This Program Doesn't Do</a>
+<a href="#fast">This Autohotkey Obfuscator is Blazing Fast!</a>
+</div>
+
+<h2><a name="basic_concept"></a>Basic concept</h2>
+<div>This programs offer several functionalies to make your source code unreadable to anyone. </br>
+This prevents users / some hackers to understand how the code works, to see your security controls, and to modify or reuse your code without permission.</br>
+For example a function can look like this (See Example section for longer code example):</br>
+</br>
+<font color="blue">
+f@kff@fkf@kfk#() {</br>
+global</br>
+kff%kffffffffff@k#kffkf@%fkf%fkfff@kfk#kffkk#%@k%f@fkkfkffkf@ffk#fffk%ffkk%fkk#ffk#f@f@fffffkfkff%f@ = % kfk%k#k#fkfkf@fkk#%kf%k#fkfkfkf@k#fkk#ffkfk#</br>
+f%fkk#f@f@f@fff@k#kffkfkfk%kk#f%f@kfkff@k#ffffkfkfkf%f@kf%fffkf@kff@f@k#fkffk#fk%f%f@fff@kff@k#f@ff%fkfkf()</br>
+return, % %kff@fkkfkfkffkf@k#kf%%fkkffffkfff@f@fff@k#%%f@fkfkk#fffkk#f@k#%</br>
+} </br>
+</font>
+</br>
+It does that by: </br>
+--><font color="green">"Obfuscating" your code </font></br>
+AND optionally: </br>
+--><font color="green">Removing all your comments</font></br>
+--><font color="green">Stripping all whitespaces and empty lines</font></br>
+--><font color="green">Scrambling all your code</font> together so that there is no logical order.</br>
+The main focus of this program as its name indicates is though Obfuscation.</br></br>
+For obfuscation to work correctly, you will have to add a few obfuscator commands to your code.</br>
+Some are mandatory, some optional.</br>
+The commands will be highlighted in brown in this documentation all along. These commands look like :</br>
+<font color="brown">;$OBFUSCATOR: COMMAND : OPTIONAL PARAMETER(S)</font></br>
+They are called comment commands because they all start with a comment sign for your code to still run correctly.</br>
+Code examples will be highlighted in blue.
+<font color="blue">;$OBFUSCATOR: $START_BLOCK:</font></br>
+</div>
+
+<h2><a name="basic_obf"></a>Understanding Obfuscation</h2>
+<div>Obfuscation is the ability to disguise things under complicated names.</br>
+The first step is to rename all functions,labels,variables etc. to complicated and non logical names</br>
+For example myfunction() will become ffk@fkfkk()</br>
+This program only uses "fk@#" characters to make up new names that ressembles the others, creating extra-confusion.</br>
+</br>
+<font color="green"><b>There are 2 major types of obfuscation:</b></br>
+Straight obfuscation and dynamic obfuscation</br></font></br>
+<b>Straight obfuscation</b> means no dynamic variables are really use to disguise a name.</br>
+E.g. myfunction() if renamed by the program to ffk@fkfkk() will always be called by ffk@fkfkk() but it will still add some fake dynamic empty variables in between.</br>
+For example it will call ffk@%fffkf%fk%ffkf%fkk() : if you take out %fffkf% %ffkf% which are empty wou will find ffk@fkfkk() and then be able to find back the function that was used.</br>
+So even if straight obfuscation already makes the code quite hard to understand this is a quite limited obfuscation.</br></br>
+
+<b>Dynamic Obfuscation</b> means a lot of small global variables will be created so that each call to myfunction() will look completely different.</br>
+It will create many variables that will be equals to the three characters to create obfuscated names "fk@#" thus creating many possibilities to call a same name.</br>
+It will also create global obfuscated variables to split the name in 2 or more, and assign these parts to new obfuscated variables.</br>
+Finally it still can add empty variables in the middle.</br>
+For example if myfunction() became ffk@fkfkk()</br>
+The program have created some characters var : f@fff:="f" @kkkf:="k"</br>
+and have split ffk@fkfkk in several parts fkfkf:="ffk@" fkfkfkfk:="fk" kkfkfk:="fkk"</br>
+So we can now use some of these parts by calling the variables and either leave some remaining "fk@#" or call one of their replacements.</br>
+E.g We have thus ffk@fkfkk() = %fkfkf%%fkfkfkfk%%kkfkfk%() = %fkfkf%f%@kkkf%%kkfkfk%() = %fkfkf%%f@fff%k%kkfkfk%()</br>
+Finally we can add this non-assigned empty vars for example @@fff@ @kkk@ (which are ="")</br>
+We have then ffk@fkfkk() = %fkfkf%f%@kkkf%%kkfkfk%() = %fkfkf%%@@fff@%%f@fff%k%@kkk@%%kkfkfk%()</br>
+Thus each call of myfunction() will be very very hard to find.</br>
+More over dynamic obfuscation allows more complex uses that you can lean on in <b>"Dynamic Obfuscation"</b> section</br>
+</div>
+
+<h2><a name="hidestr"></a>Hide Sensitive Strings With hidestr()</h2>
+<div>
+This program allows you to obfuscate any sensitive strings in your autohotkey scripts by surrounding them with the ihidestr() function. You can surround sensitive literal strings with 'ihidestr()' any place you use them like in variable assignments, in function calls, in statement parameters, and in expressions. You can do stuff like this:
+</br></br>var1:= ihidestr("some sensitive string") 
+</br>somefunc(ihidestr("some sensitive string"), parameter2) 
+
+</br></br>When this program obfuscates your program it will replace any literal strings passed as parameters to the ihidestr() function with an obfuscated literal string. It will then replace the ihidestr() function call itself with a call to the decode_ihidestr() function and then it will obfuscate that.</br>
+</br>E.g the above mentioned will be converted first to something like:
+</br>var1:= decode_ihidestr("8a4b6645d5s4545145d494a45b4564d5d45c562d1d") 
+</br>somefunc(decode_ihidestr("7a456b45c46b45d645a465f32118ff48fa48b54c8d"), parameter2)
+</br>And then the decode_ihidestr() function will be obfuscated as well leading to something like:
+</br>var1:= %fkfkf%f%@kkkf%#%fkfkfkfk%%kkfkfk%("8a4b6645d5s4af48545145d494a45b4564d5d45c562d1d") 
+</br>somefunc(%fkfkf%%@@fff@%%f@fff%k%@kkk@%%kkfkfk%("7a456b45c46b4ab125d645a465f32118ff48fa48b54c8d"), parameter2) 
+</br>Then of course somefunc() and parameter2 can be obfuscated as well leading to a fully obfuscated line!
+</br>
+</br>To protect sensitive strings, this program uses a variant of the <b>Vigenere cipher</b>. 
+</br>Your string is encoded into another smaller alphabet (e.g. hexadecimal) each character being coded to 2 characters and shifted by some random numbers being hidden at some position in the encoded string.
+</br>
+</div>
+<h2><a name="scramble"></a>Scramble the Order of Functions and Label Sections</h2>
+<div>
+This is a function that you can check or uncheck on the obfuscator interface. It will randonize the order that your function and label sections will appear in the obfuscated code. 
+
+</br></br> You can choose to randomize all your function and label sections together or you can choose to apply a custom scrambling template.
+
+</br>If you randomize all you can also leave some portions of code together by simply surrounding these portions by simple obfuscator commands:
+
+</br></br>The custom scrambling template allows you to organize scramblings into groups of classes. All the functions and label sections of all the classes you assign to a specific group will be randomized together and dumped into the obfuscated source code file together. You can also control the order that the groups will be dumped allowing you to create layered scrambled sandwiches of functions and label sections.
+
+</br></br>If you have some errors with your obfuscated code, turning this function off may make debugging your obfuscated code easier.
+</div>
+
+<h2><a name="strip"></a>Strip comments and whitespaces</h2>
+<div>This is a function that you can check or uncheck on the obfuscator interface. When obfuscating each function, the obfuscator will remove all extra spaces in each line and remove all comments and all comments sections surrounded by /* and */.
+</br>You can preserve some specific comment parts by simply surrounding the portions of code where comments are to be preserved by simple obfuscator commands.
+</br><b>The obfuscator will be able to process the standard #CommentFlag and #EschapeChar</b>.
+</div>
+
+<h2><a name="doesntdo"></a>What This Program Doesn't Do</h2>
+<div>This program does not automatically obfuscate global variables or static or local variables. 
+It does automatically obfuscate your functions, parameters, and labels, but not variables, classes or methods or standard functions.
+</br>I did it this way to save time building this program, I believe doing it this way saved me a year!
+</br>Also this program does not automatically process all the #include &lt;file&gt;' commands in your code.
+</br>You need to perform a few steps and create an include text file for the obfuscator which will indicate all your includes !
+
+</br></br><b>For variables, methods/properties and system functions you must add obfuscator command</b> comments to your source code so that variables will be obfuscated. 
+You can list as many variables as you want in each command comment.
+</div>
+
+<h2><a name="fast"></a>This Autohotkey Obfuscator is Blazing Fast!</h2>
+<div>
+Approximate time required to Obfuscate an 8,000 line Autohotkey program : less than 50s !
+
+</div>
+
+</div>
+
+<div id="rightcol" style="width:200px;float:left">
+<iframe style="border-width:0px;" src="iFrames/donate_digidon.htm" onload="resizeIframe(this)" scrolling="no">
+</iframe>
+<iframe style="border-width:0px;" src="iFrames/donate_david.htm" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+</div>
+
+</div>
+
+</body>
+</html>

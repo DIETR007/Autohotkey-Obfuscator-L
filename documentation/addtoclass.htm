@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Add Sections of Your Autohotkey Script to a 'Secure' Obfuscation Class</title>
+<meta name="Description" content="This Autohotkey obfuscator allows you to add sections of your code to a 'secure' class which you can then break using obfuscator command comments.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1>Add Sections of Your Autohotkey Script to Obfuscation Classes</h1>
+<div>
+You can add sections of your Autohotkey code to an obfuscation class and you can make that class secured if you want. Function implementations and label implementations found within that section will be added to the class. Neither variables nor parameters can be added to classes at this time. To add stuff to a class, use the ADDFOLLOWING_TOCLASS command comment and specify a new class name. To stop adding stuff to a class, use that command without a class name:
+
+<br><br><font color="brown">;$OBFUSCATOR: $ADDFOLLOWING_TOCLASS: (new class name)</font>
+
+<br><br>;function implementations and label implementations
+
+<br><br><font color="brown">;$OBFUSCATOR: $ADDFOLLOWING_TOCLASS:</font>
+
+<br><br>That code will create a non secured class. The only use of a non secured class is to use it in a <a href="randomizeorder.htm">custom scrambling pallette</a>.
+</div>
+
+<h2><a name="addtosecclass"></a>Create a Secured Obfuscation Class</h2>
+<div>
+With secured classes you have the ability to 'break' whole sections of code at once and all calls to functions or labels within that section will become invalid. To create a class of functions and labels, you use the ADDFOLLOWING_TOCLASS command with a class name specified by you to start adding label and function sections to the class. To end adding stuff to the class, use the ADDFOLLOWING_TOCLASS command with no class name specified. To make it into a 'secure' class, use the CREATEOBJCLASS command and specify the same classname you used in the ADDFOLLOWING_TOCLASS command:
+
+<br><br><font color="brown">;$OBFUSCATOR: $CREATEOBJCLASS: (new class name)</font>
+
+<br><br><font color="brown">;$OBFUSCATOR: $ADDFOLLOWING_TOCLASS: (same class name)</font>
+
+<br><br>;function implementations and label implementations
+
+<br><br><font color="brown">;$OBFUSCATOR: $ADDFOLLOWING_TOCLASS:</font>
+</div>
+
+<h2><a name="initclassfrags"></a>DUMP to Initialize Object Name Fragments for Secure Classes</h2>
+<div>
+For every secured class you must use this series of statements below. These statements will dump both the function fragments and the label fragments for secured classes. 
+
+<br><br><font color="brown">;$OBFUSCATOR: $DUMP_SECFRAGS_FORCLASSES: (class or class list)</font> OR <font color="brown">;$OBFUSCATOR: $DUMPPOISENED_SECFRAGS_FORCLASSES: (class or class list)</font>
+<br>THEN
+<br><font color="brown">;$OBFUSCATOR: $DUMP_TMESSFRAGS_FORCLASSES: (class or class list)</font>
+<br><font color="brown">;$OBFUSCATOR: $DUMPFRAGS_FORCLASSES: (class or class list)</font>
+
+<br><br>The security fragments must be dumped first, followed by the tmess fragments, followed by the fragments. To use the dump poisened fragments, use it before you dump the tmess fragments and the fragments. These statements can be used as many times in your code as you want including dumping the same fragments more than once.
+<br><br>Generally you'll want to physically separate the first one from the last two in the code because the first one can be replaced with the DUMPPOISENED_SECFRAGS_FORCLASSES command which would then corrupt the execution of the DUMPs which follow. A good approach is to use an if to select between the 2 different first statements and put the last two statements in a function by themselves. See the section below on poisening variable security fragments.
+
+</div>
+
+<h2><a name="dumppoisened"></a>DUMP Poisened Variable Security Fragments for Secure Classes</h2>
+<div>
+Once you have created a secure class of functions and labels, you can break or poisen them at any time you want. You can start out your program with them broken, and you can break them at any point during the normal running of your program when a security violation is detected. A template for doing this is shown below.
+
+<br><br>;start out with your class poisened
+<br><font color="brown">;$OBFUSCATOR: $DUMPPOISENED_SECFRAGS_FORCLASSES: expressmenu</font>
+
+<br><br>;put this in your autoexecute section or in a function
+<font color="blue">
+<br>if (securityPASSED) {
+<br>;this statement will override the poisened statement above
+<br>;$OBFUSCATOR: $DUMP_SECFRAGS_FORCLASSES: expressmenu
+<br>}
+<br>;execute the rest of the DUMPs for this class
+<br>dumpexpressmenu()
+</font>
+
+<br><br>;put these ones in a function by themselves
+<font color="blue">
+<br>dumpexpressmenu() {
+<br>global
+<br>;$OBFUSCATOR: $DUMP_TMESSFRAGS_FORCLASSES: expressmenu
+<br>;$OBFUSCATOR: $DUMPFRAGS_FORCLASSES: expressmenu
+<br>}
+</font>
+
+<br><br>;can be placed anywhere in your code to break classes on the fly
+<font color="blue">
+<br>if (securityFAILED) {
+<br>;$OBFUSCATOR: $DUMPPOISENED_SECFRAGS_FORCLASSES: expressmenu
+<br>;this has to be done after the DUMP POISENED in order for it to 'take'
+<br>dumpexpressmenu()
+<br>}
+</font>
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

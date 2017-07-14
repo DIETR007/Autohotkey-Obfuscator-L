@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Strip Comments and Whitespaces</title>
+<meta name="Description" content="This allows you to create a layered scrambled Sandwich out of the functions and label sections of your obfuscated Autohotkey program.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1>Remove all comments and whitespaces except specific blocks</h1>
+
+<h2>Remove all comments and whitespaces</h2>
+<div>
+Strip comments and whitespaces is a function that you can check or uncheck on the obfuscator interface. When obfuscating each function, the obfuscator will remove all extra spaces in each line and remove all comments and all comments sections surrounded by /* and */.
+</div>
+
+<h2>Specify some comment blocks to be preserved</h2>
+<div>
+You can preserve some specific comment parts by simply surrounding the portions of code where comments are to be preserved by simple obfuscator commands:
+</br><font color="brown">;$OBFUSCATOR: $START_COMMENT:</font> & <font color="brown">;$OBFUSCATOR: $END_COMMENT:</font>
+</br>The obfuscator will be able to process the standard #CommentFlag and #EschapeChar. 
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

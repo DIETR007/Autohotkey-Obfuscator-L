@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Change Obfuscation Encoding Defaults for Autohotkey Object Types</title>
+<meta name="Description" content="Change the obfuscation encoding defaults for sections of your Autohotkey program by inserting simple obfuscator command comments into your script.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+<!-- !!! TO BE IMPROVED !!!! -->
+<iframe style="border-width:0px;float:left" src="iFrames/topnote-toimprove.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/></iframe>
+
+<h1>Change Obfuscation Encoding Defaults for Autohotkey Object Types</h1>
+<div>
+In order to change the obfuscation encoding defaults for functions, you use the change defaults command
+
+<br><br>For an explanation of the meaning of each individual obfuscation parameter, refer to <a href="standardparam.htm">Understanding the Standard Parameter Set</a>.
+
+<br><br>You can also use the restore defaults command to restore what they were before the change. Only one restore step back is allowed. 
+</div>
+
+<h2>Change Function Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $FUNCS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br><font color="brown">;$OBFUSCATOR: $FUNCS_RESTORE_DEFAULTS: </font>
+</div>
+
+<h2>Change Parameter Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $PARAMS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br><font color="brown">;$OBFUSCATOR: $PARAMS_RESTORE_DEFAULTS: </font>
+</div>
+
+<h2>Change Label Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br><font color="brown">;$OBFUSCATOR: $LABELS_RESTORE_DEFAULTS: </font>
+</div>
+
+<h2>Change Global Variable Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $GLOBVARS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br><font color="brown">;$OBFUSCATOR: $GLOBVARS_RESTORE_DEFAULTS: </font>
+</div>
+
+<h2>Change Partial Variable Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $GLOBPARTIALVARS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br><font color="brown">;$OBFUSCATOR: $GLOBPARTIALVARS_RESTORE_DEFAULTS: </font>
+</div>
+
+<h2><font color="red">[DigiDon: Deprecated]&nbsp;</font>Change Local and Static Variables Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $LOSVARS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br>;<font color="brown">$OBFUSCATOR: $LOSVARS_RESTORE_DEFAULTS: </font>
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

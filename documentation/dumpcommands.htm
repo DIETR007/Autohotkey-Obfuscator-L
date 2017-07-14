@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>For Autohotkey Dynamic Object Name Obfuscation, Use the DUMP Commands</title>
+<meta name="Description" content="The obfuscator DUMP commands will drop scrambled and secured assignment statements into your Autohotkey script that will 'wire up' the Dynamic Obfuscation.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1>For Autohotkey Dynamic Object Name Obfuscation, Use the DUMP Commands</h1>
+<h2><a name="dumpman"></a>DUMP Commands Are Mandatory When Dynamic Obfuscation is Used</h2>
+<div>
+Because Dynamic Obfuscation builds object names out of fragments represented by %'s, these fragments must be initialized somewhere in your program. 
+</br>The DUMP command comments allow you to do that at places of your choosing in your source code.
+</br>
+</br>When using Dynamic Obfuscation you must always DUMP common object fragments and DUMP fragments for object types. If you create secure classes, you must use the DUMP commands for those and you can also use the DUMP Poisened command for those. If you want to change where your function calls go to, use the DUMP Rewire Function.
+</br>
+</br>The DUMP command comments will drop a bunch of assignment statements into your code. These statements will initialize the values of object name fragments that will be used to create and secure object names.
+
+<br><br>The assignment statements themselves will have object name fragments inserted into them which will be represented by the presence of %'s. Both sides of the assignment statement will have these so that it will be difficult for the hacker to find the place where an object fragment used in the program is initialized.
+
+<br><br>The fragments used in the assignment statements can be common security fragments or they can be fragments associated with a secure class. Since common security fragments are used frequently even by secure classes for some things, they must be DUMPed before most other types of DUMPs are done.
+
+<br><br>If you choose to randomize the order of functions and label sections on the obfuscation run screen, then the order of individual statements within the DUMPs will also be scrambled, making it more difficult to identify individual assignments.
+
+<br><br>The DUMP commands will put comment headers into the code to identify individual object initializations which is useful for debugging. To have them show, uncheck the 'strip out all comments' box on the obfuscation run screen.
+</div>
+
+<h2><a name="dumpman"></a>Insert mandatory DUMP Commands for Dynamic Obfuscation</h2>
+<div>
+See <a href="mandatdyndumps.htm">Mandatory DUMP COMMANDS for Dynamic Obfuscation</a> for a sample of code to insert so that mandatory dumps will be made.
+</div>
+
+<h2><a name="dumpman"></a>DUMP Commands for Secure Classes</h2>
+<div>
+If you've created secure classes, you will need to use <a href="addtoclass.htm#initclassfrags">DUMPS for Secure Classes</a> as well!
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

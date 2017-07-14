@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Obfuscation Mode Commands</title>
+<meta name="Description" content="Use obfuscator command comments to change obfuscation encoding defaults, to break whole sections of code, and to rewire a function to go to another function.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1><a name="mantag"></a>Obfuscation Mode Commands</h1>
+
+<h2><a name="dynassumed"></a>Dynamic mode is assumed</h2>
+<div>
+Dynamic Obfuscator assumes dynamic obfuscation mode as it is the ultimate goal and most recommanded method.
+<br>To ease the process the obfuscator automatically switch itself to straight obfuscation when a function is not global.
+<br>However, as straight obfuscation might be easier to debug, there is the possibility of manually switching back and forth between straight obfuscation and dynamic obfuscation.
+<br>Also to make debug again simplier and to allow keeping some code blocks intact, it is possible to tell the obfuscator to stop obfuscating some blocks.
+</div>
+
+<h2><a name="manualswitch"></a>Manual switch between Straight mode and Dynamic Mode</h2>
+<div>
+Use this command to START STRAIGHT obfuscation: 
+<br>
+<br><font color="brown">;$OBFUSCATOR: $STRAIGHT_MODE:</font>
+<br>
+<br>And use this command to RESUME DYNAMIC obfuscation: 
+<br>
+<br><font color="brown">;$OBFUSCATOR: $DYNAMIC_MODE:</font>
+<br>
+<br>As stated above Dynamic obfuscation is assumed, thus before any Straight_Mode comment, dynamic obfuscation will be applied.
+<br>Non-global function will always use straight obfuscation automatically as they do not support dynamic obfuscation.
+<br>They will have to be converted to global function in order to be automatically dynamically obfuscated.
+</div>
+
+<h2><a name="mantag"></a>You can STOP/RESUME Obfuscation for sections of code</h2>
+<div>
+Use this command to STOP obfuscation: 
+<br>
+<br><font color="brown">;$OBFUSCATOR: $STOP_OBF:</font>
+<br>
+<br>And use this command to RESUME obfuscation: 
+<br>
+<br><font color="brown">;$OBFUSCATOR: $RESUME_OBF:</font>
+<br><br>No obfuscation will be done at all EXCEPT if any previous label or function call is detected.
+<br>In this case they will be replaced by the actual obfuscated names to avoid any mistakes.
+<br>Also as an exeption any ihidestr() call is replaced to still allow for hidden strings.
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

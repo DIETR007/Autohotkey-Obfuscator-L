@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Obfuscator rules - Functions and Labels</title>
+<meta name="Description" content="This program has the ability to obfuscate all usage of functions in your Autohotkey program and to make multiple function calls look completely different.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h2><a name="prefuncs"></a>Prepare function sections</h2>
+<div>
+In order to correctly find and parse off functions, the obfuscator needs a few simple format rules to be followed. The first is that the function definition must start in column 1. The second is that the ending '}' for the function must be in column 1 and there cannot be any other '}' in column 1 within the function. You can still use the ending curly brace within the function for instance to terminate the truth block of an if, but that curly brace would always have to be indented, it can not be in column 1. Also, function names can only be made out of letters, numbers, and the underscore. I did not code the program to recognize more characters for function names because I never use them.
+</div>
+
+<h2><a name="prelabels"></a>Prepare Label Sections</h2>
+<div>
+A few simple format rules need to be followed in order for the obfuscator to find and parse off label sections. The first is that the label section header has to start in column 1 and be followed by ':'. The second rule is that the ending RETURN for the label section has to start in column 1. The RETURN statement can still be used within the section for instance as part of an if statement, but it would always have to be indented.  Label names can made out of only letters, numbers, and the underscore, similiar to function names.
+</div>
+
+<h2><a name="nestedlabels"></a>Nested Label Headers Inside Other Label Sections and Functions</h2>
+<div>
+Labels that are nested inside other label sections are ok, no special handling is necessary. They do not need an ending RETURN of their own if they are nested. There should be only one final RETURN for them all in column 1. Label sections within functions are also ok, but in that case no need to worry about special positioning of the labels header or RETURN statements.
+</div>
+
+<h2><a name="guilabelstate"></a>Special Rule For Labels Referred to in a GUI +Label???? Statement</h2>
+<div>
+<a href="guicontrols.htm#guilabel" target="blank">See here</a>
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

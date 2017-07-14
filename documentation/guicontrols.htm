@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Obfuscator rules - GUI rules</title></title>
+<meta name="Description" content="This program has the ability to obfuscate special objects in Autohotkey GUI controls including items starting with a V (variable) and a G (gosub on click).">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+<h1>Obfuscation of Special Script Objects in Autohotkey Gui Controls</h1>
+<div>
+This program can replace special uses of objects used in gui controls.
+</div>
+
+<h2><a name="guigosub"></a>Gosub Labels in Gui Controls that Start with a 'G'</h2>
+<div>
+This program can find and replace occurances of labels found in gui controls that start with a 'G' to signify gosub on click: 
+
+<br><br><font color="blue">gui, add, text, Gclickhandler, hello world</font>
+
+<br><br><font color="red">[added DigiDon]&nbsp;</font>
+For dynamic Glabel in expressions you need to have a quote character """ just before or just after the Glabel.
+
+<br><br><font color="blue">GUI, add, text, % "Glabel " x " XCoord", hello world</font>
+
+<br><br>No other special steps are necessary by you for this. An invalid replacement could occur if you have 2 labels that are the same except one starts with a g: 
+
+<br><br><font color="blue">lob:
+<br>glob:
+</font>
+</div>
+
+<h2><a name="guiglob"></a>Global Variables in Gui Controls that Start with a 'V'</h2>
+<div>
+This obfuscator can replace global variables starting with a 'V' that are found in GUI controls :
+
+<br><br><font color="blue">GUI, add, text, Vmyglobvar, hello world</font>
+
+<br><br><font color="red">[added DigiDon]&nbsp;</font>
+For Vvars in expressions you need to have a quote character """ just before or just after the Vvar.
+
+<br><br><font color="blue">GUI, add, text, % "Vmyglobvar " x " XCoord", hello world</font>
+
+<br><br>No other extra work is necessary by you for this, just do the normal things required for <a href="globalvariables.htm">obfuscating global variables</a>. Only global variables found in gui controls will be replaced at this time, static and local variables starting with a 'V' are not supported.
+</div>
+
+<h2>Variables Surrounded with %'s in Autohotkey GUI Controls</h2>
+<div>
+Variables surrounded with %'s in controls will be replaced, nothing extra by you needs to be done.
+
+<br><br><font color="blue">gui, add, text, %controlwidth%,
+<br>(join`s
+<br>bla bla bla....%saythis%
+<br>)
+</font>
+</div>
+
+<h2><a name="guilabel"></a>The GUI +label????? Clause</h2>
+<div>
+If you are using the GUI +Label???? clause to set a handler for the closing of a window, you will have to apply some special steps to avoid erros.
+
+<br><br>Use the DEFGUILAB command comment anywhere in your source code and add the name of GUI +Label:
+e.g. configwin if this was GUI +Labelconfigwin
+
+</br><font color="red"><b>[modified DigiDon]</b>&nbsp;</font><font color="red">Previous
+&emsp;</br>;$OBFUSCATOR: $DEFCLOSEGUILAB: (list of GUI labels)</font>
+</br><font color="green">NEW</font>
+</br><font color="brown">;$OBFUSCATOR: $DEFGUILAB: (list of GUI labels)</font>
+
+</br></br>Turn off normal label obfuscation encoding for these actual GUI label sections. You do this by surrounding these sections of code with the change defaults command and the restore defaults command:
+
+<br><br><font color="brown">;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: -1</font>
+<br><font color="blue">configwinClose:
+<br>configwinEscape:
+<br> ;program statements here
+<br>RETURN
+
+<br><br>configwinContextmenu:
+<br> ;program statements here
+<br>RETURN
+<br><br>configwinDropFiles:
+<br> ;program statements here
+<br>RETURN
+<br><br>configwinSize:
+<br> ;program statements here
+<br>RETURN</font>
+<br><font color="brown">;$OBFUSCATOR: $LABELS_RESTORE_DEFAULTS:</font>
+
+<br><br>The -1 in the CHANGE DEFAULTS command turns off obfuscation for label objects that follow and the restore defaults command restores the obfuscation defaults to whatever they previously were.
+
+</br>Both the label header and the GUI, +Label?????? statement will be obfuscated
+
+<br><br>The label headers will come out looking like this, with the CLOSE, ESCAPE, DROPFILES, etc. part still present:
+
+<font color="blue">
+<br><br>f@kfk#fffffffkk#fkk#kffkClose:
+<br>f@kfk#fffffffkk#fkk#kffkEscape:
+</font>
+
+<br><br>The gui statement will come out looking like this:
+
+<br><br><font color="blue">GUI, +Labelf@kfk#fffffffkk#fkk#kffk
+</font>
+
+</div>
+ 
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

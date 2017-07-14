@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Preparing Your Autohotkey Include Files for Obfuscation</title>
+<meta name="Description" content="A couple of simple steps are necessary to prepare your Autohotkey include files for this Autohotkey Obfuscator.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1><a name="incfile"></a>Preparing Your Autohotkey Include Files for Obfuscation</h1>
+<div>
+<b>This obfuscator does not automatically find and parse your Autohotkey include files and make them part of the obfuscation</b>. First you must move your <a href="#ignoretags">'#include &lt;file&gt;' statements in your source code</a> to the beginning or end of your source code files and use the 'ignore before this' and 'ignore after this' obfuscator command comments. Then to signify to the obfuscator what files are to be included, you prepare an <a href="#includemap">includes map file</a>. 
+</div>
+
+<h2><a name="ignoretags"></a>Move Your '#include &lt;file&gt;' Statements to the Beginning or End of Your Source Code Files</h2>
+<div>
+Move your '#include &lt;file&gt;' statements to the beginning of your source code file and put this obfuscator command comment after them:
+<br><font color="brown">;$OBFUSCATOR: $IGNORE_BEFORE_THIS:</font>
+
+<br><br>Or you can move them to the end of your source code file and put this command comment before them:
+<br><font color="brown">;$OBFUSCATOR: $IGNORE_AFTER_THIS:</font>
+
+<br><br>The obfuscator will not try to process anything before or after those tags in the current source code file. No obfuscation of those areas will be done and in fact none of the code there will be transferred to the final obfuscated code. This must be done with all your '#include &lt;file&gt;' statements.
+
+<br><br>If your include statements only bring in whole functions or label sections then moving them around  should not pose a problem. If you are, however, using includes to drop code fragments inline into other stuff and cannot move them around, then that feature is not supported by this obfuscator.
+</div>
+
+<h2><a name="includemap"></a>Prepare an Includes Map File</h2>
+<div>
+You tell the obfuscator what files to obfuscate together by <b>preparing an includes map file indicating your main script and all your includes</b>. Just prepare a pure text file with the file path for each file on a separate line. You will be asked for this file when you run the obfuscator. The file that has your autoexecute section on it should be listed first. The order that the remaining files are listed can make a difference because if there is an obfuscator command comment to change obfuscation defaults for functions, then that change will remain in effect across any new source code files until a new command comment changing function defaults is found.
+</br><font color="red">[DigiDon]&nbsp;</font>The Include Map File can now contain relative files, directories (to change relative paths), and comments on separated lines.
+</br></br>
+<h3>If you have a single MainScript.ahk script file with no includes</h3>
+You still should create an '[SCRIPTNAME]_IncludeMAP.txt' file with in the same folder as your MainScript containing only:
+</br><font color="blue">MainScript.ahk</font>
+
+<h3>If you have a script including other .ahk files</h3>
+For example if you have at the end of your MainScript.ahk :
+</br><font color="blue">;LIBRARIES
+</br>#include Lib\Init.ahk
+</br>#include Lib\Init_Settings.ahk
+</br>#include Lib\Init_Variables_PreInit.ahk
+</br>;INCLUDES
+</br>#include Includes\XML_Builder.ahk</font>
+
+</br></br>You should put before
+</br><font color="brown">;$OBFUSCATOR: $IGNORE_AFTER_THIS:</font>
+
+</br></br>And create an '[SCRIPTNAME]_IncludeMAP.txt' file with :
+</br>YOU MUST FIRST LIST OUR MAIN SCRIPT, path can be relative to this _IncludeMAP.
+So if you have created this file in the same folder as your MainScript, this file can contains:
+</br><font color="blue">MainScript.ahk
+</br>;LIBRARIES
+</br>Lib\Init.ahk
+</br>Lib\Init_Functions.ahk
+</br>;INCLUDES
+</br>Includes\XML_Builder.ahk</font>
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

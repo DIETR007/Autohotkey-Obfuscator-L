@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>What's new?</title>
+<meta name="Description" content="This obfuscator automatically uses the dynamic variable name creation capabilities of Autohotkey to create an obfuscation mess like never before seen.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1>What's new ?</h1>
+<span style="color: rgb(88, 152, 255);"><span style="font-size: 18px;"><b>Dynamic Obfuscator improvements by DigiDon</b></span></span>
+
+<br/>
+<br/>
+
+<div><b><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);">**MUCH IMPROVED DOCUMENTATION !</span></span></b></div>
+
+</br>
+
+<div><b><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);">**OBFUSCATION PROCESS WAS MADE MUCH SIMPLIER !</span></span></b>
+</br>Dynamic obfuscation can be implemented little by little.
+</br>No need for complex statements for straight obfuscation.
+</br>Can Stop/Resume or Change obf mode in 1 statement
+</br>And many small usage improvements
+</div>
+
+<br/>
+
+<div><b><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);">**NOT NEED TO DRAMATICALLY CHOOSE between low security straight obfuscation and great dynamic obfuscation</span></span></b></div>
+<div>You can now do both and increase the dynamic part over time :</div>
+<div>Dynamic obfuscation works only with assume-global functions. But before every non-global function with some calls to other functions or obfuscated variables would lead to fatal errors because dynamic names would be used.</div>
+<div>Now the Obfuscator recognizes non-global functions and will then only use straight obfuscation automatically</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**NO NEED TO DECLARE VARS MULTIPLE TIME TO THE OBFUSCATOR</b></span></span></div>
+<div>It is enough to declare all your used vars to the obfuscator once at the beginning, whether there are locals, globals, static or even objects, it does not matter and can be done only once! You can still define the local vars to the obfuscator for each function the old way to have maybe specific names and parameters but this is not necessary at all.</div>
+<br/>
+
+
+<div><span style="color: rgb(50, 135, 18);"><span style="font-size: 16px;"><b>**BETTER DETECTION OF ALL TYPES</b></span></span> : <span style="line-height: 1.45;">Transmap shows clearly all that have been recognized and in which file</span></div>
+<div>-Functions</div>
+<div> with Parameters and Nested labels</div>
+<div>-Labels &amp; Hotkeys</div>
+<div> with Nested Labels and hotkeys</div>
+<div>-Classes</div>
+<div>  with Nested Classes, Methods and Parameters</div>
+<div>-Context conditions #if ....</div>
+<div>  with Nested Labels and hotkeys</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**OBFUSCATOR INCLUDE FILE IS MORE FLEXIBLE NOW</b></span></span> 
+</br>with disabled commented lines, folder paths and relative paths</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**OBFUSCATOR NOW PROPOSES NAMES AUTOMATICALLY FOR FASTER TESTING</b></span></span>
+</br>TransMap etc.</div>
+<br/>
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**OBFUSCATOR HAS NOW SOME BASIC MISTAKE ERROR CHECKING</b></span></span> 
+</br>Like if the mandatory autoexecute statement is missing, if the include file is incorrect</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**BETTER INTERFACE TO SHOW PROGRESS</b></span></span> </br>in % and the file being processed and added statistics (code lines and how long)!</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**IMPROVED OBF OF DYNAMIC VVARS AND GLABLES</b></span></span></div>
+<div>You just need to have these followed or preceded by &quot; : ex Gui, add, ... , % &quot;vMyVar &quot; &quot;gMyLabel ..... .... ....&quot;</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**NEW VERY USEFUL COMMANDS FOR OBFUSCATORS</b></span></span></div>
+<div><span style="color: rgb(167, 69, 0);"><b>;$OBFUSCATOR: $STOP_OBF: &amp;&amp; ;$OBFUSCATOR: $RESUME_OBF:  </b></span></div>
+<div>Can be used to stop / resume obfuscation for some blocks.</div>
+<div>If stop it will still replace Ihidestring calls and previous obfuscated functions / labels calls but not variables and parameters</div>
+<div><span style="color: rgb(167, 69, 0);"><b>;$OBFUSCATOR: $STRAIGHT_MODE: &amp;&amp; ;$OBFUSCATOR: $DYNAMIC_MODE:</b></span></div>
+<div>Can be used to change the obfuscation mode of large blocks if Dynamic is causing a problem but I don't think it should happen now.</div>
+<div><span style="color: rgb(167, 69, 0);"><b>;$OBFUSCATOR: $START_BLOCK: &amp;&amp; ;$OBFUSCATOR: $END_BLOCK:</b></span></div>
+<div> ! Can be used to define quickly some code blocks that will stay together when the SCRAMBLING option is used !</div>
+<div><span style="color: rgb(167, 69, 0);"><b>;$OBFUSCATOR: $START_COMMENT: &amp;&amp; ;$OBFUSCATOR: $END_COMMENT:</b></span></div>
+<div>Can be used to preserve some comment blocks even if the option to remove all comments is used !</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**MUCH BETTER COMMENTS BLANK LINES AND SPACES DELETION FUNCTIONALITY</b></span></span></div>
+<div>Handles comment sections correctly</div>
+<div>Delete all inline comments</div>
+<div>Take in account comment and eschape chars changes !</div>
+<div>Can preserve some comment sections</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**BETTER SCRAMBLING ABILITY</b></span></span></div>
+<div>Scramble all your code while preserving some blocks together, and without loosing code !</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**COMPLEX DYNAMIC VARS WITH PARTS CAN NOW BE OBFUSCATED !</b></span></span></div>
+<div>Vars like Space%A_Index%Var%B_Index%_Path can have each part (Space,Var,_Path) be obfuscated</div>
+<div>You should list them with the new</div>
+<div><font color="brown">;$OBFUSCATOR: $DEFGLOBPARTIALVARS:</font></div>
+<div>and call along with others DUMPs</div>
+<div><font color="brown">;$OBFUSCATOR: $DEFGLOBPARTIALVARS_DUMPALL:</font></div>
+<div>They Some constraints : if you have set these parts you can for example not call %What%%A_Index%Var%B_Index%_Path if you have set What:=&quot;Space&quot; before as the name Space has been obfed. If you use this then just don't define Space as VarPart and call it always %What%%A_Index%Var%B_Index%_Path with What:=&quot;Space&quot; and What  declared as globalvar to the obfuscator if you want it to be obfed fully every time.</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**OBJECTS CAN NOW BE OBFUSCATED !</b></span></span></div>
+<div>-They just have to be declared as global var in the obfuscator declaration</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**PROPERTIES AND METHOD CALLS CAN NOW BE OBFUSCATED !</b></span></span></div>
+<div>You should list them with the new</div>
+<div><font color="brown">;$OBFUSCATOR: $DEFPROPERTIES:</font></div>
+<div>and call along with others DUMPs</div>
+<div><font color="brown">;$OBFUSCATOR: $PROPERTIESFRAGS_DUMPALL:</font></div>
+<div>It is only their uses which will be ofuscated. Just like System functions, their original names will not be changed.</div>
+<div>But property definitions like </div>
+<div>Obj={ Prop:&quot;test&quot;} can look like Obj={(k#fkk#f@ kff@f@fkf@kff@ kfkffff@ fkf@f@ff k#fffkfkf@f@f@ f@k#fffk):&quot;test&quot;}</div>
+<div>Property Uses like</div>
+<div>Obj.Prop can look like Obj[k#fkk#f@ kff@f@fkf@kff@ kfkffff@ fkf@f@ff k#fffkfkf@f@f@ f@k#fffk]</div>
+<div>THANKS TO THIS, METHODS CAN ALSO BE OBFUSCATED THIS WAY</div>
+<div>Obj.Method(param) can look like Obj[k#fkk#f@ k#fffkfkf@f@f@ f@k#fffk](Param)</div>
+<div>Of course, the Obj itself, the method parameters and string values can be obfuscated as well so that the whole thing will look like garbage :)</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**CONTEXT CONDITIONS #IF... ARE NOW RECOGNIZED AND OBFUSCATED</b></span></span></div>
+<br/>
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**CONTINUATION SECTIONS ARE NOW PROPERLY HANDLED AND OBFUSCATED</b></span></span></div>
+<br/>
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**COMMENT SECTIONS ARE NOW PROPERLY HANDLED</b></span></span></div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**NESTED LABELS ARE NOW PROPERLY RECOGNIZED AND OBFUSCATED</b></span></span></div>
+<br/>
+
+<div><span style="font-size: 16px;"><span style="color: rgb(50, 135, 18);"><b>**REINTRODUCED TRANSMESS FILE</b></span></span>
+</br>To help debugging by showing all the created replacement names</div>
+<br/>
+
+<div><span style="font-size: 16px;"><span style="color: rgb(20, 113, 145);"><b>**BUG CORRECTIONS</b></span></span></div>
+<div>No dynamic replacement bugs when your var is being declared in a function with global, static or local keyword</div>
+<div>Recognition even when inline comments</div>
+<div>Preserve correctly all comments sections</div>
+<div>Preserve and obfuscate all #if conditions</div>
+<div>Does not obfucate vars not surrounded by %% in continuation section</div>
+<div>Understands := in parameters</div>
+<div>Recognize Context conditions #if ...</div>
+<div>Recognize Classes</div>
+<div>External commands such as #CommentFlag will be preserve even at the end of a file, even when scrambling</div>
+<div>#CommentFlag has been introduced in obfuscator comments to avoid errors</div>
+<div>...</div>
+<br/>
+
+
+<div><span style="font-size: 16px;"><span style="color: rgb(20, 113, 145);"><b>**AND MUCH MORE!! (I did this log after so this is from memory):</br></b></span></span></div>
+</br>
+
+<div><span style="font-size: 16px;"><span style="color: rgb(222, 87, 0);"><b>**UNFORTUNATELY still some known LIMITATIONS:</b></span></span></div>
+<div><u><span style="font-size: 15px;">But much less than before !</span></u></div>
+<div><b>-INCLUDES ARE NOT PROCESSED AUTOMATICALLY.</b></div>
+<div>You have to provide to the obfuscator a special text file containing all you includes that the obfuscator will process.</div>
+<div>The includes are easier to do now in this file but I didn't have time to work on this limitation to see if we could process AHK includes directly. I think it might be a bit more complex than it seems because there are special types of includes but maybe at least the standard ones could be processed automatically.</div>
+<div><b>- TEXT IN MSGBOX OR GUI CONTAINING VAR NAMES</b> will still be obfuscated improperly.</div>
+<div>That might be solved but needs some work to detect if the call if just in param, after % &quot; &quot; or used actually as a variable. No proper time for it and minor case for now.</div>
+<div><b>- ! CLASSES and METHODS ARE STILL NOT OBFUSCATED !</b></div>
+<div>THEY MIGHT BE IN THE FUTURE BUT THAT REQUIRES CAREFUL WORK because of complex Class design and possible uses.</div>
+<div>Classes were already made recognizable. But the complex nested aspects will be quite difficult to handle. Internal methods should not be obfed (__New etc.) and all possible calls should be taken into account so that every call is obfuscated properly, otherwise it won't work. Therefore this has been delayed. NEVERTHELESS IT IS POSSIBLE TO OBFUSCATE THEIR USE by creating objects based on class, obfuscate the objects as global vars, and obfuscate important methods.</div>
+<div><b>- GUI INTERNAL LABELS (CLOSE, SIZE,CONTEXTMENU,...) SHOULD STILL BE SURROUNDED BY SPECIAL COMMANDS</b> (if not in stop_obf mode)</div>
+<div><font color="brown">;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: -1</font></div>
+<div>before, and after:</div>
+<div><font color="brown">;$OBFUSCATOR: $LABELS_RESTORE_DEFAULTS:</font></div>
+<div>That might be solved quite easily by modifying the parameter internally for example each time the label starts with &quot;XXGui&quot; &quot;XGui&quot; or are the standard &quot;GuiClose&quot; etc. Wasn't a priority</div>
+<div><b>-Gui system functions are not dealt with</b>. That would require some work. Wasn't a priority.</div>
+<br/>
+
+</div>
+
+<div id="rightcol" style="width:200px;float:left">
+<iframe style="border-width:0px;" src="iFrames/donate_digidon.htm" onload="resizeIframe(this)" scrolling="no">
+</iframe>
+<iframe style="border-width:0px;" src="iFrames/donate_david.htm" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+</div>
+
+</div>
+
+</body>
+</html>

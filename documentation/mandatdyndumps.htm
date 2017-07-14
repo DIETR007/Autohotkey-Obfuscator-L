@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Mandatory Dump Commands</title>
+<meta name="Description" content="Use obfuscator command comments to change obfuscation encoding defaults, to break whole sections of code, and to rewire a function to go to another function.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1>For Dynamic Obfuscation, Use dumps commands</h1>
+<div>
+See <a href="dumpcommands.htm">explanation of DUMP COMMANDS</a> for more information before.
+</div>
+
+<h2><a name="dynobf_dump"></a>Place these mandatory dump commands</h2>
+<div>
+For Dynamic Obfuscation, Use dumps commands.
+</br>Add these 4 function calls <b>at the very beginning of your script in your autoexecute section :</b>
+</br>
+<font color="brown">
+</br>;*******************************************************************************
+</br>obf_dumpcommonobjfrags()
+</br>obf_dumpunclassed()
+</br>obf_dumpunsecclasses()
+</br>obf_dumpall()
+</br>;*******************************************************************************
+</font>
+</br>
+</br>Then add the functions containing the Obfcuscator DUMP comment commands below in the code, <b>after your auto-execute section</b>
+</br>to actually make the dumps when the script will be obfuscated
+</br>
+<font color="brown">
+</br>;*******************************************************************************
+</br>; &nbsp; &nbsp; &nbsp; &nbsp;                O B F &nbsp; D U M P &nbsp; F U C T I O N S
+</br>;*******************************************************************************
+</br>;$OBFUSCATOR: $FUNCS_CHANGE_DEFAULTS: ,, -1
+</br>obf_dumpcommonobjfrags() 
+</br>{
+</br>	global
+</br>;$OBFUSCATOR: $DUMP_SECFRAGS_FORCLASSES: common
+</br>;$OBFUSCATOR: $DUMP_TMESSFRAGS_FORCLASSES: common
+</br>} 
+</br>;$OBFUSCATOR: $FUNCS_RESTORE_DEFAULTS:
+</br>
+</br>;$OBFUSCATOR: $FUNCS_CHANGE_DEFAULTS: ,, -1
+</br>obf_dumpunclassed()
+</br>{
+</br>	global
+</br>;$OBFUSCATOR: $FUNCFRAGS_DUMPCLASS: unclassed
+</br>;$OBFUSCATOR: $LABELFRAGS_DUMPCLASS: unclassed
+</br>}
+</br>
+</br>obf_dumpunsecclasses()
+</br>{
+</br>	global
+</br>;$OBFUSCATOR: $FUNCFRAGS_DUMPCLASS: unsecclasses
+</br>;$OBFUSCATOR: $LABELFRAGS_DUMPCLASS: unsecclasses 
+</br>}
+</br>;$OBFUSCATOR: $FUNCS_RESTORE_DEFAULTS:
+</br>
+</br>obf_dumpall() 
+</br>{
+</br>	global
+</br>;$OBFUSCATOR: $GLOBVARFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $GLOBPARTIALVARSFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $LOSVARFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $PARAMFRAGS_DUMPALL: 
+</br>;$OBFUSCATOR: $SYSFUNCFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $PROPERTIESFRAGS_DUMPALL:
+</br>}
+</font>
+
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

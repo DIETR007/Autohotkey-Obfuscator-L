@@ -1,0 +1,30 @@
+body { margin-left:40px;}
+/* #wrapcols { width:72em; } */
+#wrapcols { width:100%; }
+
+#mainconts { width:70%; float:left; margin-bottom:4em; }
+#rightcol { width:30%; float:right; }
+
+#mainconts h1 { margin-top:1.5em; margin-bottom:0.5em; color:#cd853f; }
+#mainconts h2 { margin-bottom:0.1em;font-size:1.25em; }
+#mainconts h3 { margin-top:0.5em;margin-bottom:0.1em;font-size:1.1em; }
+
+.supportwrapper td { padding-left:10px; }
+
+.supportobfform { }
+.supportobfhead1  { padding:4px 8px 20px 8px; font-size:1.1em; font-weight:normal; background-color:#ddd; border:2px #777 solid; border-bottom:0px white solid; }
+.supportobfhead2  { padding:4px 8px 8px 8px; font-size:1em; font-weight:normal; background-color:#ddd; border:2px #777 solid; border-bottom:0px white solid; }
+
+.logotd { width:547px; }
+.headerspacer { padding-left:2em; }
+.authorinfo { font-size:1.1em; width:32em;}
+.toplinks { font-size:1.2em; text-align: center; }
+.toplinks a { border-right:7px #fff solid; border-left:7px #fff solid; border-bottom:0px #fff solid; }
+.toplinks .selnav { background-color:#eee; border:2px #777 solid; border-bottom:0 #fff solid; }
+.titlelink:hover { color:blue; }
+
+.indexwrap { line-height:1.1em;margin-left:1.5em; }
+.indexwrap a { display:block;padding-top:0.5em; }
+.indexwrap a.indentindex { margin-left:1.5em; padding-top:0.20em; }
+.indexwrap a.dbindentindex { margin-left:3em; padding-top:0.20em; }
+h2.toplevel { background-color:#ddd; padding:6px 0px 2px 4px;color:#070; border:1px #090 dashed; border-bottom:3px #ccc solid; width:85%; }

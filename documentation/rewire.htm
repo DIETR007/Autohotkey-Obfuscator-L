@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>For Autohotkey Dynamic Object Name Obfuscation, Use the DUMP Commands</title>
+<meta name="Description" content="The obfuscator DUMP commands will drop scrambled and secured assignment statements into your Autohotkey script that will 'wire up' the Dynamic Obfuscation.">
+
+<link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
+
+<style type="text/css">
+</style>
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+  }
+</script>
+</head>
+<body>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+</iframe>
+
+<div id="wrapcols">
+
+<div id="mainconts">
+
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
+</iframe>
+
+<h1>BREAK / REWIRE Sensitive functions</h1>
+<div></div>
+
+<h2><a name="dumprewirefunc"></a>DUMP to 'Rewire' Where Functions Go To</h2>
+<div>
+For greater security, you can 'rewire' your most sensitive functions to go to an alternate decoy function. You use these 2 commands and you can use them as much as you want in your code. As soon as your program executes one of these, all following calls to the original function will be affected. 
+
+<br><br>;all following calls to originalname will go to decoyname
+<br><font color="brown">;$OBFUSCATOR: $DUMP_REWIREFUNCPATH: originalname, decoyname</font>
+<br><br>;this will make them start going back to the originalname
+<br><font color="brown">;$OBFUSCATOR: $DUMP_REWIRE_STRAIGHT: originalname</font>
+
+<br><br>The exact same function call in the exact same place in your code will go to the original function or the decoy function depending on which version of the rewire was run before it. To create a 'rewire' function, add a function to your code by the name of decoyname that has the same number of parameters as the originalname. This function should not be called whatsoever in the unobfuscated version of your program, only the obfuscator will use it. No other work is necessary to create a rewire function except to use the 2 commands above.
+
+<br><br>You can use these commands during your program startup or 'inline' in your code to test for security violations in the main executable sections of your program. Just as soon as the REWIREFUNCPATH is used, all following calls to originalname will be transferred to decoyname. 
+
+<font color="blue">
+<br><br>;program start up, start broken!
+<br>;$OBFUSCATOR: $DUMP_REWIREFUNCPATH: originalname, decoyname
+<br>;somewhere within your startup section do this
+<br>if (securityPASSED) {
+<br>;$OBFUSCATOR: $DUMP_REWIRE_STRAIGHT: originalname
+<br>}
+
+<br><br>;inline test done during the main execution of the program
+<br>if (securityFAILED) {
+<br>;$OBFUSCATOR: $DUMP_REWIREFUNCPATH: originalname, decoyname
+<br>}
+</font>
+
+</div>
+
+</div>
+
+<div id="rightcol">
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+*************************************************************************************************
+UPDATES BY DIGIDON VERSION 2.0 : SEE MORE COMPLETE LIST IN DOCUMENTATION WHAT'S NEW AND COMMENTS
+*************************************************************************************************
+**NOT NEED TO DRAMATICALLY CHOOSE between low security straight obfuscation and great dynamic obfuscation
+You can now do both and increase the dynamic part over time :
+Dynamic obfuscation works only with assume-global functions. But before every non-global function with some calls to other functions or obfuscated variables would lead to fatal errors because dynamic names would be used.
+Now the Obfuscator recognizes non-global functions and will then only use straight obfuscation automatically
+
+**NO NEED TO DECLARE VARS MULTIPLE TIME TO THE OBFUSCATOR
+It is enough to declare all your used vars to the obfuscator once at the beginning, whether there are locals, globals, static or even objects, it does not matter and can be done only once! You can still define the local vars to the obfuscator for each function the old way to have maybe specific names and parameters but this is not necessary at all.
+
+**Better detection of all types : Transmap shows clearly all that have been recognized and in which file
+-Functions
+ with Parameters and Nested labels
+-Labels & Hotkeys
+ with Nested Labels and hotkeys
+-Classes
+  with Nested Classes, Methods and Parameters
+-Context conditions #if ....
+  with Nested Labels and hotkeys
+
+**Obfuscator Include file is more flexible now with disabled commented lines, folder paths and relative paths
+
+**Better interface to show progress in % and the file being processed !
+
+**Improved obf of dynamic vVars and gLables
+You just need to have these followed or preceded by " : ex Gui, add, ... , % "vMyVar " "gMyLabel ..... .... ...."
+
+**New very useful commands for Obfuscators
+;$OBFUSCATOR: $STOP_OBF: && ;$OBFUSCATOR: $RESUME_OBF:  
+Can be used to stop / resume obfuscation for some blocks.
+If stop it will still replace Ihidestring calls and previous obfuscated functions / labels calls but not variables and parameters
+;$OBFUSCATOR: $STRAIGHT: && ;$OBFUSCATOR: $DYNAMIC:
+Can be used to change the obfuscation mode of large blocks if Dynamic is causing a problem but I don't think it should happen now.
+;$OBFUSCATOR: $START_BLOCK: && ;$OBFUSCATOR: $END_BLOCK:
+ ! Can be used to define quickly some code blocks that will stay together when the SCRAMBLING option is used !
+;$OBFUSCATOR: $START_COMMENT: && ;$OBFUSCATOR: $END_COMMENT:
+Can be used to preserve some comment blocks even if the option to remove all comments is used !
+
+**Much better Comments Blank lines and Spaces deletion functionality
+Only preserve in-line comments containing potentially dangerous chars like ()[]...
+Delete all other inline comments
+Take in account commentchar changes !
+
+**BETTER SCRAMBLING ABILITY
+Scramble all your code while preserving some blocks together, and without loosing code !
+
+**COMPLEX DYNAMIC VARS WITH PARTS CAN NOW BE OBFUSCATED !
+Vars like Space%A_Index%Var%B_Index%_Path can have each part (Space,Var,_Path) be obfuscated
+They Some constraints : if you have set these parts you can for example not call %What%%A_Index%Var%B_Index%_Path if you have set What:="Space" before as the name Space has been obfed. If you use this then just don't define Space as VarPart and call it always %What%%A_Index%Var%B_Index%_Path with What:="Space" and What  declared as globalvar to the obfuscator if you want it to be obfed fully every time.
+
+**OBJECTS CAN NOW BE OBFUSCATED !
+-They just have to be declared as global var in the obfuscator declaration
+
+**PROPERTIES AND METHOD CALLS CAN NOW BE OBFUSCATED !
+You should list them with the new
+;$OBFUSCATOR: $DEFPROPERTIES:
+and call along with others DUMPs
+;$OBFUSCATOR: $PROPERTIESFRAGS_DUMPALL: 
+It is only their uses which will be ofuscated. Just like System functions, their original names will not be changed.
+But property definitions like 
+Obj={ Prop:"test"} can look like Obj={(k#fkk#f@ kff@f@fkf@kff@ kfkffff@ fkf@f@ff k#fffkfkf@f@f@ f@k#fffk):"test"}
+Property Uses like
+Obj.Prop can look like Obj[k#fkk#f@ kff@f@fkf@kff@ kfkffff@ fkf@f@ff k#fffkfkf@f@f@ f@k#fffk]
+THANKS TO THIS, METHODS CAN ALSO BE OBFUSCATED THIS WAY
+Obj.Method(param) can look like Obj[k#fkk#f@ k#fffkfkf@f@f@ f@k#fffk](Param)
+Of course, the Obj itself, the method parameters and string values can be obfuscated as well so that the whole thing will look like garbage :)
+
+**CONTEXT CONDITIONS #IF... ARE NOW PROPERLY HANDLED AND OBFUSCATED
+
+**NESTED LABELS ARE NOW PROPERLY RECOGNIZED AND OBFUSCATED
+
+**BUG CORRECTIONS:
+No dynamic replacement bugs when your var is being declared in a function with global, static or local keyword
+Recognition even when inline comments
+Preserve correctly all comments sections
+Preserve and obfuscate all #if conditions
+Does not obfucate vars not surrounded by %% in continuation section
+Understands := in parameters
+Recognize Context conditions #if ...
+Recognize Classes
+External commands such as #CommentFlag will be preserve even at the end of a file, even when scrambling
+
+AND MUCH MORE !! (Sorry I did this log after from memory)
+
+**********************************************************
+UPDATES BY DAVID MALIA
+**********************************************************
+3/19/2013 - fixed problem with hotkeys defined with the '::' in programs. if the hotkey contained special hotkey characters or spaces the code would not obfuscate correctly.
+
+3/19/2013 - fixed problem with hotkeys defined with the '::' in programs. calls to functions and usage of variable names within hotkey sections would not obfuscate correctly.
+
+3/19/2013 - NOTE: hotkeys defined with the '::' in programs can not be followed by a statement on the same line. the obfuscator requires that the statements be on following lines and that the hotkey section be terminated with a 'return' statement that starts in column 1.
+
+3/19/2013 - fixed problem with the use of a variable named mytrue in program source code include file: 'OBFhidestr.ahk'. changed variable usage from 'mytrue' to 'true'. this could cause an error when the 'decode_ihidestr()' function found in that source code was moved to a users program to be obfuscated and there was no creation of a global variable in the users program by the name of 'mytrue' and with the value 1. the 'ihidestr()' and  'decode_ihidestr()' functions would then fail and the obfuscated programs would not work correctly
+
+3/19/2013 - fixed problem with the use of a variable named mytrue in files under the example-obfuscated-programs folder. files fixed were: in mindynobf.ahk, rewirefunction.ahk, straightobf.ahk, and obfclasses.ahk.
+
+3/19/2013 - fixed problem with the use of a variable named mytrue in files under the custom-hidestr-encoders folder.
+
+3/19/2013 - fixed problems with the output obfuscated file size balloning when reobfuscating the same file multiple times. functions in th output file would be duplicated and the output file would not work correctly. most of the problems were fixed but sometimes it can still occur. the problem can always be reset by restarting the obfuscator.
+
+3/23/2013 - added new window to program that will show when the 'obfuscation' function is running
+
