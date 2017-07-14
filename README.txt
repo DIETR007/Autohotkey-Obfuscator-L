@@ -29,4 +29,7 @@
 	
 	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
+	
+	See online doc at:
+	http://hotpportunity.com/AHK-Obfuscator/
 */
