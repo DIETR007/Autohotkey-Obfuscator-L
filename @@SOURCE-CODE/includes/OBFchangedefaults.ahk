@@ -227,9 +227,10 @@ init_changedefaultsCOMMs()
 	def_PARAMS		= DEFPARAMS
 	def_LOSVARS 	= DEFLOSVARS
 	def_GLOBVARS	= DEFGLOBVARS
-	;ADDED DIGIDON GLOBPARTIALVARS, PROPERTIES
+	;ADDED DIGIDON GLOBPARTIALVARS, PROPERTIES, SYSVARS
 	def_GLOBPARTIALVARS	= DEFGLOBPARTIALVARS
 	def_PROPERTIES	= DEFPROPERTIES
+	def_SYSVARS	= DEFSYSVARS
 	; TWEAKED DIGIDON HOTKEY : SEPARATE FROM LABEL : NO OBF : need to look better if csq !!
 	def_HOTKEY	= DEFHOTKEY
 	;ADDED DIGIDON CLASS AND #IF CONTEXT CONDITIONS
@@ -247,139 +248,6 @@ init_changedefaultsCOMMs()
 	add_funcstoCLASS	= ADDFUNCSTOCLASS
 	
 	add_followingtoCLASS = ADDFOLLOWING_TOCLASS
-}
-
-initOBFdefaults() {
-	global
-
-	defaultprop1 = sizemin
-	defaultprop2 = sizemax
-	defaultprop3 = makefragsets
-	defaultprop4 = fragsperset
-	defaultprop5 = fragvarsizemin
-	defaultprop6 = fragvarsizemax	
-	defaultprop7 = addnullfrags
-	
-	numdefaultprop = 7
-	
-	;definition of initial defaults
-	
-	sysfunc_sizemin 		= 12
-	sysfunc_sizemax 		= 16
-	sysfunc_makefragsets	= 4
-	sysfunc_fragsperset		= 2	
-	sysfunc_fragvarsizemin  = 12
-	sysfunc_fragvarsizemax	= 16
-	sysfunc_addnullfrags 	= 1
-	
-	func_sizemin 		= 12
-	func_sizemax 		= 16
-	func_makefragsets	= 2
-	func_fragsperset	= 1	
-	func_fragvarsizemin = 12
-	func_fragvarsizemax	= 16
-	func_addnullfrags 	= 1
-	
-	label_sizemin		 = 22
-	label_sizemax		 = 42
-	label_makefragsets	 = 2
-	label_fragsperset	 = 1	
-	label_fragvarsizemin = 22
-	label_fragvarsizemax = 35
-	label_addnullfrags	 = 1
-	
-	param_sizemin		 = 12
-	param_sizemax		 = 16
-	param_makefragsets	 = 2
-	param_fragsperset	 = 1	
-	param_fragvarsizemin = 14
-	param_fragvarsizemax = 26
-	param_addnullfrags	 = 1	
-	
-	LOSvar_sizemin		  = 12
-	LOSvar_sizemax		  = 22
-	LOSvar_makefragsets	  = 2
-	LOSvar_fragsperset	  = 1	
-	LOSvar_fragvarsizemin = 14
-	LOSvar_fragvarsizemax = 28
-	LOSvar_addnullfrags	  = 1
-	
-	;TWEAKED DIGIDON : CHANGED DEFAULTS
-	; GLOBvar_sizemin		   = 12
-	; GLOBvar_sizemax		   = 18
-	; GLOBvar_makefragsets   = 3
-	; GLOBvar_fragsperset    = 1
-	; GLOBvar_fragvarsizemin = 12
-	; GLOBvar_fragvarsizemax = 16
-	; GLOBvar_addnullfrags   = 1
-	GLOBvar_sizemin		   = 6
-	GLOBvar_sizemax		   = 12
-	GLOBvar_makefragsets   = 2
-	GLOBvar_fragsperset    = 1
-	GLOBvar_fragvarsizemin = 6
-	GLOBvar_fragvarsizemax = 12
-	GLOBvar_addnullfrags   = 1
-	
-	;ADDED DIGIDON PROPERTIES
-	properties_sizemin 		= 12
-	properties_sizemax 		= 16
-	properties_makefragsets	= 4
-	properties_fragsperset		= 2	
-	properties_fragvarsizemin  = 12
-	properties_fragvarsizemax	= 16
-	properties_addnullfrags 	= 1
-	
-	;TWEAKED DIGIDON : CHANGED DEFAULTS
-	;ADDED DIGIDON GLOBPARTIALVARS
-	; GLOBPARTIALvar_sizemin		  = 12
-	; GLOBPARTIALvar_sizemax		  = 18
-	; GLOBPARTIALvar_makefragsets   = 3
-	; GLOBPARTIALvar_fragsperset    = 1
-	; GLOBPARTIALvar_fragvarsizemin = 12
-	; GLOBPARTIALvar_fragvarsizemax = 15
-	; GLOBPARTIALvar_addnullfrags   = 1
-	GLOBPARTIALvar_sizemin		  = 4
-	GLOBPARTIALvar_sizemax		  = 8
-	GLOBPARTIALvar_makefragsets   = -1
-	GLOBPARTIALvar_fragsperset    = 1
-	GLOBPARTIALvar_fragvarsizemin = 0
-	GLOBPARTIALvar_fragvarsizemax = 0
-	GLOBPARTIALvar_addnullfrags   = -1
-	
-	FUNCandVAR_sizemin		  = -1
-	FUNCandVAR_sizemax		  = -1
-	FUNCandVAR_makefragsets   = -1
-	FUNCandVAR_fragsperset    = 2
-	FUNCandVAR_fragvarsizemin = 14
-	FUNCandVAR_fragvarsizemax = 20
-	FUNCandVAR_addnullfrags   = 1
-	
-	guilabel_sizemin		 = 16
-	guilabel_sizemax		 = 26
-	guilabel_makefragsets	 = -1
-	guilabel_fragsperset	 = 1	
-	guilabel_fragvarsizemin = 12
-	guilabel_fragvarsizemax = 15
-	guilabel_addnullfrags	 = 1
-	
-	;CREATION OF CLASSES FOR FUNCTIONS
-	;these are the 'start' defaults
-	defaultCLASS_makenumnulls			= 40
-	defaultCLASS_nullnameminsize		= 14
-	defaultCLASS_nullnamemaxsize		= 26
-	defaultCLASS_replacementsperchar	= 10
-	defaultCLASS_replacenameminsize		= 14
-	defaultCLASS_replacenamemaxsize		= 26
-	
-	defaultCLASSprop1 = makenumnulls
-	defaultCLASSprop2 = nullnameminsize
-	defaultCLASSprop3 = nullnamemaxsize
-	defaultCLASSprop4 = replacementsperchar	
-	defaultCLASSprop5 = replacenameminsize	
-	defaultCLASSprop6 = replacenamemaxsize
-	
-	numdefaultCLASSprop = 6
-	
 }
 
 /*
@@ -438,7 +306,8 @@ CLASS_%classname%_replace%char%_%curRnum%_value = % char
 	OBF_%vartype%_%rownum%_LOSvar_numrows
 	OBF_%vartype%_%rownum%_LOSvar_%lrow%_name
 	OBF_%vartype%_%rownum%_LOSvar_%lrow%_OBFname
-	OBF_%vartype%_%rownum%_LOSvar_%lrow%_replacementsdone
+	;DIGIDON TWEAKED : DELETE _replacementsdone PART BECAUSE VARIABLES ARE NOW NOT OBF IF LOCAL/GLOBAL/STATIC
+	; OBF_%vartype%_%rownum%_LOSvar_%lrow%_replacementsdone
 	OBF_%vartype%_%rownum%_LOSvar_%lrow%_numfragrows
 	OBF_%vartype%_%rownum%_LOSvar_%lrow%_fragsperrow
 	OBF_%vartype%_%rownum%_LOSvar_%lrow%_lastfragrowused

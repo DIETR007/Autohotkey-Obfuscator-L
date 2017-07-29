@@ -36,6 +36,7 @@
 
 
 #SingleInstance force
+Glb_VersionNum := 2.01
 
 OnExit, savelastfiles
 
@@ -44,6 +45,8 @@ initvartypes()
 getlastobffiles()
 
 chooseOBFfunc()
+;Added DigiDon : Automatic selection
+GuiControl, +default, createTRANSMAPfilenames_v
 	
 ;return from AUTOEXECUTE
 return
@@ -59,6 +62,8 @@ return
 chooseOBFfunc:
 	gui, destroy
 	chooseOBFfunc()
+	;Added DigiDon : Automatic selection
+	GuiControl, +default, getOBFfilenames_v
 return
 
 chooseOBFfunc() {
@@ -79,7 +84,7 @@ chooseOBFfunc() {
 	GuiControlGet, spacewidth, Pos, getspacewidth	
 	
 	gui, font, %scl_h1font% bold
-	gui, add, text, xp yp+10 Cab7430, DYNAMIC OBFUSCATOR L v2.0
+	gui, add, text, xp yp+10 Cab7430, % "DYNAMIC OBFUSCATOR L v" Glb_VersionNum
 	
 	gui, font, %scl_basefont%  norm underline
 	gui, add, text, x+120 yp+4 cblue Gshowabout, About
@@ -91,10 +96,10 @@ chooseOBFfunc() {
 	gui, add, text, xm y+28, Choose Obfuscater Function	
 	
 	gui, font, %scl_basefont%  norm
-	gui, add, button, xm y+40 GcreateTRANSMAPfilenames, Create Translations Map
+	gui, add, button, xm y+40 GcreateTRANSMAPfilenames vcreateTRANSMAPfilenames_v, Create Translations Map
 	gui, add, text, x+30, This will create a 'map' file of the objects in your`nsource code files. This must be run before the`nobfuscate function below
 	
-	gui, add, button, xm y+30 GgetOBFfilenames, % "Obfuscate Source Code"
+	gui, add, button, xm y+30 GgetOBFfilenames vgetOBFfilenames_v, % "Obfuscate Source Code"
 	gui, add, text, x+30, Will create the output obfuscated file
 	
 	gui, add, button, xm y+60 G2GuiClose, Cancel program
@@ -114,7 +119,7 @@ showabout:
 	GuiControlGet, spacewidth, Pos, getspacewidth	
 	
 	gui, font, %scl_h1font% bold
-	gui, add, text, xp yp+10 Cab7430, DYNAMIC OBFUSCATOR L v2.0
+	gui, add, text, xp yp+10 Cab7430, % "DYNAMIC OBFUSCATOR L v" Glb_VersionNum
 	
 	; gui, font, %scl_basefont%  norm underline
 	; gui, add, text, x+120 yp+4 cblue Gshowabout, About
@@ -175,9 +180,11 @@ return
 
 4GuiClose:
 4GuiEscape:
+	CancelObfuscation=1
 	gui, destroy
 	chooseOBFfunc()
-return
+	tooltip
+exit
 
 ;---------------------------------------------
 ;**START CREATE TRANSLATIONS MAP FILE SECTION**
@@ -187,6 +194,7 @@ createTRANSMAPfilenames:
 	gui, destroy
 	createTRANSMAPfilenames()
 return
+
 createTRANSMAPfilenames() {	
 	global
 	
@@ -207,9 +215,8 @@ createTRANSMAPfilenames() {
 	gui, add, text, xm y+2, Choose the 'include map' file that contains your list `nof source code files to process
 	
 	editwidth = % "W" . (spacewidthW * 100)
-	gui, add, edit, xm y+2 Vfileslistfile %editwidth% r4
-		, % lastincludemap 
-	gui, add, button, xm y+2 Gchoosesourcecodefile, Choose file
+	gui, add, edit, xm y+2 Vfileslistfile %editwidth% r3, % lastincludemap 
+	gui, add, button, xm y+2 Gchoosesourcecodefile vchoosesourcecodefile_v, Choose file
 	
 	gui, font, %scl_h2font%  bold
 	gui, add, text,, Obfuscator Translation Map File
@@ -217,11 +224,14 @@ createTRANSMAPfilenames() {
 	gui, add, text, xm y+2, Obfuscater output 'translations map' file name, may use`na path relative to the file above
 	gui, add, edit, xm y+2 Voutfilename %editwidth%, % lasttransmap
 	
-	gui, add, button, GcreateTRANSMAP, Create Translations Map
+	gui, add, button, GcreateTRANSMAP vcreateTRANSMAP_v Default, Create Translations Map
 	gui, add, button, x+20 yp GchooseOBFfunc, Cancel
 	
 	gui, show
+	
+	GuiControl, Focus, createTRANSMAP_v
 }
+
 createTRANSMAP:
 	gui, submit
 	myfileslistfile = % fileslistfile
@@ -241,7 +251,9 @@ createTRANSMAP:
 	
 	createTRANSMAP()
 	;gui 10:destroy
-	Gosub, chooseOBFfunc	
+	Gosub, chooseOBFfunc
+
+	
 return
 
 ;---------------------------------------------
@@ -305,7 +317,7 @@ getOBFfilenames() {
 	gui, add, text, xm y+4, Output file name for the Obfuscated file, may may use`na path relative to the first file above
 	gui, add, edit, xm y+4 Vobf_outfilename %editwidth%, % lastoutobffile
 	
-	gui, add, button, Gobfuscatecode, Obfuscate Program
+	gui, add, button, Gobfuscatecode Default, Obfuscate Program
 	gui, add, button, x+20 yp GchooseOBFfunc, Cancel
 	
 	gui, show	
@@ -400,6 +412,10 @@ choosesourcecodefile:
 	GuiControl,, obf_outfilename, % filechoosenBase_FileName . "obfuscated.ahk"
 	
 	lastoutobffile_BK:=filechoosenBase_FileName . "obfuscated.ahk"
+	
+	;Added DigiDon : Automatic selection
+	GuiControl,-default, choosesourcecodefile_v
+	GuiControl,+default, createTRANSMAP_v
 return
 
 getlastobffiles()
@@ -464,8 +480,8 @@ startswithfragtype(obscomm)
 }
 
 /*	
-	;ADDED DIGIDON GLOBPARTIALVARS PROPERTIES
-	for vartypes of 'sysfunc', 'func' , 'label', 'globvar', 'globpartialvar', 'PROPERTIES'
+	;ADDED DIGIDON GLOBPARTIALVARS PROPERTIES SYSVAR
+	for vartypes of 'sysfunc', 'func' , 'label', 'globvar', 'globpartialvar', 'properties', 'sysvar'
 	; for vartypes of 'sysfunc', 'func' , 'label', 'globvar'
 	OBF_%vartype%_numrows
 	OBF_%vartype%_%rownum%_name
@@ -512,14 +528,19 @@ startswithfragtype(obscomm)
 */	
 
 
-#Include includes/OBFchangedefaults.ahk
-#Include includes/OBFinit.ahk
-#Include includes/OBFutilfuncs.ahk
-#Include includes/OBFusefulfuncs.ahk
-#Include includes/OBFcreatetransMAP.ahk
-#Include includes/OBFprocesstransMAP.ahk
-#Include includes/OBFparsesource.ahk
-#Include includes/OBFobfuscate.ahk
-#Include includes/OBFhidestr.ahk
+#Include %A_ScriptDir%/includes
+#Include OBFchangedefaults.ahk
+#Include OBFinit.ahk
+#Include OBFutilfuncs.ahk
+#Include OBFusefulfuncs.ahk
+#Include OBFcreatetransMAP.ahk
+#Include OBFprocesstransMAP.ahk
+#Include OBFparsesource.ahk
+#Include OBFobfuscate.ahk
 
-#Include includes/OBFvardumps.ahk
+; #Include OBFhidestr.ahk
+#Include OBFhidestr_DIGIDON.ahk
+;TWEAKED DIGIDON : You can optinally add your own ihidestr include, but names should not be the same as in original fct though
+; #Include *i OBFhidestr_DIGIDON.ahk
+
+#Include OBFvardumps.ahk

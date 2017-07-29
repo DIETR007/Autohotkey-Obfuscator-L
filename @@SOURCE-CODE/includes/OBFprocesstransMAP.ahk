@@ -69,6 +69,8 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 	OBF_GLOBVAR_numrows 	= 0
 	;ADDED DIGIDON GLOBPARTIALVARS
 	OBF_GLOBPARTIALVAR_numrows 	= 0
+	;ADDED DIGIDON SYSVARS
+	OBF_SYSVAR_numrows 	= 0
 	;ADDED DIGIDON PROPERTIES
 	OBF_PROPERTIES_numrows 	= 0
 	;ADDED DIGIDON #IF CONTEXT CONDITION
@@ -79,13 +81,12 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 	OBF_block_numrows = 0
 	OBF_FUNCandVAR_numrows 	= 0
 	OBF_NULL_numrows 		= 0
-	;ADDED DIGIDON : SHOULD BE MULTIPLE OF 2
-	OBF_NULL_MinSize = 4
-	OBF_NULL_MaxSize = 8
 	
 	SYSFUNC_time 	= 0
 	;ADDED DIGIDON PROPERTIES
 	PROPERTIES_time = 0
+	;ADDED DIGIDON SYSVARS
+	SYSVAR_time = 0
 	FUNC_time 		= 0	
 	LABEL_time 		= 0
 	PARAM_time 		= 0
@@ -266,6 +267,15 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 			GLOBVAR_time += A_TickCount - timestart
 			continue					
 		}
+		
+		;ADDED DIGIDON SYSVARS
+		if (CUR_OBFTRANSCOMM = def_SYSVARS) {
+			timestart = % A_TickCount
+			add_SYSvar_OBFentry()
+			SYSVAR_time += A_TickCount - timestart
+			continue					
+		}
+		
 		;ADDED DIGIDON GLOBPARTIALVARS
 		if (CUR_OBFTRANSCOMM = def_GLOBPARTIALVARS) {
 			; If A_Index=265
@@ -463,12 +473,25 @@ findclass(classname)
 	return, % false
 }
 
+;ADDED DIGIDON SYSVARS
+add_SYSVAR_OBFentry() {
+	global
+	if !set_obfcreate_names() {
+		write_transtablemess("`r`n#ERROR: " . CUR_OBFTRANSCOMM 
+			. " command found but no parameters, 1 parameter, system var name, is required ")
+		return
+	}	
+	set_obfcreate_params(11)	
+	OBFclass = % SYSvar_class
+	addnew_OBFentry("OBF_SYSVAR") 
+}
+
 ;ADDED DIGIDON PROPERTIES
 add_PROPERTIES_OBFentry() {
 	global
 	if !set_obfcreate_names() {
 		write_transtablemess("`r`n#ERROR: " . CUR_OBFTRANSCOMM 
-			. " command found but no parameters, 1 parameter, super global var name, is required ")
+			. " command found but no parameters, 1 parameter, property var name, is required ")
 		return
 	}	
 	set_obfcreate_params(10)	
@@ -862,6 +885,7 @@ add_param_OBFentry()
 	addnew_OBFentry("OBF_FUNC_" . funcnum . "_PARAM") 
 	
 }
+
 add_LOSvar_OBFentry()
 {
 	GLOBAL
@@ -990,15 +1014,27 @@ addnew_OBFentry(varlistname) {
 			}
 		}
 		
-		;ADDED DIGIDON PROPERTIES
-		;check for dup definition of this global var
+		;ADDED DIGIDON SYSVARS
+		;check for dup definition of this system var
 		if (varlistname = "OBF_PROPERTIES") {
 			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
-				msgbox, 4096,, % "super global var def duplication2: '" . obfcreate_varname%a_index% . "'"
+				msgbox, 4096,, % "system var def duplication2: '" . obfcreate_varname%a_index% . "'"
+				continue
+			}
+		}
+		
+		;ADDED DIGIDON PROPERTIES
+		;check for dup definition of this property var
+		if (varlistname = "OBF_PROPERTIES") {
+			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
+				msgbox, 4096,, % "property var def duplication2: '" . obfcreate_varname%a_index% . "'"
 				continue
 			}
 		}
 		newrow = % ++%varlistname%_numrows
+		;TESTING DIGIDON
+		; if (varlistname="OBF_GLOBPARTIALVAR")
+		; msgbox % "OBF_GLOBPARTIALVAR newrow " newrow " = " obfcreate_varname%a_index%
 		;ADDED DIGIDON OBF_numrows
 		;DIGIDON : UNCOMPLETE : SHOULD PROBABLY ADD #IF CONTEXT CONDITIONS & CLASS
 		if (varlistname = "OBF_FUNC" or varlistname = "OBF_LABEL")
@@ -1012,19 +1048,19 @@ addnew_OBFentry(varlistname) {
 			%varlistname%_%newrow%_LOSvar_numrows := 0
 		}
 		
-		;DIGIDON MAYBE : DELETE THAT PART BECAUSE VARIABLES ARE NOT OBF IF LOCAL/GLOBAL ETC. INLINE DEF BETTER
+		;DIGIDON TWEAKED : DELETE _replacementsdone PART BECAUSE VARIABLES ARE NOW NOT OBF IF LOCAL/GLOBAL/STATIC
 		;a flag used so that the first LOSvar in a function will not
 		;have %'s in it
-		if (substr(varlistname, -5) = "LOSvar") {
-			%varlistname%_%newrow%_replacementsdone = 0
-		}
+		; if (substr(varlistname, -5) = "LOSvar") {
+			; %varlistname%_%newrow%_replacementsdone = 0
+		; }
 		;set a class name marker for functions and labels
 		if (varlistname = "OBF_FUNC" or varlistname = "OBF_LABEL") {
 			%varlistname%_%newrow%_classname = % USE_CLASS_NAME
 			;msgbox, my class name: %USE_CLASS_NAME%
 		}
-		;ADDED DIGIDON PROPERTIES
-		if (varlistname = "OBF_SYSFUNC" or varlistname = "OBF_PROPERTIES") {
+		;TWEAKED DIGIDON PROPERTIES & SYSVARS
+		if (varlistname = "OBF_SYSFUNC" or varlistname = "OBF_PROPERTIES" or varlistname = "OBF_SYSVAR") {
 			;set 'obfname' = 'name' for sysfuncs
 			%varlistname%_%newrow%_OBFname = % %varlistname%_%newrow%_name
 		} else {
@@ -1088,13 +1124,13 @@ createREPLACEMENTSlist() {
 	;replace@withOBF_3 = replace@withOBF_MASTvarname
 }
 
-createNULLSlist()
-{
+createNULLSlist() {
 	global
 	
 	while OBF_NULL_numrows < 100
 	{
 		newrow = % ++OBF_NULL_numrows
+		; tooltip OBF_NULL_MinSize %OBF_NULL_MinSize% OBF_NULL_MaxSize %OBF_NULL_MaxSize%
 		OBF_NULL_%newrow% = % randomOBFname(OBF_NULL_MinSize, OBF_NULL_MaxSize)
 	}
 }
@@ -1107,22 +1143,35 @@ randomOBFname(sizemin, sizemax)
 	;but is included here because this variable is used in the testing of 
 	;whether a substring match has allowable variable characters before or after it
 	;in which case the match would be evaluated as INVALID
-	;DIGIDON MAYBE REMOVE THE []
-	oddvarnameallowedchars = #@$?[]_  
+	;TWEAKED DIGIDON ?[] are not authorized so are deleted
+	oddvarnameallowedchars = #@$_ 
+	; oddvarnameallowedchars = #@$?[]_   
 	
-	;full list of autohotkey allowable chars for varnames and func names
+	; full list of autohotkey allowable chars for varnames and func names
+	; # _ @ $
+	; "##########$$$$$$$$$$
+	
+	; full list of autohotkey allowable chars for varnames and func names
 	; # _ @ $ ? [ ]
-	;"##########$$$$$$$$$$[[[[[[[[[[]]]]]]]]]]
+	; "##########$$$$$$$$$$[[[[[[[[[[]]]]]]]]]]
 	
 makeobfstarttime = % A_TickCount
 	
 	static obfSTARTchars := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	static obfchars 	:= "######@@@@@@$$$$$$??????[[[[[[]]]]]]######@@@@@@$$$$$$??????[[[[[[]]]]]]ABCDEFGHIJKLMNOPQRSTUVWXYZ012345678901234567890123456789"
+	;DIGIDON : TWEAKED CHAR STRINGS MODIFIED SO CHARACTERS SETS ARE INCREASED
+	static obfchars 	:= "######@@@@@@$$$$$$######@@@@@@$$$$$$ABCDEFGHIJKLMNOPQRSTUVWXYZ012345678901234567890123456789"
 	static numrandstartchars, numrandobfchars
 	
-	static charset1 := "fk", charset2 := "kf", charset3 := "ff", charset4 := "f@", charset5 := "k#" 
-	static charset6 := "f?", charset7 := "f]", charset8 := "cu", charset9 := "cc", charset10 := "aa"
-	static numcharsets = 5
+	static charset1 := "fk", charset2 := "kf", charset3 := "ff", charset4 := "kk", charset5 := "f@" 
+	static charset6 := "@f", charset7 := "k@", charset8 := "@k", charset9 := "f#", charset10 := "#f"
+	static charset11 := "k#", charset12 := "#k", charset13 := "f$", charset14 := "$f"
+	; static charset1 := "fk", charset2 := "kf", charset3 := "ff", charset4 := "f@", charset5 := "k#" 
+	; static charset6 := "kk", charset7 := "f$", charset8 := "cu", charset9 := "cc", charset10 := "aa"
+	; static charset6 := "f?", charset7 := "f]", charset8 := "cu", charset9 := "cc", charset10 := "aa"
+	
+	;DIGIDON : TWEAKED NUMBER MODIFIED SO CHARACTERS SET ARE INCREASED
+	; static numcharsets = 5
+	static numcharsets = 15
 		
 	numrandstartchars 	= % strlen(obfSTARTchars)
 	numrandobfchars 	= % strlen(obfchars)
@@ -1409,8 +1458,7 @@ countparamsandLOSvars()
 	}
 }
 
-showclassesfound()
-{
+showclassesfound() {
 	global
 	local mycurclass, numreplacements
 	
@@ -1478,7 +1526,7 @@ showclassesfound()
 	;sort the list
 	Sort, foundsecclasses	
 	
-	foundclasses = **SECURED CLASSES FOUND**(funcs, labels)
+	foundclasses = **SECURED CLASSES FOUND**
 	
 	;print them out
 	loop, parse, foundsecclasses, `n
@@ -1518,7 +1566,7 @@ showclassesfound()
 	;sort the list
 	Sort, foundnonsecclasses	
 	
-	foundclasses .= "`n`n**NON SECURED CLASSES FOUND**(funcs, labels)"		
+	foundclasses .= "`n`n**NON SECURED CLASSES FOUND**"		
 			
 	;print them out
 	loop, parse, foundnonsecclasses, `n
@@ -1550,8 +1598,7 @@ addtabs(mycurclass)
 		
 	return a_tab . a_tab . a_tab
 }
-show_switched_funcs()
-{
+show_switched_funcs() {
 	global
 	
 	foundswitched= **SWITCHED FUNCS**`n
@@ -1571,24 +1618,32 @@ showobfstats() {
 	myshowclasses = % showclassesfound()
 	myshowswitched = % show_switched_funcs()
 	
+	;TWEAKED DIGIDON : DISABLED FUNCANDVAR LINE BEACAUSE SEEMS TO BE FOR SPECIFIC UNDOCUMENTED USED
+	; FUNCandVARs: %OBF_FUNCANDVAR_numrows%
+	
 	msgbox, 4097,, 
 	;ADDED DIGIDON counttotalMAPlines,countTOTALlines
 	(LTrim
 	counttotalMAPlines (approx): %counttotalMAPlines%
 	countTOTALlines (approx): %countTOTALlines%
 	messedupnames_recs: %messedupnames_recs%   already used: %numalreadyused%
-	functions found: %OBF_FUNC_numrows%
-	System functions found: %OBF_SYSFUNC_numrows%
-	LABEL HEADERS found: %OBF_LABEL_numrows%
-	Total parameters found: %totalparams%
-	Total LOS vars found: %totalLOSvars%
-	total GLOBAL vars found: %OBF_GLOBVAR_numrows%
-	total GLOBALPARTIAL vars found: %OBF_GLOBPARTIALVAR_numrows%
-	total PROPERTIES vars found: %OBF_PROPERTIES_numrows%
-	Total FUNCandVARs found: %OBF_FUNCANDVAR_numrows%
-	dumpcode_numrows: %dumpcode_numrows%
+	
+	HERE IS WHAT WAS FOUND:
+	FUNCTIONS: %OBF_FUNC_numrows%
+	SYSTEM FUNCTIONS: %OBF_SYSFUNC_numrows%
+	LABEL HEADERS: %OBF_LABEL_numrows%
+	PARAMETERS: %totalparams%
+	
+	HERE IS WHAT WAS DECLARED:
+	LOS vars: %totalLOSvars%
+	GLOBAL vars: %OBF_GLOBVAR_numrows%
+	GLOBALPARTIAL vars: %OBF_GLOBPARTIALVAR_numrows%
+	SYSTEM vars: %OBF_SYSVAR_numrows%
+	PROPERTIES vars: %OBF_PROPERTIES_numrows%
+	
+	DUMP CLASSES: %dumpcode_numrows%
+	
 	%myshowswitched%
-
 	%myshowclasses%
 	)
 	;TWEAKED DIGIDON Can Cancel

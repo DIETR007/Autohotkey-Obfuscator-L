@@ -50,7 +50,7 @@ createTRANSMAP() {
 	writetoMAPfilestr=
 	
 	MAPfilestr =
-(
+	(
 
 	OBFUSCATOR FIND FUNCTION AND LABEL HEADERS MAP OUTPUT FILE
 	Date: %currenttime%
@@ -85,19 +85,21 @@ createTRANSMAP() {
 
 	#OUTPUT FILE NAME(this file):
 	%myMAPfilename%
-)
+	)
 	writetoMAPfile(MAPfilestr)
 	
 	initOBFdefaults()
 	init_changedefaultsCOMMs()
 	
 	MAPfilestr = 
-(	
+	(
 	    
 	Change the values assigned to the program start defaults below to use
 	different starting values when this map file is input to the obfuscator.
+	For the time being the number of empty `%'s vars and dynamic fragments
+	must be directly changed in 'OBFinit.ahk' file
 
-)
+	)
 	writetoMAPfile(MAPfilestr)
 	
 	;write out all default values
@@ -112,7 +114,7 @@ createTRANSMAP() {
 		}
 		writetoMAPfile("")
 	}
-		
+
 	totalsourcelines = 0
 	
 	;after label sections and function are 'broken off'
@@ -142,31 +144,88 @@ createTRANSMAP() {
 
 ;ADDED DIGIDON ParseIncludeList
 ParseIncludeList(fileslist) {
-global curfilenum
+	global curfilenum
+	global CancelTransMap, CancelObfuscation, processcodesection, obfDir
+	
+	SetWorkingDir %obfDir%
+	
 	AA_Index=0
 	Loop, parse, fileslist, `n, `r
 	{
+		;ADDED DIGIDON CANCEL TRANSMAP
+		if (CancelTransMap=1 and processcodesection="MAPcodesection") {
+			CancelTransMap=
+			tooltip CANCELING
+			sleep 1000
+			tooltip
+			exit
+		}
+		;ADDED DIGIDON CANCEL OBFUSCATION
+		if (CancelObfuscation=1 and processcodesection="OBFcodesection") {
+			CancelObfuscation=
+			tooltip CANCELING
+			sleep 1000
+			tooltip
+			exit
+		}
 		;ADDED DIGIDON BETTER INCLUDEFILE
 		if Trim(A_LoopField="")
-		continue
+			continue
 		
 		if (SubStr(A_LoopField,1,1)=";")
-		{
-		continue
+			{
+			continue
+			}
+		
+		SplitPath, A_LoopField , OutFileName, OutDir, OutExtension
+		if (OutExtension!="ahk") {
+		; msgbox OutExtension %OutExtension%
+		Filetype:="dir"
 		}
+		else
+		Filetype:="ahkfile"
 		
 		If !FileExist(A_LoopField)
 			{
-			TrimLoopField=%A_LoopField%
-			msgbox,
-			(LTrim
-			"%TrimLoopField%"
-			in Include file cannot be found or is not a valid filepath.
 			
-			Make sure you selected a home-made file (call it "scriptname_includemap.txt" for example) with the list of the files to obfuscate, starting with your main script and continuing with your include files. 
-			See documentation if needed.
-			)
-			exitapp
+			if (Filetype="dir") {
+				If FileExist(obfDir . A_LoopField) {
+				SetWorkingDir, % obfDir . A_LoopField
+				continue
+				}
+				else If FileExist(obfDir . "\" . A_LoopField) {
+				SetWorkingDir, % obfDir . "\" . A_LoopField
+				continue
+				}
+			}
+			else If (FileExist(obfDir . A_LoopField) or FileExist(obfDir . "\" . A_LoopField))
+			SetWorkingDir, % obfDir
+			}
+			
+			If !FileExist(A_LoopField) {
+			
+			
+			TrimLoopField=%A_LoopField%
+			if A_Index=1
+				msgbox,
+				(LTrim
+				"%TrimLoopField%"
+				in Include file cannot be found or is not a valid filepath.
+				
+				Make sure you selected a custom-made file (call it "scriptname_includemap.txt" for example) with the list of the files to obfuscate, starting with your main script and continuing with your include files. 
+				See documentation if needed.
+				)
+			else
+				msgbox,
+				(LTrim
+				"%TrimLoopField%"
+				in Include file cannot be found or is not a valid filepath. obfDir %obfDir%
+				
+				Please correct in your includeMAP file.
+				)
+			gui 10:destroy
+			createTRANSMAPfilenames()
+			exit
 			}
 		if InStr(FileExist(A_LoopField), "D")
 			{
@@ -178,6 +237,7 @@ global curfilenum
 		;file name and the number it is in the list
 		parse_onefile(A_LoopField, AA_Index)				
 	}
+	SetWorkingDir %obfDir%
 }
 
 MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LOFname)
@@ -185,7 +245,6 @@ MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LO
 	;LOCAL
 	local NestedFctLine
 	
-
 	if (LOFtype = "label") 			
 		mysecttype = % "label:global"
 	else if (LOFtype = "hotkey") 
@@ -200,7 +259,6 @@ MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LO
 	;ADDED DIGIDON Classes	
 	else if (LOFtype = "class")
 		mysecttype = % "class"	
-
 
 	;the routine below will slow down the program enormously!
 	;showmyprocmess("MAPPING CODE SECTION: " . mysecttype, LOFheaderline)
@@ -219,6 +277,7 @@ MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LO
 		;TWEAKED DIGIDON
 		LOFname := LOFnameBK
 		preLOFlines =
+		
 		if IS_OBFCOMM(A_Loopfield) {
 			passthruCOMM(LOFtype)
 			continue
@@ -228,6 +287,7 @@ MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LO
 		
 		AA_Loopfield:=Trim(A_Loopfield)
 		AA_Index:=A_Index
+		
 		Loop, parse, NestedFctLines, |
 		if (AA_Index=A_LoopField) {
 			LOFname:= Getting_ValueChosenFromList(A_Index,LOFsnames)
@@ -240,14 +300,16 @@ MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LO
 			showmyprocmess("  *NESTED LABEL FOUND: " . LOFname)
 			writeLOFtoTRANSMAP(preLOFlines, A_Loopfield, LOFtype2, LOFname, "NESTEDLABEL")
 		}
+		
 		;ADDED DIGIDON NESTED HOTKEY
 		else if (isLOFheader(A_Loopfield, LOFtype2, LOFname, 1) and LOFtype2 = "hotkey") {
 			showmyprocmess("  *NESTED HOTKEY FOUND: " . LOFname)
 			writeLOFtoTRANSMAP(preLOFlines, A_Loopfield, LOFtype2, LOFname, "NESTEDHK")
 		}
+		
 		;ADDED DIGIDON NESTED CLASS
 		else if (isLOFheader(A_Loopfield, LOFtype2, LOFname, 1, 1) and LOFtype2 = "class") {
-		; msgbox NESTED CLASS FOUND
+			; msgbox NESTED CLASS FOUND
 			showmyprocmess("  *NESTED CLASS FOUND: " . LOFname)
 			writeLOFtoTRANSMAP(preLOFlines, A_Loopfield, LOFtype2, LOFname, "NESTEDCLASS")
 		}
@@ -321,6 +383,14 @@ passthruCOMM(cursectiontype = "") {
 		writetoMAPfile("`r`n$" . CUR_OBFCOMM . ": " . CUR_COMMPARAMS)
 		return	
 	}	
+	
+	;ADDED DIGIDON SYSVARS
+	;DEFINE SUPER GLOBALS
+	if (CUR_OBFCOMM	= def_SYSVARS) {
+		;'pass through' this command and put it in the translations map
+		writetoMAPfile("`r`n$" . CUR_OBFCOMM . ": " . CUR_COMMPARAMS)
+		return
+	}
 	
 	;ADDED DIGIDON PROPERTIES
 	;DEFINE SUPER GLOBALS
@@ -401,7 +471,6 @@ getcommparams()
 
 writeLOFtoTRANSMAP(preLOFlines, LOFheaderline, LOFtype, LOFname, specialcase = "")
 {
-		
 	writetoMAPfile("")
 	if preLOFlines is not space
 		writetoMAPfile(preLOFlines)
@@ -412,7 +481,7 @@ writeLOFtoTRANSMAP(preLOFlines, LOFheaderline, LOFtype, LOFname, specialcase = "
 	}
 	
 	if (LOFtype = "function")
-		OBFfunc = % "$DEFFUNCS: "	
+		OBFfunc = % "$DEFFUNCS: "
 	else if (LOFtype = "label")
 		OBFfunc = % "$DEFLABELS: "
 	;TWEAKED DIGIDON : DEF HOTKEYS INSTEAD OF LABELS
@@ -492,8 +561,7 @@ writeLOFtoTRANSMAP(preLOFlines, LOFheaderline, LOFtype, LOFname, specialcase = "
 	}	
 }
 
-createTRANSMAPmesswin()
-{
+createTRANSMAPmesswin() {
 	global
 	
 	gui 10:default
@@ -505,7 +573,7 @@ createTRANSMAPmesswin()
 	GuiControlGet, spacewidth, Pos, getspacewidth
 	
 	gui, font, %scl_h1font% bold
-	gui, add, text, xp yp, Mapping Functions and Label Sections in Source Code 
+	gui, add, text, xp yp, Mapping Functions Labels and other code Sections in Source Code 
 	
 	editwidth = % "W" . (spacewidthW * 140)
 	
@@ -519,10 +587,19 @@ createTRANSMAPmesswin()
 	
 	gui, add, text, xm y+20
 	
-	gui, add, button, xm+30 yp GchooseOBFfunc, Choose OBF fuction
+	gui, add, button, xm+30 yp Gcanceltransmap, Cancel
+	; gui, add, button, xm+30 yp GchooseOBFfunc, Cancel
 	
 	gui, show,, Mapping Source Code Files
 }
+
+10GuiClose:
+canceltransmap:
+CancelTransMap=1
+gui,10:destroy
+chooseOBFfunc()
+exit
+
 
 showmyprocmess(message, funcorlabelname = "")
 {	

@@ -1,3 +1,4 @@
+#SingleInstance, Force
 ;refer to the readme in the same directory as this for
 ;information on this file
 
@@ -9,7 +10,7 @@ unobfuscated_1:= "hello world, autohotkey rocks"
 ;first try a simple test and see how it can handle that
 ;the statement below will have obfuscated literal text
 ;in the 'OUTPUT_ahkprogram_with_hidestr.ahk' program
-decoded_1:= decode_ihidestr("19e6c07c1fbc00c8701c9f0ddf4cdf0d30dceb882f8c00bc50c8df8caf1c6f")
+decoded_1:= decode_ihidestr("dcac9342d282c39e33e252d3921292d3f3a2ae5ee252c382139e925262e222")
 
 unobfuscated_2:= "`a```t`ts`n `%`,""hello`n`tworld"""
 
@@ -17,7 +18,7 @@ unobfuscated_2:= "`a```t`ts`n `%`,""hello`n`tworld"""
 ;string to give it a TORTURE TEST
 ;the statement below will have obfuscated literal text
 ;in the 'OUTPUT_ahkprogram_with_hidestr.ahk' program
-decoded_2:= decode_ihidestr("a19d8fb3c357a487f4d8837783874357d317afb34f97df978f7783c8c497c49783979397")
+decoded_2:= decode_ihidestr("7914563b9adf7b0fcb505aff5a0f1adfaa9f763b161fa61f56ff5a409b1f9b1f5a1f6a1f")
 
 msgbox, THESE 2 SHOULD BE THE SAME:`n`nunobfuscated_1: %unobfuscated_1%`n`ndecoded_1: %decoded_1%`n`nSPECIAL CHARACTER TORTURE TEST`nTHESE 2 SHOULD BE THE SAME:`n`nunobfuscated_2: %unobfuscated_2%`n`ndecoded_2: %decoded_2%
 
@@ -26,7 +27,13 @@ return
 
 
 ;******************************************
+;	!! IN YOUR ACTUAL FILES YOU MUST DELETE THIS COMMENT SECTION !!!
 ;	PUT THESE FUNCTIONS IN YOUR ACTUAL AUTOHOTKEY SCRIPT FILE
+;FOR MORE SECURITY DO NOT LEAVE COMMENTS DIRECLTY IN YOUR CODE !
+;SO THAT NOBODY CAN LOOK FOR THEM DIRECTLY EVEN IF YOU DO NOT USE THE STIP COMMENT FUNCTIONALITY
+;COMMENTS EXPLAINING HOW THE ENCODING/DECODING WORKS AND HOW IT CAN BE MODIFIED ARE IN
+;		ORIGINAL OBFhidestr - Commented.ahk ----> HAVE A LOOK !
+;******************************************
 
 ihidestr(thisstr)
 {

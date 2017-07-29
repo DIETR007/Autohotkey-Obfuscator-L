@@ -1,3 +1,11 @@
+V2.01 - DigiDon
+-Auto-button selection for faster obfuscation tests
+-Auto-file naming for faster obfuscation tests
+-Correction of obfuscation bugs
+-Added DEFSYSVARS type for AHK bult-in variables
+-Corrected bug of stalling at beginning of obf processed
+-other improvements and bug corrections
+
 *************************************************************************************************
 UPDATES BY DIGIDON VERSION 2.0 : SEE MORE COMPLETE LIST IN DOCUMENTATION WHAT'S NEW AND COMMENTS
 *************************************************************************************************

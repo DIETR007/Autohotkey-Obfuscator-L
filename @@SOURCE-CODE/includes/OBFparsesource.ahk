@@ -40,8 +40,7 @@ countlines(var) {
   return max
 }
 
-parse_onefile(sourcecodefile, filenumber)
-{
+parse_onefile(sourcecodefile, filenumber) {
 	global processcodesection, CUR_OBFCOMM, totalsourcelines, counttotalMAPLines
 	global prevpercentcountlinesprocessed,newpercentcountlinesprocessed,countlinesprocessed,countTOTALlines
 	global scramblefuncs, custdumporder,GLobObf_Block,GlobObf_Comment,removeallwhitespace

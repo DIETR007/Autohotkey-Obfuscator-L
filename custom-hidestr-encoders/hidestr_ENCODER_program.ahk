@@ -1,3 +1,4 @@
+#SingleInstance, Force
 ;this is a program for testing the literal string
 ;obfuscator function. this program will read in an
 ;autohotkey script

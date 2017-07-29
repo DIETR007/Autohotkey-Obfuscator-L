@@ -1,3 +1,4 @@
+#SingleInstance, Force
 ;refer to the readme in the same directory as this for
 ;information on this file
 

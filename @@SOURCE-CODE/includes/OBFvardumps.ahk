@@ -581,10 +581,13 @@ DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="")
 	if (substr(OBFvarpath, 1, 11) = "OBF_SYSFUNC") 
 		issysfunc = % true
 	
-	;ADDED DIGIDON PROPERTIES
+	;ADDED DIGIDON PROPERTIES, SYSVARS
 	isPROPERTIES = % false
+	issysvar = % false
 	if (substr(OBFvarpath, 1, 17) = "OBF_PROPERTIES") 
 		isPROPERTIES = % true
+	if (substr(OBFvarpath, 1, 10) = "OBF_SYSVAR") 
+		issysvar = % true
 	
 	dumpfragsstr =		
 	loop, % %OBFvarpath%_numfragrows
@@ -599,8 +602,8 @@ DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="")
 			onefragline = % a_tab
 				. ADD_COMMON_JUNK(%OBFvarpath%_frag_%curfragrow%_%curfragcol%_varname, "12", "23")
 				. "="
-			;ADDED DIGIDON PROPERTIES
-			if (issysfunc or isPROPERTIES) 
+			;TWEAKED DIGIDON PROPERTIES & SYSVARS
+			if (issysfunc or isPROPERTIES or issysvar) 
 				onefragline .= hidesysfunc(%OBFvarpath%_frag_%curfragrow%_%curfragcol%_value)
 			else
 				onefragline .= ADD_JUNK_FORCLASS(%OBFvarpath%_frag_%curfragrow%_%curfragcol%_value, useclass, "12", "23") 
@@ -702,6 +705,11 @@ ADD_JUNK_FORCLASS(obfname, forclass, minmaxnulls="12", minmaxreplacements="12", 
 ADD_JUNK(obfname, minmaxnulls, minmaxreplacements, forclass="", usemastervars="") {
 	global
 	
+	; if (obfname="A_Index")
+	; debugaddjunk=1
+	; else
+	; debugaddjunk=
+	
 	static minnulls, maxnulls, nullstoinsert
 	static minreplacements, maxreplacements, replacementstoinsert
 	static curchar, uptochars, insertintome, TMESSobf, breakpoint
@@ -728,12 +736,21 @@ ADD_JUNK(obfname, minmaxnulls, minmaxreplacements, forclass="", usemastervars=""
 		return, obfname
 	
 	;compute my random 'consume' range
-	uptochars = % strlen(obfname) // (replacementstoinsert + nullstoinsert) + 1
+	;TWEAKED DIGIDON DELETED + 1 to avoid case where strlen(insertintome) < uptochars when nullstoinsert = 1
+	; uptochars = % strlen(obfname) // (replacementstoinsert + nullstoinsert) + 1
+	uptochars = % strlen(obfname) // (replacementstoinsert + nullstoinsert)
+	;ADDED DIGIDON
+	if (uptochars=0 or uptochars="")
+	uptochars=1
 	if (uptochars > 8)
 		uptochars = 8
 		
 	insertintome = % obfname
 	TMESSobf=
+	
+	;DEBUG DIGIDON
+	; if(debugaddjunk=1)
+	; msgbox begin obfname %obfname% nullstoinsert %nullstoinsert% replacementstoinsert %replacementstoinsert% uptochars %uptochars%
 	
 	loop
 	{
@@ -743,11 +760,24 @@ ADD_JUNK(obfname, minmaxnulls, minmaxreplacements, forclass="", usemastervars=""
 			
 		;should not occur, but do to make this fail safe
 		if (!insertintome or strlen(insertintome) < uptochars)
+		{
+		;DEBUG DIGIDON
+		; if(debugaddjunk=1)
+		; msgbox happens %insertintome% uptochars %uptochars%
 			break
-			
+		}
+		
+		;TWEAKED DIGIDON SWITCHED from 1 to 2 in order to avoid just adding the null before
 		;break string 'insertintome' into 2 parts
-		random, breakpoint, 1, % uptochars		
-					
+		if (a_index=1 and strlen(obfname)>1)
+		random, breakpoint, 2, % uptochars
+		else
+		random, breakpoint, 1, % uptochars	
+
+		;DEBUG DIGIDON
+		; if(debugaddjunk=1)
+		; msgbox loop obfname %obfname% nullstoinsert %nullstoinsert% breakpoint %breakpoint% uptochars %uptochars% `nTMESSobf %TMESSobf%
+		
 		if (replacementstoinsert and nullstoinsert) {
 			;do a replacement or insert a null
 			if flipcoin() 
@@ -766,12 +796,23 @@ ADD_JUNK(obfname, minmaxnulls, minmaxreplacements, forclass="", usemastervars=""
 		
 		if (nullstoinsert) {
 			gosub, insertanull
+		
+		;DEBUG DIGIDON
+		; if(debugaddjunk=1)
+			; msgbox TMESSobf %TMESSobf% insertintome %insertintome% breakpoint %breakpoint% uptochars %uptochars% nullstoinsert %nullstoinsert% replacementstoinsert %replacementstoinsert%
 			continue
-		}			
+		}
 	}
 	
+	;DEBUG DIGIDON
+	; if(debugaddjunk=1)
+	; msgbox obfname %obfname% TMESSobf %TMESSobf% insertintome %insertintome%
 	;add the final remaining part of the string on the right
 	TMESSobf .= insertintome
+	
+	;DEBUG DIGIDON
+	; if(debugaddjunk=1)
+	; msgbox End obfname %obfname% TMESSobf %TMESSobf% breakpoint %breakpoint% uptochars %uptochars%
 	
 	;253 characters is a limit imposed by autohotkey, if a triple messed
 	;obf string is produced
@@ -800,6 +841,7 @@ to compile or run the obfuscated code generated.
 ) 
 	
 	}
+	
 	return, TMESSobf
 
 doareplacement:
@@ -836,7 +878,8 @@ doareplacement:
 	
 	;set it to the part left over on the right after 
 	;my insertion to prime it for the top of the loop
-	insertintome = % myrightpart	
+	insertintome = % myrightpart
+	
 return
 
 insertanull:
