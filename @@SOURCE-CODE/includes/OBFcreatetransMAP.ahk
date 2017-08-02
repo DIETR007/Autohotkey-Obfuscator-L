@@ -392,9 +392,15 @@ passthruCOMM(cursectiontype = "") {
 		return
 	}
 	
-	;ADDED DIGIDON PROPERTIES
-	;DEFINE SUPER GLOBALS
-	if (CUR_OBFCOMM	= def_PROPERTIES) {
+	;ADDED DIGIDON SYSPROPERTIES
+	if (CUR_OBFCOMM	= def_SYSPROPERTIES) {
+		;'pass through' this command and put it in the translations map
+		writetoMAPfile("`r`n$" . CUR_OBFCOMM . ": " . CUR_COMMPARAMS)
+		return	
+	}
+	
+	;ADDED DIGIDON SYSMETHODS
+	if (CUR_OBFCOMM	= def_SYSMETHODS) {
 		;'pass through' this command and put it in the translations map
 		writetoMAPfile("`r`n$" . CUR_OBFCOMM . ": " . CUR_COMMPARAMS)
 		return	
@@ -490,9 +496,11 @@ writeLOFtoTRANSMAP(preLOFlines, LOFheaderline, LOFtype, LOFname, specialcase = "
 	;ADDED DIGIDON #IF CONDITION
 	else if (LOFtype = "contextcondition")
 		OBFfunc = % "$DEFCOND: "
-	;ADDED DIGIDON METHODS
+	;ADDED DIGIDON SYSMETHODS
+	;TWEAKED DIGIDON MAYBE LATER : DISABLED AUTO DEFMETHOD FOR NOW
 	else if (LOFtype = "method")
-		OBFfunc = % "$DEFMETHODS: "
+		OBFfunc = % "$ACTUALMETHOD: "
+		; OBFfunc = % "$DEFSYSMETHODS: "
 	;ADDED DIGIDON Classes
 	else if (LOFtype = "class")
 		OBFfunc = % "$DEFCLASS: "
@@ -517,9 +525,10 @@ writeLOFtoTRANSMAP(preLOFlines, LOFheaderline, LOFtype, LOFname, specialcase = "
 	
 	writetoMAPfile(OBFfunc . LOFname)
 	
-	;TWEAKED DIGIDON PARAMS FOR METHODS
+	;TWEAKED DIGIDON PARAMS FOR SYSMETHODS
 	;if it is a function, parse out any parameters found and 
 	;write 'map' tags for those as well
+	;DIGIDON UNCOMPLETE SYSPROPERTIES PARAMETERS NOT TAKEN INTO ACCOUNT []
 	if (LOFtype = "function" or LOFtype = "method") {
 		paramslist = % substr(LOFheaderline, (strlen(LOFname) + 2))
 		closingpar = % instr(paramslist, ")")
@@ -555,7 +564,11 @@ writeLOFtoTRANSMAP(preLOFlines, LOFheaderline, LOFtype, LOFname, specialcase = "
 			continue
 			}
 			
-			;DIGIDON MAYBE SPECIAL CASE FOR METHODS?
+			;DIGIDON MAYBE SPECIAL CASE FOR SYSMETHODS?
+			;DIGIDON UNCOMPLETE DEFMETHODPARAMS
+			if (LOFtype = "method")
+			writetoMAPfile("$DEFMETHODPARAMS: " . myparam)
+			else
 			writetoMAPfile("$DEFPARAMS: " . myparam)
 		}	
 	}	
@@ -573,7 +586,7 @@ createTRANSMAPmesswin() {
 	GuiControlGet, spacewidth, Pos, getspacewidth
 	
 	gui, font, %scl_h1font% bold
-	gui, add, text, xp yp, Mapping Functions Labels and other code Sections in Source Code 
+	gui, add, text, xp yp, Mapping Functions Labels `nand other code Sections in Source Code 
 	
 	editwidth = % "W" . (spacewidthW * 140)
 	

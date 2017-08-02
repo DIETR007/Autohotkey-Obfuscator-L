@@ -81,16 +81,28 @@ For Dynamic Obfuscation, Use dumps commands.
 </br>obf_dumpall() 
 </br>{
 </br>	global
-</br>;$OBFUSCATOR: $GLOBVARFRAGS_DUMPALL:
-</br>;$OBFUSCATOR: $GLOBPARTIALVARSFRAGS_DUMPALL:
-</br>;$OBFUSCATOR: $LOSVARFRAGS_DUMPALL:
-</br>;$OBFUSCATOR: $PARAMFRAGS_DUMPALL: 
-</br>;$OBFUSCATOR: $SYSFUNCFRAGS_DUMPALL:
-</br>;$OBFUSCATOR: $PROPERTIESFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $ALLFRAGS_DUMPALL:
 </br>}
 </font>
 
 </div>
+
+<h2><a name="dynobf_allfragsdump"></a>ALLFRAGS_DUMPALL Command</h2>
+<div>
+This command is a shortcut to dump in one place all necessary fragments, which could have individually be stated by the following commands
+</br>
+<font color="brown">
+</br>;$OBFUSCATOR: $GLOBVARFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $GLOBPARTIALVARSFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $LOSVARFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $SYSVARFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $PARAMFRAGS_DUMPALL: 
+</br>;$OBFUSCATOR: $SYSFUNCFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $SYSPROPERTIESFRAGS_DUMPALL:
+</br>;$OBFUSCATOR: $SYSMETHODSFRAGS_DUMPALL:
+</font>
+</div>
+
 
 </div>
 

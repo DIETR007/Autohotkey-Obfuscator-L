@@ -70,6 +70,14 @@ USE
 <br><font color="brown">;$OBFUSCATOR: $GLOBVARS_RESTORE_DEFAULTS: </font>
 </div>
 
+<h2>Change Local and Static Variables Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $LOSVARS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br>;<font color="brown">$OBFUSCATOR: $LOSVARS_RESTORE_DEFAULTS: </font>
+</div>
+
 <h2>Change Partial Variable Defaults</h2>
 <div>
 USE
@@ -78,12 +86,36 @@ USE
 <br><font color="brown">;$OBFUSCATOR: $GLOBPARTIALVARS_RESTORE_DEFAULTS: </font>
 </div>
 
-<h2><font color="red">[DigiDon: Deprecated]&nbsp;</font>Change Local and Static Variables Defaults</h2>
+<h2>Change System Variable Defaults</h2>
 <div>
 USE
-<br><font color="brown">;$OBFUSCATOR: $LOSVARS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br><font color="brown">;$OBFUSCATOR: $SYSVARS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
 <br>AND
-<br>;<font color="brown">$OBFUSCATOR: $LOSVARS_RESTORE_DEFAULTS: </font>
+<br><font color="brown">;$OBFUSCATOR: $SYSVARS_RESTORE_DEFAULTS: </font>
+</div>
+
+<h2>Change System Functions Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $SYSFUNCS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br><font color="brown">;$OBFUSCATOR: $SYSFUNCS_RESTORE_DEFAULTS: </font>
+</div>
+
+<h2>Change Properties Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $SYSPROPERTIES_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br><font color="brown">;$OBFUSCATOR: $SYSPROPERTIES_RESTORE_DEFAULTS: </font>
+</div>
+
+<h2>Change Methods Defaults</h2>
+<div>
+USE
+<br><font color="brown">;$OBFUSCATOR: $SYSMETHODS_CHANGE_DEFAULTS: {minobfstr}, {maxobfstr}, {obfrows}, {fragsperrow}, {minfragstr}, {maxfragstr} </font>
+<br>AND
+<br><font color="brown">;$OBFUSCATOR: $SYSMETHODS_RESTORE_DEFAULTS: </font>
 </div>
 
 </div>

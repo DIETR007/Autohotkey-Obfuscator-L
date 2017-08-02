@@ -99,25 +99,35 @@ Vars like Space%A_Index%Var%B_Index%_Path can have each part (Space,Var,_Path) b
 </br>If you use these string variable and still want it to be obfuscated then just don't define Space as VarPart and call it always with string variables like %What%%A_Index%Var%B_Index%_Path with What:="Space" and declare What as globalvar to the obfuscator.
 </div>
 
-<h2><a name="decl_propmeth"></a>Use the DEFPROPERTIES to obfuscate your properties and methods</h2>
+<h2><a name="decl_sysproperties"></a>Use the DEFSYSPROPERTIES to obfuscate your properties</h2>
 <div>
 You should list them with the new:
-<br><br><font color="brown">;$OBFUSCATOR: $DEFPROPERTIES: (list of property or method names)</font> 
-</br>Because this functionality is still new, it is only the property/method uses which will be ofuscated. Just like System functions, their original names will not be changed.
+<br><br/><font color="red">Obfuscation will only be applied for these elements in dynamic mode</font>
+<br><font color="brown">;$OBFUSCATOR: $DEFPROPERTIES: (list of property names)</font> 
+</br></br>Because this functionality is still new, it is only the property uses which will be ofuscated. Just like System functions, their original names will not be changed.
 </br>But still, property definitions like 
 </br>Obj={ Prop:"test"} can look like Obj={(k#fkk#f@ kff@f@fkf@kff@ kfkffff@ fkf@f@ff k#fffkfkf@f@f@ f@k#fffk):"test"}
 </br>Property Uses like
 </br>Obj.Prop can look like Obj[k#fkk#f@ kff@f@fkf@kff@ kfkffff@ fkf@f@ff k#fffkfkf@f@f@ f@k#fffk]
-</br><b>THANKS TO THIS, METHODS CAN ALSO BE OBFUSCATED THIS WAY</b>
+</br>Of course, the Obj itself, the property parameters and string values can be obfuscated as well so that the whole thing will look obfuscated :)
+</div>
+
+<h2><a name="decl_sysmethods"></a>Use the DEFSYSMETHODS to obfuscate your methods</h2>
+<div>
+You should list them with the new:
+<br><br><font color="brown">;$OBFUSCATOR: $DEFSYSMETHODS: (list of method names)</font> 
+</br><br/><font color="red">Obfuscation will only be applied for these elements in dynamic mode</font>
+</br>Because this functionality is still new, it is only the method uses which will be ofuscated. Just like System functions, their original names will not be changed.
+</br>But still it will be quite effective to obfuscate the method calls:
 </br>Obj.Method(param) can look like Obj[k#fkk#f@ k#fffkfkf@f@f@ f@k#fffk](Param)
-</br>Of course, the Obj itself, the method parameters and string values can be obfuscated as well so that the whole thing will look like garbage :)
+</br>Of course, the Obj itself, the method parameters and string values can be obfuscated as well so that the whole thing will look obfuscated :)
 </div>
 
 <h2><a name="decl_sysvar"></a>Use the DEFSYSVARS to obfuscate your properties and methods</h2>
 <div>
 You should list them with the new:
 <br><br><font color="brown">;$OBFUSCATOR: $DEFSYSVARS: (list of ahk built-in variables)</font> 
-</br>Due to the variables being built-in is only their uses which will be ofuscated. Just like System functions, their original names will not and cannot be changed.
+</br></br>Due to the variables being built-in is only their uses which will be ofuscated. Just like System functions, their original names will not and cannot be changed.
 </br>Also please note that <b>All system variables surrounded by %'s wont and cannot be obfuscated.</b> Nevertheless All other uses in expressions will be obfuscated.
 </br>This Obfuscation is much stronger in dynamic mode as in straight mode the name will be visible, only split by some empty vars.
 </div>

@@ -105,7 +105,7 @@ SPECIAL CASE when the gui, +label????? is used with a gui
 </font>
 </div>
 
-<h2><font color="red">[Deprecated DigiDon]&nbsp;</font><a href="declareall.htm" class="titlelink">Local and Static Variables</a></h2>
+<h2><a href="declareall.htm" class="titlelink">Local and Static Variables</a></h2>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $LOSVARS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
@@ -125,10 +125,37 @@ SPECIAL CASE when the gui, +label????? is used with a gui
 </font>
 </div>
 
-<h2><a href="declareall.htm" class="titlelink">Properties and Methods</a></h2>
+<h2><a href="mandatdyndumps.htm" class="titlelink">Mandatory Fragment Dumps</a></h2>
 <div>
-<font color="brown">;$OBFUSCATOR: $DEFPROPERTIES: (property or method names) { / <a href="standardparam.htm">Standard Parameter Set</a> }
-<br>;$OBFUSCATOR: $PROPERTIESFRAGS_DUMPALL:
+<font color="brown">;$OBFUSCATOR: $ALLFRAGS_DUMPALL:
+</font>
+</div>
+
+<h2><a href="mandatdyndumps.htm" class="titlelink">Mandatory unclassed Dumps</a></h2>
+<div>
+<font color="brown">;$OBFUSCATOR: $FUNCFRAGS_DUMPCLASS: unclassed<br/>
+;$OBFUSCATOR: $LABELFRAGS_DUMPCLASS: unclassed
+</font>
+</div>
+
+<h2><a href="mandatdyndumps.htm" class="titlelink">Mandatory unsecured Dumps</a></h2>
+<div>
+<font color="brown">;$OBFUSCATOR: $FUNCFRAGS_DUMPCLASS: unsecclasses<br/>
+;$OBFUSCATOR: $LABELFRAGS_DUMPCLASS: unsecclasses 
+</font>
+</div>
+
+<h2><a href="declareall.htm" class="titlelink">Methods (partial obfuscation)</a></h2>
+<div>
+<font color="brown">;$OBFUSCATOR: $DEFSYSMETHODS: (methods) { / <a href="standardparam.htm">Standard Parameter Set</a> }
+<br>;$OBFUSCATOR: $SYSMETHODSFRAGS_DUMPALL:
+</font>
+</div>
+
+<h2><a href="declareall.htm" class="titlelink">Properties (partial obfuscation)</a></h2>
+<div>
+<font color="brown">;$OBFUSCATOR: $DEFSYSPROPERTIES: (properties) { / <a href="standardparam.htm">Standard Parameter Set</a> }
+<br>;$OBFUSCATOR: $SYSPROPERTIESFRAGS_DUMPALL:
 </font>
 </div>
 

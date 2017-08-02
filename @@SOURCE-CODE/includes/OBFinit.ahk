@@ -37,7 +37,7 @@ initvartypes()
 {
 	global
 	;MODIFIED DIGIDON
-	numvartypes = 11
+	numvartypes = 12
 	; numvartypes = 8
 	
 	vartype1 = SYSFUNC
@@ -50,10 +50,12 @@ initvartypes()
 	vartype8 = GUILABEL
 	;ADDED DIGIDON GLOBPARTIALVARS
 	vartype9 = GLOBPARTIALVAR
-	;ADDED DIGIDON PROPERTIES
-	vartype10 = PROPERTIES
+	;ADDED DIGIDON SYSPROPERTIES
+	vartype10 = SYSPROPERTIES
+	;ADDED DIGIDON SYSMETHODS
+	vartype11 = SYSMETHODS
 	;ADDED DIGIDON SYSVAR
-	vartype11 = SYSVAR
+	vartype12 = SYSVAR
 }
 
 
@@ -141,19 +143,28 @@ initOBFdefaults() {
 	GLOBvar_fragvarsizemax = 12
 	GLOBvar_addnullfrags   = 1
 	
-	;ADDED DIGIDON PROPERTIES
-	properties_sizemin 		= 12
-	properties_sizemax 		= 16
-	properties_makefragsets	= 4
-	properties_fragsperset		= 2	
-	properties_fragvarsizemin  = 12
-	properties_fragvarsizemax	= 16
-	properties_addnullfrags 	= 1
+	;ADDED DIGIDON SYSPROPERTIES
+	SYSPROPERTIES_sizemin 		= 10
+	SYSPROPERTIES_sizemax 		= 16
+	SYSPROPERTIES_makefragsets	= 2
+	SYSPROPERTIES_fragsperset		= 2
+	SYSPROPERTIES_fragvarsizemin  = 8
+	SYSPROPERTIES_fragvarsizemax	= 12
+	SYSPROPERTIES_addnullfrags 	= 1
+	
+	;ADDED DIGIDON SYSMETHODS
+	SYSMETHODS_sizemin 		= 10
+	SYSMETHODS_sizemax 		= 16
+	SYSMETHODS_makefragsets	= 2
+	SYSMETHODS_fragsperset		= 2
+	SYSMETHODS_fragvarsizemin  = 8
+	SYSMETHODS_fragvarsizemax	= 12
+	SYSMETHODS_addnullfrags 	= 1
 	
 	;ADDED DIGIDON SYSVARS
 	SYSvar_sizemin 		= 12
 	SYSvar_sizemax 		= 16
-	SYSvar_makefragsets	= 4
+	SYSvar_makefragsets	= 2
 	SYSvar_fragsperset		= 2	
 	SYSvar_fragvarsizemin  = 12
 	SYSvar_fragvarsizemax	= 16

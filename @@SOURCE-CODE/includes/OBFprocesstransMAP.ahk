@@ -71,8 +71,10 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 	OBF_GLOBPARTIALVAR_numrows 	= 0
 	;ADDED DIGIDON SYSVARS
 	OBF_SYSVAR_numrows 	= 0
-	;ADDED DIGIDON PROPERTIES
-	OBF_PROPERTIES_numrows 	= 0
+	;ADDED DIGIDON SYSPROPERTIES
+	OBF_SYSPROPERTIES_numrows 	= 0
+	;ADDED DIGIDON SYSMETHODS
+	OBF_SYSMETHODS_numrows 	= 0
 	;ADDED DIGIDON #IF CONTEXT CONDITION
 	OBF_CONTEXTCONDITION_numrows = 0
 	;ADDED DIGIDON Classes
@@ -83,8 +85,8 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 	OBF_NULL_numrows 		= 0
 	
 	SYSFUNC_time 	= 0
-	;ADDED DIGIDON PROPERTIES
-	PROPERTIES_time = 0
+	;ADDED DIGIDON SYSPROPERTIES
+	SYSPROPERTIES_time = 0
 	;ADDED DIGIDON SYSVARS
 	SYSVAR_time = 0
 	FUNC_time 		= 0	
@@ -278,24 +280,23 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 		
 		;ADDED DIGIDON GLOBPARTIALVARS
 		if (CUR_OBFTRANSCOMM = def_GLOBPARTIALVARS) {
-			; If A_Index=265
-			; msgbox 265 here 1
 			timestart = % A_TickCount
 			add_GLOBALPARTIALvar_OBFentry()
-			; If A_Index=265
-			; msgbox 265 here 2
 			GLOBPARTIALVAR_time += A_TickCount - timestart
 			continue					
 		}
-		;ADDED DIGIDON PROPERTIES
-		if (CUR_OBFTRANSCOMM = def_PROPERTIES) {
-			; If A_Index=265
-			; msgbox 265 here 1
+		;ADDED DIGIDON SYSPROPERTIES
+		if (CUR_OBFTRANSCOMM = def_SYSPROPERTIES) {
 			timestart = % A_TickCount
-			add_PROPERTIES_OBFentry()
-			; If A_Index=265
-			; msgbox 265 here 2
-			PROPERTIES_time += A_TickCount - timestart
+			add_SYSPROPERTIES_OBFentry()
+			SYSPROPERTIES_time += A_TickCount - timestart
+			continue					
+		}
+		;ADDED DIGIDON SYSMETHODS
+		if (CUR_OBFTRANSCOMM = def_SYSMETHODS) {
+			timestart = % A_TickCount
+			add_SYSMETHODS_OBFentry()
+			SYSMETHODS_time += A_TickCount - timestart
 			continue					
 		}
 	}
@@ -481,13 +482,13 @@ add_SYSVAR_OBFentry() {
 			. " command found but no parameters, 1 parameter, system var name, is required ")
 		return
 	}	
-	set_obfcreate_params(11)	
+	set_obfcreate_params(12)	
 	OBFclass = % SYSvar_class
 	addnew_OBFentry("OBF_SYSVAR") 
 }
 
-;ADDED DIGIDON PROPERTIES
-add_PROPERTIES_OBFentry() {
+;ADDED DIGIDON SYSPROPERTIES
+add_SYSPROPERTIES_OBFentry() {
 	global
 	if !set_obfcreate_names() {
 		write_transtablemess("`r`n#ERROR: " . CUR_OBFTRANSCOMM 
@@ -495,8 +496,21 @@ add_PROPERTIES_OBFentry() {
 		return
 	}	
 	set_obfcreate_params(10)	
-	OBFclass = % PROPERTIES_class
-	addnew_OBFentry("OBF_PROPERTIES") 
+	OBFclass = % SYSPROPERTIES_class
+	addnew_OBFentry("OBF_SYSPROPERTIES") 
+}
+
+;ADDED DIGIDON SYSPROPERTIES
+add_SYSMETHODS_OBFentry() {
+	global
+	if !set_obfcreate_names() {
+		write_transtablemess("`r`n#ERROR: " . CUR_OBFTRANSCOMM 
+			. " command found but no parameters, 1 parameter, property var name, is required ")
+		return
+	}
+	set_obfcreate_params(11)	
+	OBFclass = % SYSMETHODS_class
+	addnew_OBFentry("OBF_SYSMETHODS") 
 }
 
 add_sysfunc_OBFentry() 
@@ -1016,25 +1030,37 @@ addnew_OBFentry(varlistname) {
 		
 		;ADDED DIGIDON SYSVARS
 		;check for dup definition of this system var
-		if (varlistname = "OBF_PROPERTIES") {
+		if (varlistname = "OBF_SYSVAR") {
 			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
 				msgbox, 4096,, % "system var def duplication2: '" . obfcreate_varname%a_index% . "'"
 				continue
 			}
 		}
 		
-		;ADDED DIGIDON PROPERTIES
+		;ADDED DIGIDON SYSPROPERTIES
 		;check for dup definition of this property var
-		if (varlistname = "OBF_PROPERTIES") {
+		if (varlistname = "OBF_SYSPROPERTIES") {
 			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
 				msgbox, 4096,, % "property var def duplication2: '" . obfcreate_varname%a_index% . "'"
 				continue
 			}
 		}
+		
+		;ADDED DIGIDON SYSMETHODS
+		;check for dup definition of this property var
+		if (varlistname = "OBF_SYSMETHODS") {
+			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
+				;Tweaked DigiDon : disabled duplication warning for SYSMETHODS because happens frequently with __Call etc.
+				msgbox, 4096,, % "method var def duplication2: '" . obfcreate_varname%a_index% . "'"
+				continue
+			}
+		}
 		newrow = % ++%varlistname%_numrows
+		
 		;TESTING DIGIDON
 		; if (varlistname="OBF_GLOBPARTIALVAR")
 		; msgbox % "OBF_GLOBPARTIALVAR newrow " newrow " = " obfcreate_varname%a_index%
+		
 		;ADDED DIGIDON OBF_numrows
 		;DIGIDON : UNCOMPLETE : SHOULD PROBABLY ADD #IF CONTEXT CONDITIONS & CLASS
 		if (varlistname = "OBF_FUNC" or varlistname = "OBF_LABEL")
@@ -1059,8 +1085,8 @@ addnew_OBFentry(varlistname) {
 			%varlistname%_%newrow%_classname = % USE_CLASS_NAME
 			;msgbox, my class name: %USE_CLASS_NAME%
 		}
-		;TWEAKED DIGIDON PROPERTIES & SYSVARS
-		if (varlistname = "OBF_SYSFUNC" or varlistname = "OBF_PROPERTIES" or varlistname = "OBF_SYSVAR") {
+		;TWEAKED DIGIDON SYSPROPERTIES & SYSVARS & SYSMETHODS
+		if (varlistname = "OBF_SYSFUNC" or varlistname = "OBF_SYSPROPERTIES" or varlistname = "OBF_SYSMETHODS" or varlistname = "OBF_SYSVAR") {
 			;set 'obfname' = 'name' for sysfuncs
 			%varlistname%_%newrow%_OBFname = % %varlistname%_%newrow%_name
 		} else {
@@ -1639,7 +1665,8 @@ showobfstats() {
 	GLOBAL vars: %OBF_GLOBVAR_numrows%
 	GLOBALPARTIAL vars: %OBF_GLOBPARTIALVAR_numrows%
 	SYSTEM vars: %OBF_SYSVAR_numrows%
-	PROPERTIES vars: %OBF_PROPERTIES_numrows%
+	SYSPROPERTIES vars: %OBF_SYSPROPERTIES_numrows%
+	SYSMETHODS vars: %OBF_SYSMETHODS_numrows%
 	
 	DUMP CLASSES: %dumpcode_numrows%
 	

@@ -47,7 +47,7 @@ You should start out with only <a href="#strsteps">straight obfuscation </a>and 
 First <a href="#dynsteps">implement Dynamic Obfuscation</a> with no secure classes and no custom scrambling pallette.
 </br>Convert slowly your important functions to assume-global mode until the non-obfuscated version then the obfuscated version are working fine.
 
-<br><br>Now start inserting comment commands to tell the obfuscator to <a href="declareall.htm#decl_glob">obfuscate your variables and objects</a>, <a href="declareall.htm#decl_partvars">part variables</a>, and <a href="declareall.htm#decl_propmeth">properties and methods</a>. Add commands to specify the obfuscation of <a href="autohotkeyfunctions.htm">autohotkey built in functions</a>. Follow the steps to <a href="sensitivestrings.htm">hide sensitive strings</a> and <a href="obfall.htm">obfuscate more, obfuscate all</a>!
+<br><br>Now start inserting comment commands to tell the obfuscator to <a href="declareall.htm#decl_glob">obfuscate your variables and objects</a>, <a href="declareall.htm#decl_partvars">part variables</a>, and <a href="declareall.htm#decl_sysproperties">properties</a> and <a href="declareall.htm#decl_sysmethods">methods</a>. Add commands to specify the obfuscation of <a href="autohotkeyfunctions.htm">autohotkey built in functions and variables</a>. Follow the steps to <a href="sensitivestrings.htm">hide sensitive strings</a> and <a href="obfall.htm">obfuscate more, obfuscate all</a>!
 
 <br><br>The last thing you want to do is to start <a href="addtoclass.htm#addtosecclass">create secure classes that can be broken</a>. Secure classes require their own sequence of <a href="addtoclass.htm#initclassfrags">DUMP commands for Secure Classes</a> so you will have to learn those.
 
@@ -97,7 +97,7 @@ Select the 'Obfuscate Source Code' function on the main obfuscator window. Indic
 Your functions, parameters, and labels are automatically found and obfuscated by this program. 
 </br>BUT Variables including global, static, and local are not automatically obfuscated. Put obfuscator command comments in your source code in order to <a href="declareall.htm#decl_glob">obfuscate your variables and objects</a>, <a href="declareall.htm#decl_partvars">part variables</a>, and <a href="declareall.htm#decl_propmeth">properties and methods</a>.  
 
-<br><br>In order to <a href="autohotkeyfunctions.htm">obfuscate autohotkey system functions</a> like SubStr(), put obfuscater command comments in your source code.
+<br><br>In order to <a href="autohotkeyfunctions.htm">obfuscate autohotkey system functions and variables</a>, put obfuscater commands comments in your source code.
 
 <br><br>In order to <a href="sensitivestrings.htm">hide sensitive strings in your code a couple of steps must be followed</a>
 
@@ -115,12 +115,13 @@ The in-built defaults in this program are set to do dynamic obfuscation.
 <br>Therefore, to use only straight mode you have to put this command at the very beginning of your auto-execute section:
 <br><font color="brown">;$OBFUSCATOR: $STRAIGHT_MODE:</font>
 <br>
-<br>Straight obfuscation does not allow you to <a href="addtoclass.htm#addtosecclass">create secure classes that can be broken</a> or to <a href="rewire.htm">rewire functions to go to other functions</a>.
+<br>Straight obfuscation does not allow you to obfuscate: (not yet) <a href="declareall.htm#decl_sysproperties">properties and methods</a>, nor <a href="autohotkeyfunctions.htm">autohotkey built in functions and variables</a>.
+<br/> Also, Straight obfuscation does not allow you to <a href="addtoclass.htm#addtosecclass">create secure classes that can be broken</a> nor <a href="rewire.htm">rewire functions to go to other functions</a>.
 
 <br><br>All the other features work with straight obfuscation and you can still <a href="declareall.htm">obfuscate functions, labels, variables, etc..</a>
 </br><b>But remember : the straight obfuscation is much less secure than dynamic obfuscation !</b> 
 </br>The only %'s added will be empty vars. Therefore calls and used variables can still be found ... with not so many difficulties (although the names will be the obfuscator replacements).
-Moreover Autohotkey obfuscated functions and methods/properties will be barely obfuscated (just some empty %'s) as no obfuscation replacement name is used.
+Moreover Autohotkey functions will be barely obfuscated (just some empty %'s) as no obfuscation replacement name is used.
 </br></br>With Dynamic Obfuscator L, <b>Dynamic Obfuscation has been made much easier to implement step by step than before, so you should try it quickly.</b>
 </div>
 

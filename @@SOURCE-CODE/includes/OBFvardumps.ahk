@@ -445,8 +445,7 @@ DUMP_REWIREFUNC(myparams)
 
 }
 
-DUMPALL_FRAGSETS_FORVARTYPE(OBFvarlistpath, forclass="")
-{
+DUMPALL_FRAGSETS_FORVARTYPE(OBFvarlistpath, forclass="") {
 	global
 	static dumpallvars, dumponevar
 	
@@ -563,8 +562,7 @@ DUMP_FRAGSETS_FORA_VARLIST(varlist, forvartype)
 	return, dumpallvars
 }
 
-DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="")
-{
+DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="") {
 	global
 	local dumpfragsstr, onefragline
 	
@@ -581,12 +579,15 @@ DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="")
 	if (substr(OBFvarpath, 1, 11) = "OBF_SYSFUNC") 
 		issysfunc = % true
 	
-	;ADDED DIGIDON PROPERTIES, SYSVARS
-	isPROPERTIES = % false
+	;ADDED DIGIDON SYSPROPERTIES, SYSVARS, SYSMETHODS
+	isSYSPROPERTIES = % false
+	isSYSMETHODS = % false
 	issysvar = % false
-	if (substr(OBFvarpath, 1, 17) = "OBF_PROPERTIES") 
-		isPROPERTIES = % true
-	if (substr(OBFvarpath, 1, 10) = "OBF_SYSVAR") 
+	if (substr(OBFvarpath, 1, 17) = "OBF_SYSPROPERTIES") 
+		isSYSPROPERTIES = % true
+	else if (substr(OBFvarpath, 1, 14) = "OBF_SYSMETHODS") 
+		isSYSMETHODS = % true
+	else if (substr(OBFvarpath, 1, 10) = "OBF_SYSVAR") 
 		issysvar = % true
 	
 	dumpfragsstr =		
@@ -602,8 +603,8 @@ DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="")
 			onefragline = % a_tab
 				. ADD_COMMON_JUNK(%OBFvarpath%_frag_%curfragrow%_%curfragcol%_varname, "12", "23")
 				. "="
-			;TWEAKED DIGIDON PROPERTIES & SYSVARS
-			if (issysfunc or isPROPERTIES or issysvar) 
+			;TWEAKED DIGIDON SYSPROPERTIES & SYSVARS & SYSMETHODS
+			if (issysfunc or isSYSPROPERTIES or isSYSMETHODS or issysvar) 
 				onefragline .= hidesysfunc(%OBFvarpath%_frag_%curfragrow%_%curfragcol%_value)
 			else
 				onefragline .= ADD_JUNK_FORCLASS(%OBFvarpath%_frag_%curfragrow%_%curfragcol%_value, useclass, "12", "23") 
@@ -618,8 +619,7 @@ DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="")
 	return, % dumpfragsstr
 }
 
-hidesysfunc(sysfuncfrag)
-{
+hidesysfunc(sysfuncfrag) {
 	global
 	local obfstr
 	
@@ -636,8 +636,7 @@ hidesysfunc(sysfuncfrag)
 	return, obfstr
 }
 
-DUMPALL_FRAGSETS_FORPARAMS()
-{
+DUMPALL_FRAGSETS_FORPARAMS() {
 	global
 	
 	local dumpallparams, curfuncname, dumponefunc, addtobeginning
@@ -661,8 +660,7 @@ DUMPALL_FRAGSETS_FORPARAMS()
 	return, % dumpallparams
 }
 
-DUMPALL_FRAGSETS_FORLOSVARS()
-{
+DUMPALL_FRAGSETS_FORLOSVARS() {
 	global
 	
 	local dumpallLOS, curfuncname, dumponeLOS, addtobeginning
@@ -686,15 +684,13 @@ DUMPALL_FRAGSETS_FORLOSVARS()
 	return, % dumpallLOS
 }
 
-ADD_COMMON_JUNK(obfname, minmaxnulls="12", minmaxreplacements="12", usemastervars="")
-{
+ADD_COMMON_JUNK(obfname, minmaxnulls="12", minmaxreplacements="12", usemastervars="") {
 	global
 	
 	return, ADD_JUNK(obfname, minmaxnulls, minmaxreplacements, "common", usemastervars)
 }
 
-ADD_JUNK_FORCLASS(obfname, forclass, minmaxnulls="12", minmaxreplacements="12", usemastervars="")
-{
+ADD_JUNK_FORCLASS(obfname, forclass, minmaxnulls="12", minmaxreplacements="12", usemastervars="") {
 	global
 	
 	return, ADD_JUNK(obfname, minmaxnulls, minmaxreplacements, forclass, usemastervars)

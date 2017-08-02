@@ -384,10 +384,15 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			if (Debug_Obf=1 && LOFname="PickIcon_gCons")
 				msgbox replaceFUNCandVARs DONE `n%LOFtype% %LOFname% `nstrippedLOFbodylines %strippedLOFbodylines%
 				
-			;ADDED DIGIDON PROPERTIES
-			replacePROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			;ADDED DIGIDON SYSPROPERTIES
+			replaceSYSPROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			if (Debug_Obf=1 && LOFname="PickIcon_gCons")
-				msgbox replaceGLOBALPARTIALVARs DONE `n%LOFtype% %LOFname% preLOFlines %preLOFlines% LOFheaderline %LOFheaderline% `nstrippedLOFbodylines %strippedLOFbodylines% end OBF
+				msgbox replaceSYSPROPERTIES DONE `n%LOFtype% %LOFname% preLOFlines %preLOFlines% LOFheaderline %LOFheaderline% `nstrippedLOFbodylines %strippedLOFbodylines% end OBF
+				
+			;ADDED DIGIDON SYSMETHODS
+			replaceSYSMETHODS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			if (Debug_Obf=1 && LOFname="PickIcon_gCons")
+				msgbox replaceSYSMETHODS DONE `n%LOFtype% %LOFname% preLOFlines %preLOFlines% LOFheaderline %LOFheaderline% `nstrippedLOFbodylines %strippedLOFbodylines% end OBF
 				
 			;ADDED DIGIDON SYSVARS
 			replaceSYSVARS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
@@ -465,11 +470,17 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				msgbox replaceFUNCandVARs strippedLOFbodylines %strippedLOFbodylines%
 				
-			;ADDED DIGIDON PROPERTIES
-			replacePROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			;ADDED DIGIDON SYSPROPERTIES
+			replaceSYSPROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			; TESTING DIGIDON
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
-				msgbox replacePROPERTIES strippedLOFbodylines %strippedLOFbodylines%
+				msgbox replaceSYSPROPERTIES strippedLOFbodylines %strippedLOFbodylines%
+				
+			;ADDED DIGIDON SYSMETHODS
+			replaceSYSMETHODS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			; TESTING DIGIDON
+			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
+				msgbox replaceSYSMETHODS strippedLOFbodylines %strippedLOFbodylines%
 				
 			;ADDED DIGIDON SYSVARS
 			replaceSYSVARS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
@@ -547,11 +558,11 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			; if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				; msgbox replaceLOSvars strippedLOFbodylines %strippedLOFbodylines%
 				
-			; DIGIDON UNCOMPLETE Classes : should OBF prop / methods : need new func
-			; replacePROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			; DIGIDON UNCOMPLETE Classes : should OBF prop / SYSMETHODS : need new func
+			; replaceSYSPROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			; TESTING DIGIDON
 			; if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
-				; msgbox replacePROPERTIES strippedLOFbodylines %strippedLOFbodylines%
+				; msgbox replaceSYSPROPERTIES strippedLOFbodylines %strippedLOFbodylines%
 				
 			;ADDED DIGIDON SYSVARS
 			replaceSYSVARS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
@@ -581,8 +592,11 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			
 			replaceFUNCandVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			
-			;ADDED DIGIDON PROPERTIES
-			replacePROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			;ADDED DIGIDON SYSPROPERTIES
+			replaceSYSPROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			
+			;ADDED DIGIDON SYSMETHODS
+			replaceSYSMETHODS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			
 			;ADDED DIGIDON SYSVARS
 			replaceSYSVARS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
@@ -708,8 +722,8 @@ FIND_VARROW_FROMTYPE(LOFtype) {
 		return false
 }
 
-;ADDED DIGIDON MAYBE replacePROPERTIES
-replacePROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LOFname)
+;ADDED DIGIDON replaceSYSPROPERTIES
+replaceSYSPROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LOFname)
 {
 	global
 	static lookforprop, curOBfrecnum, StartingPos, newline, foundpropat
@@ -721,16 +735,16 @@ replacePROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 	
 	; TESTING DIGIDON	
 	if (Debug_Obf=1 && LOFname="CM_ChooseNotebook")
-		msgbox BEGIN replacePROPERTIES
+		msgbox BEGIN replaceSYSPROPERTIES
 	
 	curline = % LOFbodylines
 			
-	loop, % OBF_PROPERTIES_numrows
+	loop, % OBF_SYSPROPERTIES_numrows
 	{
-		if (!OBF_PROPERTIES_%A_Index%_OBFname or OBF_PROPERTIES_%A_Index%_OBFname = "no/obf")
+		if (!OBF_SYSPROPERTIES_%A_Index%_OBFname or OBF_SYSPROPERTIES_%A_Index%_OBFname = "no/obf")
 			continue
 			
-		lookforprop  = % OBF_PROPERTIES_%A_Index%_name
+		lookforprop  = % OBF_SYSPROPERTIES_%A_Index%_name
 		curOBfrecnum = % a_index
 		StartingPos = 1
 		newline =
@@ -757,6 +771,7 @@ replacePROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 			
 			prevchar = % SubStr(newline, 0)
 			nextchar = % SubStr(curline, foundpropat + strlen(lookforprop), 1)
+			nextnextchar = % SubStr(curline, foundpropat + strlen(lookforprop)+1, 1)
 			
 			;ADDED DIGIDON CONTINUATION SECTION : SKIP TRANSLATION
 			if (ContinuationSectionStatus="start") {
@@ -768,19 +783,24 @@ replacePROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 			}
 			
 			partialVAR_ERROR = % aretheyvariablecharsPROPCALLS(prevchar,nextchar)
+			
+			;TESTING DIGIDON
+			; if (lookforprop="selectsinglenode")
+			; msgbox % "LookForProp " lookforprop "`npartialVAR_ERROR" partialVAR_ERROR "`n" str_getTailLines(newline,10)
+			
 			if (partialVAR_ERROR) {
 				;TWEAKED DigiDon
 				newline .= SubStr(curline, foundpropat, strlen(lookforprop))	
 			
 			} else {
 				if (prevchar=".") {
-				replacewithprop = % "[" oneofmyOBFs("OBF_PROPERTIES" . "_" . curOBfrecnum)  . "]"
+				replacewithprop = % "[" oneofmyOBFs("OBF_SYSPROPERTIES" . "_" . curOBfrecnum)  . "]"
 				newline:=SubStr(newline,1,-1)
 				newline .= replacewithprop
-				} else if (nextchar=":" and prevchar!="`n" and prevchar!="`t") {
+				} else if (nextchar=":" and nextnextchar!="=" and prevchar!="`n" and prevchar!="`t") {
 					prevprevchar:=SubStr(newline, -1,1)
 					if (prevprevchar="," or prevchar="," or prevchar="{" or prevprevchar="{") {
-						replacewithprop = % "(" oneofmyOBFs("OBF_PROPERTIES" . "_" . curOBfrecnum)  . ")"
+						replacewithprop = % "(" oneofmyOBFs("OBF_SYSPROPERTIES" . "_" . curOBfrecnum)  . ")"
 						newline .= replacewithprop
 					} 
 					else
@@ -804,7 +824,97 @@ replacePROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 		
 	; TESTING DIGIDON	
 	if (Debug_Obf=1 && LOFname="CM_ChooseNotebook")
-		msgbox %LOFname% replacePROPERTIES LOFbodylines %LOFbodylines%
+		msgbox %LOFname% replaceSYSPROPERTIES LOFbodylines %LOFbodylines%
+}
+
+;ADDED DIGIDON SYSMETHODS
+replaceSYSMETHODS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LOFname) {
+	global
+	static lookformethod, curOBfrecnum, StartingPos, newline, foundmethodat
+	;ADDED DIGIDON CONTINUATION SECTION
+	local ContinuationSectionStatus
+		
+	if Glob_FctLocal=1
+	return
+	
+	; TESTING DIGIDON	
+	if (Debug_Obf=1 && LOFname="CM_ChooseNotebook")
+		msgbox BEGIN replaceSYSPROPERTIES
+	
+	curline = % LOFbodylines
+			
+	loop, % OBF_SYSMETHODS_numrows
+	{
+		if (!OBF_SYSMETHODS_%A_Index%_OBFname or OBF_SYSMETHODS_%A_Index%_OBFname = "no/obf")
+			continue
+			
+		lookformethod  = % OBF_SYSMETHODS_%A_Index%_name
+		curOBfrecnum = % a_index
+		StartingPos = 1
+		newline =
+		;ADDED DIGIDON CONTINUATION SECTION
+		ContinuationSectionStatus=
+		while true {
+			foundmethodat = % instr(curline, lookformethod, false, StartingPos)
+			if (!foundmethodat) {
+				newline .= SubStr(curline, StartingPos)
+				;ADDED DIGIDON RESTORE GLOBOBF BK
+				restoreGlobObfMode()
+				break
+			}				
+				
+			;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
+			loop 1 {
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundmethodat - StartingPos)))
+					ContinuationSectionStatus:=ContinuationSectionStatusTest
+				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundmethodat - StartingPos)))
+				}
+				
+			;add previous part first
+			newline .= SubStr(curline, StartingPos, (foundmethodat - StartingPos))
+			
+			prevchar = % SubStr(newline, 0)
+			nextchar = % SubStr(curline, foundmethodat + strlen(lookformethod), 1)
+			
+			;ADDED DIGIDON CONTINUATION SECTION : SKIP TRANSLATION
+			if (ContinuationSectionStatus="start") {
+			newline .= SubStr(curline, foundmethodat, strlen(lookformethod))
+			; msgbox % "Skipped continuation for " lookformethod "`n" str_getTailLines(newline,10)
+			; msgbox % "skipped line " str_getTailf(newline)
+			StartingPos = % foundmethodat + strlen(lookformethod)
+			continue
+			}
+			
+			partialVAR_ERROR = % aretheyvariablecharsMETHODCALLS(prevchar,nextchar)
+			
+			;TESTING DIGIDON
+			; if (lookformethod="selectsinglenode")
+			; msgbox % "lookformethod " lookformethod "`npartialVAR_ERROR" partialVAR_ERROR "`n" str_getTailLines(newline,10)
+			
+			if (partialVAR_ERROR) {
+				;TWEAKED DigiDon
+				newline .= SubStr(curline, foundmethodat, strlen(lookformethod))	
+			
+			} else {
+				replacewithprop = % "[" oneofmyOBFs("OBF_SYSMETHODS" . "_" . curOBfrecnum)  . "]"
+				newline:=SubStr(newline,1,-1)
+				newline .= replacewithprop
+			}
+				
+			StartingPos = % foundmethodat + strlen(lookformethod)							
+		}
+		curline = % newline					
+	}
+	LOFbodylines = % curline
+	
+	;ADDED DIGIDON FINDPROCESSOBFSPECIALCOMMS
+	findprocessOBFMODEcomms(curline)
+	
+	; LOFbodylines = % curline
+		
+	; TESTING DIGIDON	
+	if (Debug_Obf=1 && LOFname="CM_ChooseNotebook")
+		msgbox %LOFname% replaceSYSPROPERTIES LOFbodylines %LOFbodylines%
 }
 
 replaceHIDESTRcalls(ByRef LOFbodylines) {
@@ -2366,6 +2476,7 @@ aretheyvariablecharsLABELS(charbefore, charafter = "")
 
 }
 
+;ADDED DIGIDON
 aretheyvariablecharsPROPCALLS(charbefore, charafter = "") {
 	global
 	
@@ -2383,15 +2494,28 @@ aretheyvariablecharsPROPCALLS(charbefore, charafter = "") {
 			return, % true
 	}
 
-	;if char before is a dot evaluate as valid 
 	if (charafter = "." or charafter = "," or charafter = ")" or charafter = "")
 		return, % false
 
-	; msgbox PROPERTIES IS ANYWAY OBF CHAR AFTER %charafter%
+	; msgbox SYSPROPERTIES IS ANYWAY OBF CHAR AFTER %charafter%
 
 	; we return false (=OK) in other cases
 	return, % false
 }
+
+aretheyvariablecharsMETHODCALLS(charbefore, charafter = "") {
+	global
+	
+	if (charbefore!=".")
+	return, % true
+	
+	if (charafter!="(")
+	return, % true
+
+	; we return false (=OK) in other cases
+	return, % false
+}
+
 aretheyvariablecharsFUNCCALLS(charbefore, charafter = "")
 {
 	global
@@ -2661,12 +2785,28 @@ findprocessOBFDUMPcomms(ByRef LOFbodylines) {
 			else if (CUR_OBFCOMM = "FUNCFRAGS_DUMPCLASS") 
 				curline = % DUMPALL_FRAGSETS_FORVARTYPE("OBF_FUNC", CUR_COMMPARAMS)
 				
-			else if (CUR_OBFCOMM = "SYSFUNCFRAGS_DUMPALL") 
+			else if (CUR_OBFCOMM = "ALLFRAGS_DUMPALL") {
+				; curline = % DUMPALL_FRAGSETS_FORVARTYPE("ALL")
+				curline .=  DUMPALL_FRAGSETS_FORVARTYPE("OBF_SYSVAR") 			"`r`n"
+				curline .=  DUMPALL_FRAGSETS_FORVARTYPE("OBF_GLOBPARTIALVAR") 	"`r`n"
+				curline .=  DUMPALL_FRAGSETS_FORVARTYPE("OBF_SYSFUNC") 			"`r`n"
+				curline .=  DUMPALL_FRAGSETS_FORVARTYPE("OBF_GLOBVAR") 			"`r`n"
+				curline .=  DUMPALL_FRAGSETS_FORPARAMS()						"`r`n"
+				curline .=  DUMPALL_FRAGSETS_FORLOSVARS()						"`r`n"
+				curline .=  DUMPALL_FRAGSETS_FORVARTYPE("OBF_SYSPROPERTIES") 		"`r`n"
+				curline .=  DUMPALL_FRAGSETS_FORVARTYPE("OBF_SYSMETHODS") 			"`r`n"
+			}
+				
+			else if (CUR_OBFCOMM = "SYSFUNCFRAGS_DUMPALL")
 				curline = % DUMPALL_FRAGSETS_FORVARTYPE("OBF_SYSFUNC")
 				
-			;ADDED DIGIDON PROPERTIES
-			else if (CUR_OBFCOMM = "PROPERTIESFRAGS_DUMPALL") 
-				curline = % DUMPALL_FRAGSETS_FORVARTYPE("OBF_PROPERTIES")
+			;ADDED DIGIDON SYSPROPERTIES
+			else if (CUR_OBFCOMM = "SYSPROPERTIESFRAGS_DUMPALL")
+				curline = % DUMPALL_FRAGSETS_FORVARTYPE("OBF_SYSPROPERTIES")
+				
+			;ADDED DIGIDON SYSMETHODS
+			else if (CUR_OBFCOMM = "SYSMETHODSFRAGS_DUMPALL")
+				curline = % DUMPALL_FRAGSETS_FORVARTYPE("OBF_SYSMETHODS")
 				
 			;ADDED DIGIDON GLOBPARTIALVARS
 			else if (CUR_OBFCOMM = "GLOBPARTIALVARSFRAGS_DUMPALL") 
@@ -2767,9 +2907,13 @@ oneofmyOBFs(currentvariable) {
 		
 		if (ucase(substr(currentvariable, 1, 11)) = "OBF_SYSFUNC") {
 			buildfragstr = % "%" . fragvarname . "%"
-		;ADDED DIGIDON PROPERTIES
-		;TWEAKED DIGIDON PROPERTIES SPECIAL OBF WITH SPACES BETWEEN FRAGS
-		} else if (ucase(substr(currentvariable, 1, 14))="OBF_PROPERTIES") {
+		;ADDED DIGIDON SYSPROPERTIES
+		;TWEAKED DIGIDON SYSPROPERTIES SPECIAL OBF WITH SPACES BETWEEN FRAGS
+		} else if (ucase(substr(currentvariable, 1, 17))="OBF_SYSPROPERTIES") {
+			buildfragstr = % " " fragvarname
+		;ADDED DIGIDON SYSMETHODS
+		;TWEAKED DIGIDON SYSMETHODS SPECIAL OBF WITH SPACES BETWEEN FRAGS
+		} else if (ucase(substr(currentvariable, 1, 14))="OBF_SYSMETHODS") {
 			buildfragstr = % " " fragvarname
 		;ADDED DIGIDON SYSVARS
 		} else if (ucase(substr(currentvariable, 1, 10))="OBF_SYSVAR") {
@@ -2824,9 +2968,9 @@ to compile or run the obfuscated code generated.
 			continue		
 		}
 		
-		;ADDED DIGIDON PROPERTIES
-		if (ucase(substr(currentvariable, 1, 14))="OBF_PROPERTIES") {
-		;TWEAKED DIGIDON PROPERTIES SPECIAL OBF WITH SPACES BETWEEN FRAGS
+		;ADDED DIGIDON SYSPROPERTIES, SYSMETHODS
+		if (ucase(substr(currentvariable, 1, 17))="OBF_SYSPROPERTIES" or ucase(substr(currentvariable, 1, 14))="OBF_SYSMETHODS") {
+		;TWEAKED DIGIDON SYSPROPERTIES/SYSMETHODS SPECIAL OBF WITH SPACES BETWEEN FRAGS
 			buildfragstr .= PUT_NULLS_AROUND(%currentvariable%_frag_%randomset%_%a_index%_varname,"nopercatall") . " "
 			continue		
 		}

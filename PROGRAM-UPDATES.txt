@@ -1,3 +1,10 @@
+V2.02 - DigiDon
+-Added ;$OBFUSCATOR: $ALLFRAGS_DUMPALL: command comment to do all dumps at once
+-Changed DEFPROPERTIESVARS to DEFSYSPROPERTIESVARS type
+-Added DEFSYSMETHODVARS type
+-Disabled unhandled obf var auto creation : METHODS PROPERTIES etc.
+-Fix to correct var/prop being incorrectly replaced when assigning prop with {prop:}. But no spaces between prop and ":" allowed
+
 V2.01 - DigiDon
 -Auto-button selection for faster obfuscation tests
 -Auto-file naming for faster obfuscation tests

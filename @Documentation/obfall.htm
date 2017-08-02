@@ -36,7 +36,7 @@ Once you have obfuscate most of your variables you will realize that there are s
 
 <h2><a name="stringsinvars"></a>Convert built-in variables</h2>
 <div>
-If you want to obfuscate strings you already know you can hide them with the ihidestr() function.
+If you want to obfuscate built-in variables that are surrounded by %'s or obfuscate built-in variables in non-global functions (straight mode) you can assign the built-in variable to a custom variable before the statements and obfuscated this variable.
 </br>However if a string is recurring, one simple solution can be to create a global or superglobal var with this string, replace all occurences of the string by this var (which would also be better for maintainability) and declare this var to the obfuscator. When you assign the string to the (super)global var use ihidestr for better obfuscation.
 </br>Thus the recurring strings will be ofuscated as well!
 </div>

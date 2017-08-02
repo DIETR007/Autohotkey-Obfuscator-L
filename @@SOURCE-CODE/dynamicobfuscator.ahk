@@ -36,7 +36,7 @@
 
 
 #SingleInstance force
-Glb_VersionNum := 2.01
+Glb_VersionNum := 2.02
 
 OnExit, savelastfiles
 
@@ -268,7 +268,7 @@ return
 getOBFfilenames() {
 	global
 	;ADDED DIGIDON : AUTO NAME NOCOMMENT FILE
-	StringReplace,lastoutobffile,lastoutobffile, % "_nocomments"
+	AutoNameObfFile_RemovesuffixLast()
 	
 	gui 4:default
 	gui, destroy
@@ -326,27 +326,59 @@ getOBFfilenames() {
 togglestripwhitespace:
 	GuiControlGet, removeallwhitespace,, stripmywhitespace
 	;ADDED DIGIDON : AUTO NAME NOCOMMENT FILE
-	if (removeallwhitespace=1) {
-		GuiControlGet, obf_outfilename
-		if (SubStr(obf_outfilename,-14)!="_nocomments.ahk") {
-			StringReplace,obf_outfilename,obf_outfilename, % ".ahk"
-			GuiControl,, obf_outfilename, % obf_outfilename . "_nocomments.ahk"
-		}
-	} else {
-		GuiControlGet, obf_outfilename
-		; msgbox obf_outfilename %obf_outfilename%
-		StringReplace,obf_outfilename,obf_outfilename, % ".ahk"
-		StringReplace,obf_outfilename,obf_outfilename, % "_nocomments"
-		obf_outfilename.=".ahk"
-		GuiControl,, obf_outfilename, % obf_outfilename
-	}
+	GuiControlGet, obf_outfilename
+	AutoNameObfFile()
 return
+
 togglerandorder:
 	GuiControlGet, scramblefuncs,, randomizefuncs
+	;ADDED DIGIDON : AUTO NAME OBF FILE
+	GuiControl,, custorderfuncs, 0
+	GuiControlGet, obf_outfilename
+	AutoNameObfFile()
 return
+
 togglecustfuncorder:
 	GuiControlGet, custdumporder,, custorderfuncs
+	;ADDED DIGIDON : AUTO NAME OBF FILE
+	GuiControl,, randomizefuncs, 0
+	AutoNameObfFile()
 return
+
+;ADDED DIGIDON : AUTO NAME OBF FILE
+AutoNameObfFile_RemovesuffixLast() {
+global
+StringReplace,lastoutobffile,lastoutobffile, % "_NC"
+StringReplace,lastoutobffile,lastoutobffile, % "_RO"
+StringReplace,lastoutobffile,lastoutobffile, % "_CO"
+}
+
+;ADDED DIGIDON : AUTO NAME OBF FILE
+AutoNameObfFile_Removesuffix() {
+global
+StringReplace,obf_outfilename,obf_outfilename, % "_NC"
+StringReplace,obf_outfilename,obf_outfilename, % "_RO"
+StringReplace,obf_outfilename,obf_outfilename, % "_CO"
+}
+
+;ADDED DIGIDON : AUTO NAME OBF FILE
+AutoNameObfFile() {
+global
+local newname,newname_Suffix
+GuiControlGet, obf_outfilename
+AutoNameObfFile_Removesuffix()
+StringReplace,obf_outfilename,obf_outfilename, % ".ahk"
+GuiControlGet, removeallwhitespace,, stripmywhitespace
+if removeallwhitespace
+	newname_Suffix := "_NC"
+GuiControlGet, scramblefuncs,, randomizefuncs
+if scramblefuncs
+	newname_Suffix .= "_RO"
+GuiControlGet, custdumporder,, custorderfuncs
+if custdumporder
+	newname_Suffix .= "_CO"
+GuiControl,, obf_outfilename, % obf_outfilename . newname_Suffix . ".ahk"
+}
 
 chooseOBFcommfile:
 	Gui +OwnDialogs 
@@ -480,9 +512,8 @@ startswithfragtype(obscomm)
 }
 
 /*	
-	;ADDED DIGIDON GLOBPARTIALVARS PROPERTIES SYSVAR
-	for vartypes of 'sysfunc', 'func' , 'label', 'globvar', 'globpartialvar', 'properties', 'sysvar'
-	; for vartypes of 'sysfunc', 'func' , 'label', 'globvar'
+	for vartypes of 'sysfunc', 'func' , 'label', 'globvar'
+	; + vartype 'globpartialvar', 'SYSPROPERTIES', 'SYSMETHODS', 'sysvar' ?
 	OBF_%vartype%_numrows
 	OBF_%vartype%_%rownum%_name
 	OBF_%vartype%_%rownum%_OBFname
@@ -538,9 +569,10 @@ startswithfragtype(obscomm)
 #Include OBFparsesource.ahk
 #Include OBFobfuscate.ahk
 
-; #Include OBFhidestr.ahk
-#Include OBFhidestr_DIGIDON.ahk
-;TWEAKED DIGIDON : You can optinally add your own ihidestr include, but names should not be the same as in original fct though
+#Include OBFhidestr.ahk
+;TWEAKED DIGIDON : You can then either replace with your own hidestr version
+; #Include OBFhidestr_DIGIDON.ahk
+;TWEAKED DIGIDON : OR you can optinally add your own ihidestr include, but function names should not be the same as in original though
 ; #Include *i OBFhidestr_DIGIDON.ahk
 
 #Include OBFvardumps.ahk
