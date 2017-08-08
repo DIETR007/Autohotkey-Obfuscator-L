@@ -36,7 +36,7 @@
 
 
 #SingleInstance force
-Glb_VersionNum := 2.02
+Glb_VersionNum := 2.03
 
 OnExit, savelastfiles
 
@@ -568,11 +568,11 @@ startswithfragtype(obscomm)
 #Include OBFprocesstransMAP.ahk
 #Include OBFparsesource.ahk
 #Include OBFobfuscate.ahk
+#Include OBFrandomOBFname.ahk
+#Include OBFvardumps.ahk
 
 #Include OBFhidestr.ahk
 ;TWEAKED DIGIDON : You can then either replace with your own hidestr version
 ; #Include OBFhidestr_DIGIDON.ahk
 ;TWEAKED DIGIDON : OR you can optinally add your own ihidestr include, but function names should not be the same as in original though
-; #Include *i OBFhidestr_DIGIDON.ahk
-
-#Include OBFvardumps.ahk
+#Include *i OBFhidestr_DIGIDON.ahk

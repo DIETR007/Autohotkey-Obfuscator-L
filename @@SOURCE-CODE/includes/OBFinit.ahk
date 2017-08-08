@@ -61,6 +61,11 @@ initvartypes()
 
 initOBFdefaults() {
 	global
+	
+	;Tweaked Digidon: simplier to add hidestring functions : just add the function name to the list
+	;DIGIDON COMMENT : i_hidestr and i_hidestr_B are custom hidestring functions I use myself. Replace by yours
+	HideStrFunc_list := "hidestr,i_hidestr,i_hidestrB"
+	
 	; ADDED UNCOMPLETE DIGIDON MINMAXNULLS & MINMAXREPLACEMENTS , +per row ? : SHOULD BE ABLE TO BE MODIFIED LIKE
 	; sysfunc_straightminmaxnulls = 13
 	; sysfunc_minmaxnulls 		= 12

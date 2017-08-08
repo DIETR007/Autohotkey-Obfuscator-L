@@ -31,8 +31,8 @@
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
 */
 
-;created ihidestr for public open source project!
-encode_ihidestr(startstr)
+;created hidestr for public open source project!
+encode_hidestr(startstr)
 {
 	global
 	static onechar, newstr, secstartstr, hexdigits 
@@ -109,13 +109,13 @@ createhexshiftkeys()
 ;******************************************
 ;	PUT THESE FUNCTIONS IN YOUR ACTUAL AUTOHOTKEY SCRIPT FILE
 
-ihidestr(thisstr)
+hidestr(thisstr)
 {
 	return thisstr
 }
 
 
-decode_ihidestr(startstr) 
+decode_hidestr(startstr) 
 {
 	global	
 ;$OBFUSCATOR: $DEFGLOBVARS: hexdigits

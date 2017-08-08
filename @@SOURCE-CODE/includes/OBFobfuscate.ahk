@@ -788,15 +788,35 @@ replaceSYSPROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines,
 			; if (lookforprop="selectsinglenode")
 			; msgbox % "LookForProp " lookforprop "`npartialVAR_ERROR" partialVAR_ERROR "`n" str_getTailLines(newline,10)
 			
+			;ADDED DIGIDON : Convert [] prop params to ()
+			bracketdetected:=0
+			
 			if (partialVAR_ERROR) {
 				;TWEAKED DigiDon
 				newline .= SubStr(curline, foundpropat, strlen(lookforprop))	
 			
 			} else {
 				if (prevchar=".") {
-				replacewithprop = % "[" oneofmyOBFs("OBF_SYSPROPERTIES" . "_" . curOBfrecnum)  . "]"
-				newline:=SubStr(newline,1,-1)
-				newline .= replacewithprop
+					replacewithprop = % "[" oneofmyOBFs("OBF_SYSPROPERTIES" . "_" . curOBfrecnum)  . "]"
+					newline := SubStr(newline,1,-1)
+					newline .= replacewithprop
+					
+					;ADDED DIGIDON : Convert [] prop params to ()
+					if (nextchar = "[") {
+						
+						bracketpos = % instr(curline, "]", false, foundpropat + strlen(lookforprop) + 1)
+						Parameters := SubStr(curline, foundpropat + strlen(lookforprop) + 1, bracketpos - foundpropat - strlen(lookforprop) - 1)
+						
+						RegexMatch(Parameters,"P)[$fk@# ]+",RegexMatchLen)
+						
+						if (RegexMatchLen!=StrLen(Parameters)) {
+						bracketdetected:=1
+							newline .= "("
+							newline .= Parameters
+							newline .= ")"
+						}
+					}
+					
 				} else if (nextchar=":" and nextnextchar!="=" and prevchar!="`n" and prevchar!="`t") {
 					prevprevchar:=SubStr(newline, -1,1)
 					if (prevprevchar="," or prevchar="," or prevchar="{" or prevprevchar="{") {
@@ -804,13 +824,17 @@ replaceSYSPROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines,
 						newline .= replacewithprop
 					} 
 					else
-					newline .= SubStr(curline, foundpropat, strlen(lookforprop))
+						newline .= SubStr(curline, foundpropat, strlen(lookforprop))
 				}
 				 else
 					;TWEAKED DigiDon
 					newline .= SubStr(curline, foundpropat, strlen(lookforprop))
 			}
-				
+			
+			;ADDED DIGIDON : Convert [] prop params to ()
+			if (bracketdetected)
+			StartingPos = % bracketpos + 1
+			else
 			StartingPos = % foundpropat + strlen(lookforprop)							
 		}
 		curline = % newline					
@@ -922,19 +946,16 @@ replaceHIDESTRcalls(ByRef LOFbodylines) {
 	
 	curline = % LOFbodylines	
 	
-	;DIGIDON : you can add lookforfuncs but do not forget to increase numfuncs
-	lookforfunc1 = ihidestr
-	lookforfunc2 = ihidestrB
-	;lookforfunc3 = hidestrfast
+	;Tweaked Digidon: simplier to add hidestring functions
 	
-	numfuncs = 2
-		
-	loop, % numfuncs
+	StringSplit, lookforfunc_Arr, HideStrFunc_list, `,
+	
+	loop, % lookforfunc_Arr0
 	{
 		StartingPos = 1
 		newline =
 		
-		myfuncname := lookforfunc%a_index%		
+		myfuncname := lookforfunc_Arr%a_index%		
 		lookforfunc := myfuncname . "("
 		
 		while true {
@@ -949,7 +970,7 @@ replaceHIDESTRcalls(ByRef LOFbodylines) {
 			
 			prevchar = % SubStr(newline, 0)
 			;ADDED BY DIGIDON TO OBFUSCATE NEARLY EVERYWHERE IDESTR
-			partialVAR_ERROR = % aretheyvariablechars_idestr(prevchar)
+			partialVAR_ERROR = % aretheyvariablechars_hidestr(prevchar)
 
 			if (partialVAR_ERROR) {
 				newline .= lookforfunc
@@ -2600,7 +2621,7 @@ aretheyvariablechars_BIS(charbefore, charafter = "")
 
 }
 ;//ADDED BY DIGIDON ALLOW []
-aretheyvariablechars_idestr(charbefore, charafter = "")
+aretheyvariablechars_hidestr(charbefore, charafter = "")
 {
 	global
 	oddvarnameallowedchars_BIS:="#@$_"

@@ -116,15 +116,15 @@ More over dynamic obfuscation allows more complex uses that you can lean on in <
 
 <h2><a name="hidestr"></a>Hide Sensitive Strings With hidestr()</h2>
 <div>
-This program allows you to obfuscate any sensitive strings in your autohotkey scripts by surrounding them with the ihidestr() function. You can surround sensitive literal strings with 'ihidestr()' any place you use them like in variable assignments, in function calls, in statement parameters, and in expressions. You can do stuff like this:
-</br></br>var1:= ihidestr("some sensitive string") 
-</br>somefunc(ihidestr("some sensitive string"), parameter2) 
+This program allows you to obfuscate any sensitive strings in your autohotkey scripts by surrounding them with the hidestr() function. You can surround sensitive literal strings with 'hidestr()' any place you use them like in variable assignments, in function calls, in statement parameters, and in expressions. You can do stuff like this:
+</br></br>var1:= hidestr("some sensitive string") 
+</br>somefunc(hidestr("some sensitive string"), parameter2) 
 
-</br></br>When this program obfuscates your program it will replace any literal strings passed as parameters to the ihidestr() function with an obfuscated literal string. It will then replace the ihidestr() function call itself with a call to the decode_ihidestr() function and then it will obfuscate that.</br>
+</br></br>When this program obfuscates your program it will replace any literal strings passed as parameters to the hidestr() function with an obfuscated literal string. It will then replace the hidestr() function call itself with a call to the decode_hidestr() function and then it will obfuscate that.</br>
 </br>E.g the above mentioned will be converted first to something like:
-</br>var1:= decode_ihidestr("8a4b6645d5s4545145d494a45b4564d5d45c562d1d") 
-</br>somefunc(decode_ihidestr("7a456b45c46b45d645a465f32118ff48fa48b54c8d"), parameter2)
-</br>And then the decode_ihidestr() function will be obfuscated as well leading to something like:
+</br>var1:= decode_hidestr("8a4b6645d5s4545145d494a45b4564d5d45c562d1d") 
+</br>somefunc(decode_hidestr("7a456b45c46b45d645a465f32118ff48fa48b54c8d"), parameter2)
+</br>And then the decode_hidestr() function will be obfuscated as well leading to something like:
 </br>var1:= %fkfkf%f%@kkkf%#%fkfkfkfk%%kkfkfk%("8a4b6645d5s4af48545145d494a45b4564d5d45c562d1d") 
 </br>somefunc(%fkfkf%%@@fff@%%f@fff%k%@kkk@%%kkfkfk%("7a456b45c46b4ab125d645a465f32118ff48fa48b54c8d"), parameter2) 
 </br>Then of course somefunc() and parameter2 can be obfuscated as well leading to a fully obfuscated line!
