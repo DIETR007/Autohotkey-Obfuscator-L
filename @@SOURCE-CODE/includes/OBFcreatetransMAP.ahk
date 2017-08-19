@@ -36,6 +36,14 @@
 createTRANSMAP() {
 	global
 	
+	;ADDED DIGIDON : if file not existing
+	IfNotExist, % fileslistfile
+	{
+	msgbox the file %fileslistfile% does not exist please correct
+	createTRANSMAPfilenames()
+	exit
+	}
+	
 	;ADDED DIGIDON : timer
 	starttime_createTransMAP:=A_Tickcount
 	;DIGIDON ADDED counttotalMAPLines

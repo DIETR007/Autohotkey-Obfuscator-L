@@ -1,3 +1,6 @@
+V2.04
+-bug that include file was not detected
+
 V2.03 - DigiDon
 -Restructured some code
 -Modified ihidestr functions to hidestr functions
