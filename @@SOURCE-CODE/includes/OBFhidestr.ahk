@@ -119,7 +119,7 @@ decode_hidestr(startstr)
 {
 	global	
 ;$OBFUSCATOR: $DEFGLOBVARS: hexdigits
-	
+	critical
 	static newstr, startstrlen, charnum, hinibble, lownibble, mybinary
 ;$OBFUSCATOR: $DEFLOSVARS: newstr, startstrlen, charnum, hinibble, lownibble, mybinary
 
@@ -137,7 +137,7 @@ decode_hidestr(startstr)
 	startstr = % newstr
 	newstr = 
 	charnum = 1
-	while true
+	loop
 	{
 		if (charnum >startstrlen)
 			break

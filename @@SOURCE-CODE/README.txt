@@ -29,6 +29,10 @@
 	
 	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
+	http://www.EverFastAccess.com
+	
+	See online doc at:
+	http://EverFastAccess.com/AHK-Obfuscator/
 */
 
 Licensed under the GNU GENERAL PUBLIC LICENSE (see LICENSE.TXT)

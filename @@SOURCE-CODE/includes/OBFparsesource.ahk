@@ -29,6 +29,10 @@
 	
 	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
+	http://www.EverFastAccess.com
+	
+	See online doc at:
+	http://EverFastAccess.com/AHK-Obfuscator/
 */
 
 ;used to parse the source code both for the translations map creation phase
@@ -280,6 +284,10 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 	
 	timepassed := A_TickCount - lastime
 	
+	;DEBUG DIGIDON
+	; if InStr(programline, "Building_ChooseIconMenu")
+	; msgbox programline %programline% `ncommentsection %commentsection% iscontinuesect %iscontinuesect% nestedlabelsonly %nestedlabelsonly% nestedclassandfunconly %nestedclassandfunconly%
+	
 	;ADDED DIGIDON : SKIP COMMENTS AND CONTINUATION SECTION DIRECTLY
 	if (commentsection and foundcommentsection := Regexmatch(programline, "^[\s]*\*\/"))
 			{
@@ -467,11 +475,12 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 	found1colon := InStr(programline, ":")
 	MinFound:=min(0,foundleftparen,found2colons,found1colon)
 	
+	;DEBUG DIGIDON
+	; if InStr(programline, "Building_ChooseIconMenu")
+	; msgbox programline %programline% `nfoundleftparen %foundleftparen% found2colons %found2colons% found1colon %found1colon% MinFound %MinFound%
+	
 	if (MinFound=9223372036854775807)
 		return, false
-	
-	; if Instr(programline,"AutoXYWH_2")
-	; msgbox MinFound %MinFound% found1colon %found1colon% found2colons %found2colons% foundleftparen %foundleftparen%
 	
 	
 	if (MinFound = InStr(programline, "::")) {
@@ -487,16 +496,12 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 			if !InStr(validbeforesemi, beforesemi)
 				return, false
 				
-			; msgbox 2 programline %programline% aftersemi %aftersemi%
 			;TWEAKED DIGIDON : MODIFIED
 			; if !IsType(aftersemi,"alnum") and !IsType(aftersemi,"space")
 			if !IsType(after2colons,"alnum") and !IsType(after2colons,"space")
 				{
-				; msgbox semi 2colons issue after2colons %after2colons% programline %programline%
 				return, false
 				}
-				
-			; msgbox 3 programline %programline%
 		}	
 		
 		;assume it is a valid hotkey combo!
@@ -505,7 +510,7 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 		return, true	
 	}
 	
-	if (MinFound = InStr(programline, ":")) {	
+	if (MinFound = InStr(programline, ":")) {
 		;get the next character
 		mynextchr := SubStr(programline, found1colon + 1, 1)					
 		;if the character after the ':' is a '=" then this is NOT A LABEL HEADER
@@ -526,15 +531,25 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 		LOFtype = % "label"
 		return, true	
 	}
-	
+			
 	if (MinFound = InStr(programline, "(")) {
 		;assume colon is part of a comment!
+			
 		if (foundsemi and foundsemi < foundleftparen) 
 			return, false
 			
 		;assume it is a valid function (if only valid chars are between pos 1 and "(") !
 		LOFname = % SubStr(programline, 1, (foundleftparen - 1))
+		
+		;DEBUG DIGIDON
+		; if InStr(programline, "Building_ChooseIconMenu")
+			; msgbox LOFname %LOFname%
+		
+		; if (LOFname="Building_ChooseIconMenu")
+		; msgbox go Building_ChooseIconMenu
 		if !validfuncorlabelchars(LOFname) {
+			; if (LOFname="")
+		; msgbox wrong
 			LOFname =
 			return, false	
 		}

@@ -1,3 +1,12 @@
+v2.06
+-corrected multiple small invalid replacements
+-updated documentation to new website
+
+v2.05
+-bug that var indicating global func was not reset for labels
+-bug that in some cases there could be invalid glopartial replacements after obfuscation of sysfuncs for example due to %'s. Therefore Globpartial obf now happens before the others
+-improved skipping translation of vars followed by : but not =
+
 V2.04
 -bug that include file was not detected
 

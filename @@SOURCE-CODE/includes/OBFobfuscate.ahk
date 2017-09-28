@@ -29,6 +29,10 @@
 	
 	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
+	http://www.EverFastAccess.com
+	
+	See online doc at:
+	http://EverFastAccess.com/AHK-Obfuscator/
 */
 
 
@@ -262,6 +266,7 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 	global LOFHeaderObf
 	global GlobObf_Stop,GlobObf_Straight,GlbObf_Comment,OBF_numrows,Glob_FctLocal,GlobObf_ForceStraight
 	global CommFlag
+	SetBatchLines -1
 	;the function name and the string within the function call
 	;the obf replaces in order to 'hide strings' in the obf'ed source code
 	;do not move this function
@@ -309,6 +314,7 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 		backupGlobObfMode()
 		;TWEAKED DIGIDON #IF CONDITION
 		if (LOFtype = "label" or LOFtype = "hotkey" or LOFtype = "contextcondition") {
+		Glob_FctLocal:=0
 		
 			;ADDED DIGIDON FORCESTRAIGHT IF GlobObf_Stop
 			if (GlobObf_Stop=1)
@@ -384,6 +390,11 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			if (Debug_Obf=1 && LOFname="PickIcon_gCons")
 				msgbox replaceFUNCandVARs DONE `n%LOFtype% %LOFname% `nstrippedLOFbodylines %strippedLOFbodylines%
 				
+			;ADDED DIGIDON GLOBPARTIALVARS
+			replaceGLOBALPARTIALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			if (Debug_Obf=1 && LOFname="MG_Recognize")
+				msgbox replaceGLOBALPARTIALVARs DONE `n%LOFtype% %LOFname% preLOFlines %preLOFlines% LOFheaderline %LOFheaderline% `nstrippedLOFbodylines %strippedLOFbodylines% end OBF
+				
 			;ADDED DIGIDON SYSPROPERTIES
 			replaceSYSPROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			if (Debug_Obf=1 && LOFname="PickIcon_gCons")
@@ -402,11 +413,6 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			replaceGLOBALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			if (Debug_Obf=1 && LOFname="PickIcon_gCons")
 				msgbox replaceGLOBALVARs DONE `n%LOFtype% %LOFname% preLOFlines %preLOFlines% LOFheaderline %LOFheaderline% `nstrippedLOFbodylines %strippedLOFbodylines% end OBF
-			
-			;ADDED DIGIDON GLOBPARTIALVARS
-			replaceGLOBALPARTIALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
-			if (Debug_Obf=1 && LOFname="PickIcon_gCons")
-				msgbox replaceGLOBALPARTIALVARs DONE `n%LOFtype% %LOFname% preLOFlines %preLOFlines% LOFheaderline %LOFheaderline% `nstrippedLOFbodylines %strippedLOFbodylines% end OBF
 			
 		} else 	if (LOFtype = "function")  {
 			mysecttype = % "function"
@@ -447,13 +453,22 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 				GlobObf_ForceStraight=
 				break
 				}
-				
-			replaceFUNCCALLS("OBF_SYSFUNC", preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			
 			replaceNESTEDLABELheaders(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			; TESTING DIGIDON
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				msgbox replaceNESTEDLABELheaders strippedLOFbodylines %strippedLOFbodylines%
+			
+			;ADDED DIGIDON GLOBPARTIALVARS
+			replaceGLOBALPARTIALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			; TESTING DIGIDON
+			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
+				msgbox replaceGLOBALPARTIALVARs strippedLOFbodylines %strippedLOFbodylines%
+				
+			replaceFUNCCALLS("OBF_SYSFUNC", preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			; TESTING DIGIDON
+			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
+				msgbox replaceSYSFUNCCALLS strippedLOFbodylines %strippedLOFbodylines%
 			
 			replacePARAMETERS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			; TESTING DIGIDON
@@ -484,7 +499,7 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 				
 			;ADDED DIGIDON SYSVARS
 			replaceSYSVARS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
-			if (Debug_Obf=1 && LOFname="PickIcon_gCons")
+			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				msgbox replaceSYSVARS DONE `n%LOFtype% %LOFname% preLOFlines %preLOFlines% LOFheaderline %LOFheaderline% `nstrippedLOFbodylines %strippedLOFbodylines% end OBF
 			
 			replaceGLOBALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
@@ -492,15 +507,10 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				msgbox replaceGLOBALVARs strippedLOFbodylines %strippedLOFbodylines%
 			
-			;ADDED DIGIDON GLOBPARTIALVARS
-			replaceGLOBALPARTIALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
-			; TESTING DIGIDON
-			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
-				msgbox replaceGLOBALPARTIALVARs strippedLOFbodylines %strippedLOFbodylines%
-			
 		;ADDED DIGIDON UNCOMPLETE Classes
 		} else 	if (LOFtype = "class")  {
 			mysecttype = % "class"
+			Glob_FctLocal:=0
 			
 			;ADDED DIGIDON FORCESTRAIGHT IF GlobObf_Stop or Glob_FctLocal
 			;TWEAKED DIGIDON : CLASS ALWAYS GLOBAL
@@ -546,6 +556,12 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			; if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				; msgbox replaceNESTEDLABELheaders strippedLOFbodylines %strippedLOFbodylines%
 			
+			;ADDED DIGIDON GLOBPARTIALVARS
+			replaceGLOBALPARTIALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			; TESTING DIGIDON
+			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
+				msgbox replaceGLOBALPARTIALVARs strippedLOFbodylines %strippedLOFbodylines%
+				
 			; DIGIDON UNCOMPLETE Classes : are there parameters?
 			; replacePARAMETERS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			; TESTING DIGIDON
@@ -574,12 +590,6 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				msgbox replaceGLOBALVARs strippedLOFbodylines %strippedLOFbodylines%
 			
-			;ADDED DIGIDON GLOBPARTIALVARS
-			replaceGLOBALPARTIALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
-			; TESTING DIGIDON
-			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
-				msgbox replaceGLOBALPARTIALVARs strippedLOFbodylines %strippedLOFbodylines%
-			
 		} else if (LOFtype = "autoexecute") {
 			mysecttype = % "label:autoexecute"
 			replaceHIDESTRcalls(strippedLOFbodylines)
@@ -592,6 +602,9 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			
 			replaceFUNCandVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			
+			;ADDED DIGIDON GLOBPARTIALVARS
+			replaceGLOBALPARTIALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			
 			;ADDED DIGIDON SYSPROPERTIES
 			replaceSYSPROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			
@@ -603,8 +616,6 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 				
 			replaceGLOBALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			
-			;ADDED DIGIDON GLOBPARTIALVARS
-			replaceGLOBALPARTIALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 		}
 		
 	break
@@ -1062,6 +1073,11 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 				restoreGlobObfMode()
 				break
 			}				
+				
+			;add previous part first
+			newline .= SubStr(curline, StartingPos, (foundGLOBat - StartingPos))
+			prevchar = % SubStr(newline, 0)
+			nextchar = % SubStr(curline, foundGLOBat + strlen(lookforGLOB), 1)
 			
 			;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
 			loop 1 {
@@ -1070,11 +1086,6 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundGLOBat - StartingPos)))
 				}
 				
-			;add previous part first
-			newline .= SubStr(curline, StartingPos, (foundGLOBat - StartingPos))
-			prevchar = % SubStr(newline, 0)
-			nextchar = % SubStr(curline, foundGLOBat + strlen(lookforGLOB), 1)
-			
 			;ADDED DIGIDON CONTINUATION SECTION : WE SKIP TRANSLATION
 			;DIGIDON MAYBE NOT EXACT, SHOULD THERE BE OTHER CONDITIONS?
 			if (ContinuationSectionStatus="start") {
@@ -1085,11 +1096,11 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 			continue
 			}
 			
-			dotranslation=0
+			dotranslation=1
 				;DIGIDON DISABLE NULLS IF SUUROUNDED BY %'s: WHY WOULD WE HAVE ALREAY %% : SHOULD THEN BE GLOBAL
-				if prevchar is alpha
+				if prevchar and IsType(prevchar,"alpha") 
 					dotranslation=0
-				else if nextchar is alpha
+				else if nextchar and IsType(nextchar,"alpha") 
 					dotranslation=0
 				;if neither prev nor next char is a % or integer donnot do translation
 				else if (prevchar = "%" or IsType(prevchar,"integer") and (nextchar = "%" or IsType(nextchar,"integer")))
@@ -1105,9 +1116,12 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 				; else if (RegExMatch(prevchar, "\h") and (nextchar!="%" and !IsType(nextchar,"integer")))
 					; dotranslation=0
 				;DIGIDON :+ > < - also needed so we will aloow all except instead
-				else {
-					dotranslation=1
-				}
+				
+				; if (LOFname="RichCopy")
+				; msgbox % "prevchar " prevchar " nextchar " nextchar " dotranslation " dotranslation
+				; else {
+					; dotranslation=1
+				; }
 				; TESTING DIGIDON
 				; if (lookforGLOB="_NTBKPath")
 				; msgbox dotranslation %dotranslation% prevchar %prevchar% nextchar %nextchar%
@@ -1115,7 +1129,13 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 					{
 					; TESTING DIGIDON
 					; testobfpartial=1
+					; if (LOFname="MG_Recognize")
+					; msgbox do translation prevchar %prevchar% nextchar %nextchar% lookforGLOB %lookforGLOB% newline %newline%
+					
 					newline .= oneofmyOBFs("OBF_GLOBPARTIALVAR_" . GLOBrow)
+					; if (LOFname="MG_Recognize")
+					; msgbox % SubStr(curline, foundGLOBat -50, 50 + strlen(lookforGLOB) + 20)
+					; msgbox % str_getTailLines(newline,10)
 					; testobfpartial=
 					}
 				else
@@ -1377,20 +1397,29 @@ replaceSYSVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 				break
 			}
 			
-			;ADDED DIGIDON CONTINUATION SECTION & findprocessOBFspecialcomms
-			loop 1
-				{
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundSYSat - StartingPos))) {
-				ContinuationSectionStatus:=ContinuationSectionStatusTest
-				}
-				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundSYSat - StartingPos)))
-				}
-			
 			;add previous part first
 			newline .= SubStr(curline, StartingPos, (foundSYSat - StartingPos))
 			
 			prevchar = % SubStr(newline, 0)
 			nextchar = % SubStr(curline, foundSYSat + strlen(lookforSYS), 1)
+			nextnextchar = % SubStr(curline, foundSYSat + strlen(lookforSYS) + 1, 1)
+			
+			;ADDED DIGIDONTO EXCLUDE PROPS
+			if (nextchar=":" and nextnextchar!="=") {
+				;DO NOT TRANSLATE
+				newline .= SubStr(curline, foundSYSat, strlen(lookforSYS))
+				StartingPos = % foundSYSat + strlen(lookforSYS)
+				continue
+			}
+			
+			;ADDED DIGIDON CONTINUATION SECTION & findprocessOBFspecialcomms
+			loop 1
+			{
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundSYSat - StartingPos))) {
+					ContinuationSectionStatus:=ContinuationSectionStatusTest
+				}
+				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundSYSat - StartingPos)))
+			}
 			
 			;ADDED DIGIDON CONTINUATION SECTION
 			;DIGIDON MAYBE WE SHOULD ADD FOR OTHER VAR TYPES?
@@ -1401,12 +1430,13 @@ replaceSYSVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 			StartingPos = % foundSYSat + strlen(lookforSYS)
 			continue
 			}
+			
 			;msgbox prevchar %prevchar% nextchar %nextchar%
 			partialVAR_ERROR = % aretheyvariablechars_BIS(prevchar, nextchar)
 			
 			if (partialVAR_ERROR) {
 				if (nextchar = "[") {
-					if (prevchar = ".") {
+					if (prevchar = "." or IsType(prevchar,"alnum")) {
 					
 					;dont do the translation
 					;TWEAKED DigiDon
@@ -1542,20 +1572,30 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 				break
 			}
 			
-			;ADDED DIGIDON CONTINUATION SECTION & findprocessOBFspecialcomms
-			loop 1
-				{
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundGLOBat - StartingPos))) {
-				ContinuationSectionStatus:=ContinuationSectionStatusTest
-				}
-				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundGLOBat - StartingPos)))
-				}
-			
 			;add previous part first
 			newline .= SubStr(curline, StartingPos, (foundGLOBat - StartingPos))
 			
+			;set prev/next chars
 			prevchar = % SubStr(newline, 0)
 			nextchar = % SubStr(curline, foundGLOBat + strlen(lookforGLOB), 1)
+			nextnextchar = % SubStr(curline, foundGLOBat + strlen(lookforGLOB) + 1, 1)
+			
+			;ADDED DIGIDONTO EXCLUDE PROPS
+			if (nextchar=":" and nextnextchar!="=") {
+				;DO NOT TRANSLATE
+				newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
+				StartingPos = % foundGLOBat + strlen(lookforGLOB)
+				continue
+			}
+			
+			;ADDED DIGIDON CONTINUATION SECTION & findprocessOBFspecialcomms
+			loop 1
+			{
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundGLOBat - StartingPos))) {
+					ContinuationSectionStatus:=ContinuationSectionStatusTest
+				}
+				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundGLOBat - StartingPos)))
+			}
 			
 			;ADDED DIGIDON CONTINUATION SECTION
 			;DIGIDON MAYBE WE SHOULD ADD FOR OTHER VAR TYPES?
@@ -1598,7 +1638,7 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 							}
 					}
 				else if (nextchar = "[") {
-					if (prevchar = ".") {
+					if (prevchar = "." or IsType(prevchar,"alnum")) {
 					
 					;dont do the translation
 					;TWEAKED DigiDon
@@ -1721,6 +1761,15 @@ replaceLOSvars(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 				
 				prevchar = % SubStr(newline, 0)
 				nextchar = % SubStr(curline, foundLOSat + strlen(lookforLOS), 1)
+				nextnextchar = % SubStr(curline, foundLOSat + strlen(lookforLOS) + 1, 1)
+			
+				;ADDED DIGIDONTO EXCLUDE PROPS
+				if (nextchar=":" and nextnextchar!="=") {
+					;DO NOT TRANSLATE
+					newline .= SubStr(curline, foundLOSat, strlen(lookforLOS))
+					StartingPos = % foundLOSat + strlen(lookforLOS)
+					continue
+				}
 				
 				;ADDED DIGIDON CONTINUATION SECTION : ALLOW ONLY SURROUNDED BY %'s
 				if (ContinuationSectionStatus="start" and prevchar!="%" and nextchar!="%") {
@@ -1969,8 +2018,8 @@ replaceLABELCALLS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 				GLabeldetected=0
 				}
 			
-			; ADDED DIGIDON : LABEL SHOULD NOT BE AFTER OR BEFORE . or { }
-			if (prevchar="." or prevchar="{" or nextchar="." or nextchar="}")
+			; ADDED DIGIDON : LABEL SHOULD NOT BE AFTER OR BEFORE . or { } or before (
+			if (prevchar="." or prevchar="{" or nextchar="." or nextchar="}" or nextchar="(")
 				partialVAR_ERROR := true
 			
 			;MODIFIED BY DIGIDON
@@ -2304,7 +2353,7 @@ replacePARAMETERS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 							newline .= oneofmyOBFs("OBF_FUNC_" . foundFatrow . "_PARAM_" . curparamnum)
 					}
 					else if (nextchar = "[") {
-						if (prevchar = ".") {
+						if (prevchar = "." or IsType(prevchar,"alnum")) {
 						
 						;dont do the translation
 							;TWEAKED DigiDon
@@ -2895,9 +2944,9 @@ oneofmyOBFs(currentvariable) {
 	if (%currentvariable%_numfragrows < 1 or GlobObf_Straight=1 or GlobObf_ForceStraight=1) {
 		;ADDED DIGIDON GlobObf_Warn_RecoinLocalFctorStopMode
 		if GlobObf_ForceStraight=1
-		{
-		GlobObf_Warn_RecoinLocalFctorStopMode:=1
-		}
+			{
+			GlobObf_Warn_RecoinLocalFctorStopMode:=1
+			}
 		;DIGIDON MAYBE SHOULD BE MODIFIED HERE , MIN 3 MAX 5 NULLS ARE STANDARD : WHY ??!!
 		;TWEAKED DIGIDON : REDUCE NULLS AND NO NULLS FOR PARTIALS
 		;DIGIDON COMMENT : DEFAULT VALUE OF nulls & replacements for globpartialvars straight obfuscation, just obf name
@@ -3633,7 +3682,7 @@ SIZE OF OBFUSCATED SCRIPT:
 	
 	;delete if already exists
 	FileDelete, % OBFUSCATEDfile		
-	;ADDED DIGIDON : UT8 - RAW ENCODING
+	;ADDED DIGIDON : UT8 -  -->RAW ENCODING?
 	FileAppend, % writetoOBFfilestr, % OBFUSCATEDfile, UTF-8
 }
 
