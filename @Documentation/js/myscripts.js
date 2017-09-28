@@ -6,7 +6,7 @@
   function checkiframes()
 	{
 	var request = new XMLHttpRequest();  
-	request.open('GET', 'iframes/promote.htm', true);
+	request.open('GET', 'iFrames/promote.htm', true);
 	request.onreadystatechange = function(){
 		if (request.readyState === 4){
 			if (request.status === 404) {  
