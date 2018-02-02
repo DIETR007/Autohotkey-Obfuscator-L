@@ -254,23 +254,24 @@ parse_onefile(sourcecodefile, filenumber) {
 	}
 }
 
-isNestedFctInside(programlines, ByRef  LOFtype, ByRef LOFsnames)
-{
+GetNestedFctLines(programlines, ByRef  LOFtype, ByRef LOFsnames) {
 	foundfunc=1
 	LOFsLinePos=
 	LOFsnames=
-	while foundfunc := RegexMatch(programlines, "mO)^\h+(\w+)\([^\r\n]*\)\s*(\{\h*(;[^\r\n]*)?$|;[^\r\n]*(\s*\{\s*|\{\h)$)",Match,foundfunc) 
-	{
-	;ADDED DIGIDON Functions
-			LOFsnames .= Match.Value(1) . "|"
-			LOFsLinePos .= Line_GetPos(programlines, List_LineFromPos(programlines,Match.Pos(1))) . "|"
-			foundfunc+=Match.Len(1)
-	}
+	Loop, parse, programlines, `n, `r
+	if RegexMatch(A_Loopfield, "mO)^\h+(\w+)\([^\r\n]*\)\s*(\{\h*(;[^\r\n]*)?$|;[^\r\n]*(\s*\{\s*|\{\h)$)",Match)
+	LOFsLinePos.=A_Index . "|"
+	;Apparently was so reliable. Sometimes double line numbers: is it because same are found just below in another nested method for example and then not showing up for the second in transmap?
+	; while foundfunc := RegexMatch(programlines, "mO)^\h+(\w+)\([^\r\n]*\)\s*(\{\h*(;[^\r\n]*)?$|;[^\r\n]*(\s*\{\s*|\{\h)$)",Match,foundfunc) {
+	; ; ADDED DIGIDON Functions
+			; LOFsnames .= Match.Value(1) . "|"
+			; LOFsLinePos .= Line_GetPos(programlines, List_LineFromPos(programlines,Match.Pos(1))) . "|"
+			; foundfunc+=Match.Len(1)
+	; }
 	return LOFsLinePos
 }
 
-isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, nestedclassandfunconly = 0)
-{
+isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, nestedclassandfunconly = 0) {
 ;DIGIDON UNCOMPLETE : SHOULD TAKE INTO ACCOUNT CURRENT #COMMFLAG COMMENTFLAG
 ;ADDED DIGIDON nestedclassandfunconly
 
@@ -350,7 +351,11 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 	;TWEAKED DIGIDON NESTED HOTKEY
 	if (nestedlabelsonly or nestedclassandfunconly) {
 		;ADDED DIGIDON Classes
+		; if foundclass
+		; msgbox foundclass programline %programline%
 		foundclass := RegexMatch(programline, "Oi)^\h*class\h+(\w+)\h*(\{|;)?",Match)
+		; if !foundclass
+		; foundclass := RegexMatch(programline, "Oi)^\h*class\h+(\w+)\h+extends\h+\w+\h*(\{|;)?",Match)
 		found1colon := InStr(programline, ":")
 		found2colons := InStr(programline, "::")
 		
@@ -462,7 +467,9 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 	}
 	
 	;ADDED DIGIDON Classes
-	if (foundclass := RegexMatch(programline, "Oi)^class\h+(\w+)\h*\{?$",Match)) {
+		;TO BE IMPROVED : SUB CLASSES : CLASS EXTENDS
+		; foundclass := RegexMatch(programline, "Oi)^\h*class\h+(\w+)",Match)
+	if (foundclass := RegexMatch(programline, "Oi)^class\h+(\w+)\h*",Match)) {
 		LOFname = % Match.Value(1)
 		LOFtype = % "class"
 		; msgbox % "found class " LOFname

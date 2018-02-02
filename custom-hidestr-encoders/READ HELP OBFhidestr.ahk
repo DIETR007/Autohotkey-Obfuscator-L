@@ -79,6 +79,10 @@ Try to modify the encode/decode procedure:
 	
 	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
+	http://www.EverFastAccess.com
+	
+	See online doc at:
+	http://EverFastAccess.com/AHK-Obfuscator/
 */
 
 ;created ihidestr for public open source project!

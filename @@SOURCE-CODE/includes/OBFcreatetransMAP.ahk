@@ -29,6 +29,10 @@
 	
 	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
+	http://www.EverFastAccess.com
+	
+	See online doc at:
+	http://EverFastAccess.com/AHK-Obfuscator/
 */
 
 
@@ -250,6 +254,7 @@ ParseIncludeList(fileslist) {
 
 MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LOFname)
 {
+;NEED TO IMRPOVE NESTED CLASS AND NESTED METHOD DETECTION
 	;LOCAL
 	local NestedFctLine
 	
@@ -277,8 +282,14 @@ MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LO
 	LOFtype2=
 	NestedFctLines=
 		;ADDED DIGIDON NESTED FUNCTION : need to store all lines and repeat until no more found
-		NestedFctLines:=isNestedFctInside(LOFbodylines, LOFtype2, LOFsnames)
+		NestedFctLines:=GetNestedFctLines(LOFbodylines, LOFtype2, LOFsnames)
+		
+	; if (LOFtype="class")
+	; msgbox class %LOFname%
 	
+	; if NestedFctLines
+		; msgbox LOFname %LOFname% NestedFctLines %NestedFctLines%
+		
 	;look for nested label tags
 	Loop, parse, LOFbodylines, `n, `r
 	{
@@ -296,12 +307,15 @@ MAPcodesection(preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LO
 		AA_Loopfield:=Trim(A_Loopfield)
 		AA_Index:=A_Index
 		
+		
 		Loop, parse, NestedFctLines, |
 		if (AA_Index=A_LoopField) {
+		; msgbox AA_Index %AA_Index% A_LoopField %A_LoopField%
 			LOFname:= Getting_ValueChosenFromList(A_Index,LOFsnames)
 			LOFtype2:="method"
 			showmyprocmess("  *NESTED METHOD FOUND: " . LOFname)
 			writeLOFtoTRANSMAP(preLOFlines, AA_Loopfield, LOFtype2, LOFname, "NESTEDMETHOD")
+			break
 		}
 		
 		if (isLOFheader(A_Loopfield, LOFtype2, LOFname, 1) and LOFtype2 = "label") {
@@ -544,8 +558,22 @@ writeLOFtoTRANSMAP(preLOFlines, LOFheaderline, LOFtype, LOFname, specialcase = "
 			writetoMAPfile("# *PARAMETERS ERROR*")
 			return		
 		}
+		
 		paramslist = % substr(paramslist, 1, (closingpar - 1))
-				
+		; paramslist := RegExReplace(paramslist,"(""[^""]*?),""","$1~")
+		; StringReplace, paramslist, paramslist, % "`,", % "`~", All
+		; if (foundpos
+		foundpos:=1
+		loop {
+			
+			if !(foundpos:=InStr(paramslist, ",", 0, foundpos+1))
+				break
+			StrReplace(SubStr(paramslist,1,foundpos), """", "", paranth_numb) 
+			if Mod(paranth_numb,2)
+			; StrReplace(SubStr(paramslist,1,foundpos), ",", "~",, 1)
+			paramslist:=RegExReplace(paramslist, ",", "~",, 1,foundpos)
+			}
+		
 		Loop, Parse, paramslist, `,, %A_Space%%A_Tab%
 		{
 			myparam = % A_Loopfield
@@ -572,12 +600,15 @@ writeLOFtoTRANSMAP(preLOFlines, LOFheaderline, LOFtype, LOFname, specialcase = "
 			continue
 			}
 			
+			
+			StringReplace, myparam, myparam, % "~", % ",", All
+			
 			;DIGIDON MAYBE SPECIAL CASE FOR SYSMETHODS?
 			;DIGIDON UNCOMPLETE DEFMETHODPARAMS
 			if (LOFtype = "method")
-			writetoMAPfile("$DEFMETHODPARAMS: " . myparam)
+				writetoMAPfile("$DEFMETHODPARAMS: " . myparam)
 			else
-			writetoMAPfile("$DEFPARAMS: " . myparam)
+				writetoMAPfile("$DEFPARAMS: " . myparam)
 		}	
 	}	
 }

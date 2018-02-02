@@ -40,14 +40,23 @@ FIND_VARROW(OBFvarlistpath, varname) {
 	global
 	static foundatrow
 	foundatrow = 0
+	; if (OBFvarlistpath="OBF_CONTEXTCONDITION")
 	; msgbox % "_numrows " %OBFvarlistpath%_numrows
 	loop, % %OBFvarlistpath%_numrows
 		{
+		; if (OBFvarlistpath="OBF_CONTEXTCONDITION")
+		; msgbox % "name `n" %OBFvarlistpath%_%a_index%_name "`n`nvarname `n" varname
+		; if (OBFvarlistpath="OBF_LABEL")
 		; msgbox % "name `n" %OBFvarlistpath%_%a_index%_name "`n`nvarname `n" varname
 			if (%OBFvarlistpath%_%a_index%_name = varname)
 				return, % a_index	
 		}
 	
+; if (OBFvarlistpath="OBF_LABEL")	
+	; loop, % %OBFvarlistpath%_numrows
+		; {
+		; msgbox % "name `n" %OBFvarlistpath%_%a_index%_name "`n`nvarname `n" varname
+		; }
 	return, % foundatrow
 }
 

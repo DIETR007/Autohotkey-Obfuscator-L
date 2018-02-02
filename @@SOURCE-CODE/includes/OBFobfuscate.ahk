@@ -484,28 +484,42 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			; TESTING DIGIDON
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				msgbox replaceFUNCandVARs strippedLOFbodylines %strippedLOFbodylines%
-				
+			
 			;ADDED DIGIDON SYSPROPERTIES
 			replaceSYSPROPERTIES(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			
 			; TESTING DIGIDON
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
+			; if (LOFname="DragGUI_Create")
 				msgbox replaceSYSPROPERTIES strippedLOFbodylines %strippedLOFbodylines%
 				
 			;ADDED DIGIDON SYSMETHODS
 			replaceSYSMETHODS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			
 			; TESTING DIGIDON
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				msgbox replaceSYSMETHODS strippedLOFbodylines %strippedLOFbodylines%
 				
 			;ADDED DIGIDON SYSVARS
 			replaceSYSVARS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
-			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
-				msgbox replaceSYSVARS DONE `n%LOFtype% %LOFname% preLOFlines %preLOFlines% LOFheaderline %LOFheaderline% `nstrippedLOFbodylines %strippedLOFbodylines% end OBF
 			
-			replaceGLOBALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			; TESTING DIGIDON
 			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
+				msgbox replaceSYSVARS strippedLOFbodylines %strippedLOFbodylines%
+				
+			replaceGLOBALVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+			; TESTING DIGIDON
+			; if (LOFname="Start_CustomMenuRead")
+			if (Debug_GlbObf=1 && LOFname="GetWindowInfo")
 				msgbox replaceGLOBALVARs strippedLOFbodylines %strippedLOFbodylines%
+			
+			; TESTING DIGIDON
+			; if (LOFname="GUI_RichNoteEditor") 
+			; msgbox strippedLOFbodylines %strippedLOFbodylines%
+			; if (LOFname="GUI_RichNoteEditor") {
+			; FileAppend , %strippedLOFbodylines%, debug.txt
+			; msgbox done replaceGLOBALVARs
+			; }
 			
 		;ADDED DIGIDON UNCOMPLETE Classes
 		} else 	if (LOFtype = "class")  {
@@ -597,7 +611,7 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 			;check body of autoexecute for calls to functions, replace with obf, ask first
 			replaceFUNCCALLS("OBF_FUNC", preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			replaceFUNCCALLS("OBF_SYSFUNC", preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
-			
+			; msgbox done strippedLOFbodylines %strippedLOFbodylines%
 			replaceLABELCALLS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			
 			replaceFUNCandVARs(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
@@ -675,11 +689,14 @@ global
 					}
 				else
 					%SaveOrAdd%code(OBFtype . "_" . foundatrow, mysectstr)
+					; if (LOFtype="hotkey")
+					; msgbox OBFtype %OBFtype% foundatrow %foundatrow% `nmysectstr %mysectstr%
 				;SAVECODE()
 				}
 			else {
 				;label not found error condition, fall back to just adding it to the file
 				; msgbox did not find row of OBFtype %OBFtype% LOFname %LOFname%
+				msgbox did not find OBFtype %OBFtype% LOFtype %LOFtype% LOFname %LOFname%
 				writetoOBFfile(";**ERROR** LOOKUP OF " LOFtype " NOT FOUND: " . LOFname)
 				writetoOBFfile(mysectstr)
 			}
@@ -1097,11 +1114,14 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 			}
 			
 			dotranslation=1
-				;DIGIDON DISABLE NULLS IF SUUROUNDED BY %'s: WHY WOULD WE HAVE ALREAY %% : SHOULD THEN BE GLOBAL
+				;DIGIDON DISABLE NULLS IF SURROUNDED BY %'s: WHY WOULD WE HAVE ALREAY %% : SHOULD THEN BE GLOBAL
 				if prevchar and IsType(prevchar,"alpha") 
 					dotranslation=0
 				else if nextchar and IsType(nextchar,"alpha") 
 					dotranslation=0
+				
+				; if (LOFname="RichPrint" or LOFname="RichUndo")
+					; msgbox dotranslation %dotranslation% prevchar %prevchar% nextchar %nextchar% lookforGLOB %lookforGLOB% `nnewline %newline%
 				;if neither prev nor next char is a % or integer donnot do translation
 				else if (prevchar = "%" or IsType(prevchar,"integer") and (nextchar = "%" or IsType(nextchar,"integer")))
 					dotranslation=1
@@ -1109,8 +1129,10 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 					dotranslation=0
 				; else if (prevchar = "%" or IsType(prevchar,"integer") and RegExMatch(nextchar, "[@_#$]"))
 					; dotranslation=0
-				else if (RegExMatch(prevchar, "[@_#$]") or RegExMatch(nextchar, "[@_#$]"))
+				else if (InStrNNull(oddvarnameallowedchars_BIS, prevchar) or InStrNNull(oddvarnameallowedchars_BIS, nextchar))
 					dotranslation=0
+				; if (LOFname="RichPrint")
+					; msgbox dotranslation5 %dotranslation%
 				; else if (RegExMatch(prevchar, "\h") and (RegExMatch(nextchar, "\h") or nextchar=","))
 					; dotranslation=0
 				; else if (RegExMatch(prevchar, "\h") and (nextchar!="%" and !IsType(nextchar,"integer")))
@@ -1125,6 +1147,9 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 				; TESTING DIGIDON
 				; if (lookforGLOB="_NTBKPath")
 				; msgbox dotranslation %dotranslation% prevchar %prevchar% nextchar %nextchar%
+				
+				; if (LOFname="RichPrint" or LOFname="RichUndo")
+					; msgbox dotranslationFin %dotranslation% prevchar %prevchar% nextchar %nextchar% lookforGLOB %lookforGLOB% `nnewline %newline%
 				if (dotranslation=1)
 					{
 					; TESTING DIGIDON
@@ -1203,121 +1228,176 @@ replaceSECTIONHEADERname(varlist, ByRef LOFheaderline, ByRef LOFtype, ByRef LOFn
 	return
 }
 
-replaceFUNCCALLS(funclist, ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LOFname)
-{
+replaceFUNCCALLS(funclist, ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFtype, LOFname) {
 	global 
 	static lookforfunc, curOBfrecnum, StartingPos, newline, foundfuncat
+	; static curbody, curline, trimspaces, newline, newbody, foundatrow, StartingPos
+	; static curlabelnum
+	;ADDED DIGIDON
+	local GLabeldetected,GLabeldetected_case
 	;ADDED DIGIDON CONTINUATION SECTION
 	local ContinuationSectionStatus
-	
-	;ADDED DIGIDON : DO NOT PROCEED WITH SYSFUNC IF LOCAL FUNCTION
-	; if (Glob_FctLocal=1 && funclist="OBF_SYSFUNC")
-	; return
-	; TESTING DIGIDON	
-	if (Debug_Obf=1 && LOFname="CM_ChooseNotebook")
-		msgbox BEGIN replaceFUNCCALLS
 	
 	;ADDED DIGIDON OBF HEADER SINGLE LINE HOTKEYS and #IF CONDITION
 	if (LOFHeaderObf=1)
 		loopnumb=2
 	else
 		loopnumb=1
-	
-	; curline = % LOFbodylines
 		
 	;ADDED DIGIDON OBF HEADER SINGLE LINE HOTKEYS and #IF CONDITION
 	loop % loopnumb {
-	;ADDED DIGIDON OBF HEADER SINGLE LINE HOTKEYS and #IF CONDITION	
-	if (LOFHeaderObf=1 && A_Index=1)
+		;ADDED DIGIDON OBF HEADER SINGLE LINE HOTKEYS and #IF CONDITION	
+		if (LOFHeaderObf=1 && A_Index=1) {
+			foundleftparen := InStr(LOFheaderline, "(")
+			LOFheaderlineCall = % SubStr(LOFheaderline, foundleftparen + 1)
+			curline = % LOFheaderlineCall
+			; curline = % LOFheaderline
+		} else
+			curline = % LOFbodylines
+
+			
+		loop, % %funclist%_numrows
 		{
-		foundleftparen := InStr(LOFheaderline, "(")
-		LOFheaderlineCall = % SubStr(LOFheaderline, foundleftparen + 1)
-		curline = % LOFheaderlineCall
-		}
-	else
-		curline = % LOFbodylines
-
-			
-	loop, % %funclist%_numrows
-	{
-		if (!%funclist%_%A_Index%_OBFname or %funclist%_%A_Index%_OBFname = "no/obf")
-			continue
-			
-		lookforfunc  = % %funclist%_%A_Index%_name . "("
-		curOBfrecnum = % a_index
-		StartingPos = 1
-		newline =
-		;ADDED DIGIDON CONTINUATION SECTION
-		ContinuationSectionStatus=
-		while true {
-			foundfuncat = % instr(curline, lookforfunc, false, StartingPos)
-			if (!foundfuncat) {
-				newline .= SubStr(curline, StartingPos)
-				;ADDED DIGIDON RESTORE GLOBOBF BK
-				restoreGlobObfMode()
-				break
-			}				
-			
-			;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
-			loop 1 {
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundfuncat - StartingPos)))
-					ContinuationSectionStatus:=ContinuationSectionStatusTest
-				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundfuncat - StartingPos)))
-				}
-						
-			;add previous part first
-			newline .= SubStr(curline, StartingPos, (foundfuncat - StartingPos))
-			
-			prevchar = % SubStr(newline, 0)
-			nextchar = % SubStr(curline, foundfuncat + strlen(lookforfunc), 1)
-			
-			;ADDED DIGIDON CONTINUATION SECTION
-			;DIGIDON MAYBE WE SHOULD ADD FOR OTHER VAR TYPES?
-			if (ContinuationSectionStatus="start" and prevchar!="%" and nextchar!="%") {
-			newline .= SubStr(curline, foundfuncat, strlen(lookforfunc))
-			; msgbox % "Skipped continuation for " lookforGLOB "`n" str_getTailLines(newline,10)
-			; msgbox % "skipped line " str_getTailf(newline)
-			StartingPos = % foundfuncat + strlen(lookforfunc)
-			continue
-			}
-
-			partialVAR_ERROR = % aretheyvariablecharsFUNCCALLS(prevchar)
-			if (partialVAR_ERROR) {
-				;TWEAKED DigiDon
-				newline .= SubStr(curline, foundfuncat, strlen(lookforfunc))	
-			
-			} else {									
-				replacewithfunc = % oneofmyOBFs(funclist . "_" . curOBfrecnum)
-				 ; if GlobObf_Warn_RecoinLocalFctorStopMode
-					; msgbox % "WARNING lookforfunc " lookforfunc " was detected in " LOFtype " " LOFname "`nWhich is a local fct and/OR with stop obf activated `nIt will be obfed using straight mode"				
-				if (replacewithfunc) 
-					newline .= replacewithfunc . "("
-				 else
-					;TWEAKED DigiDon
-					newline .= SubStr(curline, foundfuncat, strlen(lookforfunc))	
-			}
+			;ADDED BY DIGIDON
+			GLOB_OBFname:=%funclist%_%A_Index%_OBFname
+			if (!%funclist%_%A_Index%_OBFname or %funclist%_%A_Index%_OBFname = "no/obf")
+				continue
 				
-			StartingPos = % foundfuncat + strlen(lookforfunc)							
+			lookforfunc  = % %funclist%_%A_Index%_name
+			curOBfrecnum = % a_index
+			StartingPos = 1
+			newline =
+			;ADDED DIGIDON CONTINUATION SECTION
+			ContinuationSectionStatus=
+			while true {
+			
+				; if (LOFtype = "autoexecute")
+					; msgbox lookforfunc %lookforfunc% curline %curline%
+				foundfuncat = % instr(curline, lookforfunc, false, StartingPos)
+				if (!foundfuncat) {
+					newline .= SubStr(curline, StartingPos)
+					;ADDED DIGIDON RESTORE GLOBOBF BK
+					restoreGlobObfMode()
+					break
+					}	
+				
+				; if (lookforfunc="commonobjfrags")
+					; msgbox partialVAR_ERROR %partialVAR_ERROR% prevchar %prevchar% nextchar %nextchar%
+				;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
+				loop 1 {
+					if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundfuncat - StartingPos)))
+						ContinuationSectionStatus:=ContinuationSectionStatusTest
+					findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundfuncat - StartingPos)))
+					}
+								
+				;add previous part first
+				newline .= SubStr(curline, StartingPos, (foundfuncat - StartingPos))
+				
+				prevchar = % SubStr(newline, 0)
+				nextchar = % SubStr(curline, foundfuncat + strlen(lookforfunc), 1)
+				
+				;ADDED DIGIDON CONTINUATION SECTION
+				;DIGIDON MAYBE WE SHOULD ADD FOR OTHER VAR TYPES?
+				if (ContinuationSectionStatus="start" and prevchar!="%" and nextchar!="%") {
+					newline .= SubStr(curline, foundfuncat, strlen(lookforfunc))
+					; msgbox % "Skipped continuation for " lookforGLOB "`n" str_getTailLines(newline,10)
+					; msgbox % "skipped line " str_getTailf(newline)
+					StartingPos = % foundfuncat + strlen(lookforfunc)
+					continue
+					}
+				
+				;ADDED DIGIDON to better detect GLabels
+				if (ucase(prevchar) = "G" && Instr(str_getTailf(newline),"GUI") && !IsType(nextchar,"alnum")) {
+				;ADDED DIGIDON
+				GLabeldetected=1
+					prevchar = % SubStr(newline, -1, 1)
+					partialVAR_ERROR = % aretheyvariablechars_VvarOrGLab(prevchar, nextchar)
+					GLabeldetected_case= % partialVAR_ERROR
+				} else {
+					; partialVAR_ERROR = % aretheyvariablecharsLABELS(prevchar, nextchar)
+					partialVAR_ERROR = % aretheyvariablecharsFUNCCALLS(prevchar, nextchar)
+					GLabeldetected=0
+				}
+				
+				; if (lookforfunc="commonobjfrags")
+					; msgbox partialVAR_ERROR %partialVAR_ERROR% prevchar %prevchar% nextchar %nextchar%
+				
+				; ADDED DIGIDON : FCT SHOULD NOT BE AFTER OR BEFORE . or { } or before :
+				if (prevchar="." or prevchar="{" or nextchar="." or nextchar="}" or nextchar=":")
+					partialVAR_ERROR := true
+				
+				;FUTURE TWEAK DIGIDON MAYBE : COULD ALERT IF SOME SENSITIVE LIST IS FOUND IN LOCAL FCT
+						; if GlobObf_Warn_RecoinLocalFctorStopMode
+						; msgbox % "WARNING lookforLABEL " lookforLABEL " was detected in " LOFtype " " LOFname "`nWhich is a local fct and/OR with stop obf activated `nIt will be obfed using straight mode"
+						
+				;MODIFIED BY DIGIDON
+				if (partialVAR_ERROR=1) {
+					;TWEAKED DigiDon
+					newline .= SubStr(curline, foundfuncat, strlen(lookforfunc))
+					
+					; msgbox % "Skipped continuation for " lookforfunc "`n" str_getTailLines(newline,10)
+					; msgbox % "skipped line " str_getTailf(newline)
+				} else {
+					if (prevchar="""" and nextchar="""" and GLabeldetected!=1) {
+					
+						; msgbox % "Replace fct name " lookforfunc " in " LOFname " line `n" str_getTailf(newline)
+						replacewithFCT = % GLOB_OBFname
+					;ADDED DIGIDON : Simply OBF Name for Nested Label
+					; } else if (GLabeldetected!=1 and nextchar=":" and (!IsType(prevchar,"alnum") or !prevchar)) {
+						; replacewithFCT = % GLOB_OBFname
+					} else if (GLabeldetected=1) {
+						;ADDED BY DIGIDON : GLABEL OBF
+						if (GLabeldetected_case=3 or GLabeldetected_case=4 or GLabeldetected_case=5) {
+							;do the translation
+							;TO IMPROVE : should either add dynamic obf of OBF NAME or at least straight obf of OBF NAME
+							; replacewithFCT := """ " oneofmyOBFs("OBF_LABEL_" . curlabelnum) " """
+							replacewithFCT := GLOB_OBFname
+						} else if (GLabeldetected_case=2) {
+							;put simple OBF name
+							replacewithFCT := GLOB_OBFname
+						} else if (GLabeldetected_case=1) {
+							;do NOT do translation
+							replacewithFCT := SubStr(curline, foundfuncat, strlen(lookforfunc))	
+						} else {
+							;put simple OBF name
+							replacewithFCT := GLOB_OBFname
+						}
+						
+						; msgbox % "Replace GFunction " lookforfunc " in " LOFname " line `n" str_getTailf(newline)
+					} else {
+					replacewithFCT = % oneofmyOBFs(funclist . "_" . curOBfrecnum)
+						; msgbox % "Replace1 " lookforfunc " by " replacewithFCT " in`n" str_getTailLines(newline,10)
+					}
+						
+					if (replacewithFCT) {
+						newline .= replacewithFCT
+						; msgbox % "Replace " lookforfunc " by " replacewithFCT " in`n" str_getTailLines(newline,10)
+						; msgbox % "Replace " lookforfunc " in " LOFname " line `n" str_getTailf(newline)
+					} else
+						;TWEAKED DigiDon
+						newline .= SubStr(curline, foundfuncat, strlen(lookforfunc))
+				}
+				;ADDED DIGIDON
+				StartingPos = % foundfuncat + strlen(lookforfunc)							
+			}
+			curline = % newline					
 		}
-		curline = % newline					
-	}
-	
-	;ADDED DIGIDON OBF HEADER SINGLE LINE HOTKEYS and #IF CONDITION
-	if (LOFHeaderObf=1 && A_Index=1)
-		{
-		LOFheaderline = % SubStr(LOFheaderline,1, foundleftparen) . curline
-		}
-	else
-		LOFbodylines = % curline
-	
-	;ADDED DIGIDON FINDPROCESSOBFSPECIALCOMMS
-	findprocessOBFMODEcomms(curline)
+		;ADDED DIGIDON OBF HEADER SINGLE LINE HOTKEYS and #IF CONDITION
+		if (LOFHeaderObf=1 && A_Index=1) {
+			LOFheaderline = % SubStr(LOFheaderline,1, foundleftparen) . curline
+			; LOFheaderline = % SubStr(LOFheaderline, 1, foundfuncat + strlen(lookforfunc)) . curline
+		} else
+			LOFbodylines = % curline
 		
-	; TESTING DIGIDON	
-	if (Debug_Obf=1 && LOFname="CM_ChooseNotebook")
-		msgbox %LOFname% replaceFUNCCALLS LOFbodylines %LOFbodylines%
+		;ADDED DIGIDON FINDPROCESSOBFSPECIALCOMMS
+		findprocessOBFMODEcomms(curline)
+		
+		; TESTING DIGIDON	
+		if (Debug_Obf=1 && LOFname="CM_ChooseNotebook")
+			msgbox %LOFname% CM_ChooseNotebook LOFbodylines %LOFbodylines%
 	}
 }
+
 
 ;ADDED DIGIDON
 ContinuationSectionDetect(SearchLines,skippfirst="skip",debug="") {
@@ -1436,7 +1516,7 @@ replaceSYSVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 			
 			if (partialVAR_ERROR) {
 				if (nextchar = "[") {
-					if (prevchar = "." or IsType(prevchar,"alnum")) {
+					if (prevchar = "." or IsType(prevchar,"alnum") or InStrNNull(oddvarnameallowedchars_BIS, prevchar)) {
 					
 					;dont do the translation
 					;TWEAKED DigiDon
@@ -1608,6 +1688,8 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 			}
 			;msgbox prevchar %prevchar% nextchar %nextchar%
 			partialVAR_ERROR = % aretheyvariablechars_BIS(prevchar, nextchar)
+			; if (prevchar="_" and lookforGLOB="Node" and LOFname="Start_CustomMenuRead")
+			; msgbox % "prevchar " prevchar " partialVAR_ERROR " partialVAR_ERROR "`n" str_getTailf(newline)
 			
 			if (partialVAR_ERROR) {
 				;check for previous char = 'v' which is the format used
@@ -1622,23 +1704,41 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 						;TWEAKED DIGIDON
 						partialVAR_ERROR = % aretheyvariablechars_VvarOrGLab(prevprevchar, nextchar)
 						Vvar_case= % partialVAR_ERROR
-						
 						;ADDED DIGIDON to better handle vVariables (controls)
 						;ADDED BY DIGIDON : TRY TO GENERATE AN OBF STRING WITH NO % at beginning or end
 						if (Vvar_case=3 or Vvar_case=4 or Vvar_case=5)
 							{
 							;do the translation
+							;TO IMPROVE : should either add dynamic obf of OBF NAME or at least straight obf of OBF NAME
+							; newline .= """ " oneofmyOBFs("OBF_GLOBVAR_" . GLOBrow) " """
 							newline .= GLOB_OBFname
 							}
-						else
+						else if (Vvar_case=2)
 							{
-							newline .= oneofmyOBFs("OBF_GLOBVAR_" . GLOBrow)
+							;put simple OBF name
+							newline .= GLOB_OBFname
+							}
+						else if (Vvar_case=1)
+							{
+							;do NOT do translation
+							newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
+							}
+						else {
+							;put simple OBF name
+							newline .= GLOB_OBFname
+						}
+						; if (Vvar_case=3 or Vvar_case=4 or Vvar_case=5)
+							; {
+							;; do the translation
+							; newline .= GLOB_OBFname
+							; }
+						; else
+							; {
+							; newline .= oneofmyOBFs("OBF_GLOBVAR_" . GLOBrow)
 							; if GlobObf_Warn_RecoinLocalFctorStopMode
 							; msgbox % "WARNING lookforGLOB " lookforGLOB " was detected in " LOFtype " " LOFname "`nWhich is a local fct and/OR with stop obf activated `nIt will be obfed using straight mode"
-							}
-					}
-				else if (nextchar = "[") {
-					if (prevchar = "." or IsType(prevchar,"alnum")) {
+				} else if (nextchar = "[") {
+					if (prevchar = "." or IsType(prevchar,"alnum") or InStrNNull(oddvarnameallowedchars_BIS, prevchar)) {
 					
 					;dont do the translation
 					;TWEAKED DigiDon
@@ -1655,7 +1755,7 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 					;TWEAKED DigiDon
 					newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
 				}
-			} else {					
+			} else {
 				;only replace with obf with no '%'s if already surrounded by '%'s
 				if (prevchar = "%" and nextchar = "%")
 					{
@@ -2022,6 +2122,10 @@ replaceLABELCALLS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 			if (prevchar="." or prevchar="{" or nextchar="." or nextchar="}" or nextchar="(")
 				partialVAR_ERROR := true
 			
+			;FUTURE TWEAK DIGIDON MAYBE : COULD ALERT IF SOME SENSITIVE LIST IS FOUND IN LOCAL FCT
+					; if GlobObf_Warn_RecoinLocalFctorStopMode
+					; msgbox % "WARNING lookforLABEL " lookforLABEL " was detected in " LOFtype " " LOFname "`nWhich is a local fct and/OR with stop obf activated `nIt will be obfed using straight mode"
+					
 			;MODIFIED BY DIGIDON
 			if (partialVAR_ERROR=1) {
 				;TWEAKED DigiDon
@@ -2032,22 +2136,33 @@ replaceLABELCALLS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 				;ADDED DIGIDON : Simply OBF Name for Nested Label
 				} else if (GLabeldetected!=1 and nextchar=":" and (!IsType(prevchar,"alnum") or !prevchar)) {
 					replacewithLABEL = % GLOB_OBFname
-				} else {
-					replacewithLABEL = % oneofmyOBFs("OBF_LABEL_" . curlabelnum)
-					;FUTURE TWEAK DIGIDON MAYBE : COULD ALERT IF SOME SENSITIVE LIST IS FOUND IN LOCAL FCT
-					; if GlobObf_Warn_RecoinLocalFctorStopMode
-					; msgbox % "WARNING lookforLABEL " lookforLABEL " was detected in " LOFtype " " LOFname "`nWhich is a local fct and/OR with stop obf activated `nIt will be obfed using straight mode"
-				}
-				;ADDED DIGIDON
-				if (GLabeldetected=1)
-					{
-					;ADDED BY DIGIDON : TRY TO GENERATE AN OBF STRING WITH NO % at beginning or end
+				} else if (GLabeldetected=1) {
+					;ADDED BY DIGIDON : GLABEL OBF
 					if (GLabeldetected_case=3 or GLabeldetected_case=4 or GLabeldetected_case=5)
-					; only replace with obf with no '%'s if already surrounded by '%'s
-						{
-						replacewithLABEL:=GLOB_OBFname
+							{
+							;do the translation
+							;TO IMPROVE : should either add dynamic obf of OBF NAME or at least straight obf of OBF NAME
+							; replacewithLABEL := """ " oneofmyOBFs("OBF_LABEL_" . curlabelnum) " """
+							replacewithLABEL := GLOB_OBFname
+							}
+						else if (GLabeldetected_case=2)
+							{
+							;put simple OBF name
+							replacewithLABEL := GLOB_OBFname
+							}
+						else if (GLabeldetected_case=1)
+							{
+							;do NOT do translation
+							replacewithLABEL := SubStr(curline, foundLABELat, strlen(lookforLABEL))	
+							}
+						else {
+							;put simple OBF name
+							replacewithLABEL .= GLOB_OBFname
 						}
-					}
+				} else {
+				replacewithLABEL = % oneofmyOBFs("OBF_LABEL_" . curlabelnum)
+				}
+					
 				if (replacewithLABEL) 
 					newline .= replacewithLABEL
 				 else
@@ -2339,21 +2454,37 @@ replacePARAMETERS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 						prevprevchar = % SubStr(newline, -1, 1)
 						; if aretheyvariablechars(prevprevchar) {
 						;TWEAKED DIGIDON
-						partialVAR_ERROR = % aretheyvariablechars_VvarOrGLab(prevchar, nextchar)
+						partialVAR_ERROR = % aretheyvariablechars_VvarOrGLab(prevprevchar, nextchar)
 						Vvar_case= % partialVAR_ERROR
 						;ADDED DIGIDON to better handle vVariables (controls)
 						;ADDED BY DIGIDON : TRY TO GENERATE AN OBF STRING WITH NO % at beginning or end
+						; msgbox lookforparam %lookforparam% Vvar_case %Vvar_case% prevchar %prevchar% nextchar %nextchar%
 						if (Vvar_case=3 or Vvar_case=4 or Vvar_case=5)
 							{
 							;do the translation
-							newline .= GLOB_OBFname
+							;TO IMPROVE : should either add dynamic obf of OBF NAME or at least straight obf of OBF NAME
+							; newline .= """ " oneofmyOBFs("OBF_FUNC_" . foundFatrow . "_PARAM_" . curparamnum) " """
+							newline .= curparamOBF
+							
 							}
-						else
-							;TWEAKED DIGDON DELETE getfullOBF because it is anyway not set
-							newline .= oneofmyOBFs("OBF_FUNC_" . foundFatrow . "_PARAM_" . curparamnum)
+						else if (Vvar_case=1)
+							{
+							;do NOT do translation
+							newline .= SubStr(curline, foundPARAMat, strlen(lookforparam))
+							}
+						else if (Vvar_case=1)
+							{
+							;do NOT do translation
+							newline .= SubStr(curline, foundPARAMat, strlen(lookforparam))
+							}
+						else {
+							;put simple OBF name
+							newline .= curparamOBF
+						}
+							
 					}
 					else if (nextchar = "[") {
-						if (prevchar = "." or IsType(prevchar,"alnum")) {
+						if (prevchar = "." or IsType(prevchar,"alnum") or InStrNNull(oddvarnameallowedchars_BIS, prevchar)) {
 						
 						;dont do the translation
 							;TWEAKED DigiDon
@@ -2436,6 +2567,18 @@ aretheyvariablechars_VvarOrGLab(charbefore, charafter = "")
 			}
 	}
 		
+	;if before or after are ',', evaluate as valid and case 2
+	if (charbefore = "," or charafter = ",")
+		{
+		case=2
+		return, case
+		}
+	;if char before is ' ' and no charafter, evaluate as valid  and case 2
+	if (charbefore = " " and isEmptyOrEndLine(charafter))
+		{
+		case=2
+		return, case
+		}
 	;if both the before and after chars are ' ', evaluate as valid  and case 2
 	if (charbefore = " " and charafter = " ")
 		{
@@ -2444,6 +2587,7 @@ aretheyvariablechars_VvarOrGLab(charbefore, charafter = "")
 		}
 		
 	;if first is " and the other is ' ' evaluate as valid and case 3
+	; "vLabel " -->" v" Label " "
 	if (charbefore = """" and charafter = " ")
 		{
 		case=3
@@ -2451,6 +2595,7 @@ aretheyvariablechars_VvarOrGLab(charbefore, charafter = "")
 		}
 		
 	;if first is ' ' and the other is a " evaluate as valid and case 4
+	; " vLabel" -->" v" Label ""
 	if (charbefore = " " and charafter = """")
 		{
 		case=4
@@ -2458,6 +2603,7 @@ aretheyvariablechars_VvarOrGLab(charbefore, charafter = "")
 		}
 	
 	;if both the before and after chars are '"', evaluate as valid and case 5
+	; "vLabel" -->"v" Label ""
 	if (charbefore = """" and charafter = """")
 		{
 		case=5
@@ -2586,8 +2732,7 @@ aretheyvariablecharsMETHODCALLS(charbefore, charafter = "") {
 	return, % false
 }
 
-aretheyvariablecharsFUNCCALLS(charbefore, charafter = "")
-{
+aretheyvariablecharsFUNCCALLS(charbefore, charafter = "") {
 	global
 	
 	if (charbefore!="") {
@@ -2597,22 +2742,28 @@ aretheyvariablecharsFUNCCALLS(charbefore, charafter = "")
 			return, % true
 	}
 	
+	if (charafter!="") {
+		if charafter is alnum
+			return, % true
+		if InStr(oddvarnameallowedchars, charafter)
+			return, % true
+	}
+	
 	;TWEAKED DIGIDON
 	;if char before is "." this is probably a method
 	if (charbefore = ".")
 		return, % true
 		
-	;TWEAKED DIGIDON
-	;if one but not the other is a '%' evaluate as invalid
-	if (charbefore = "%")
-		return, % true
+	;if both chars are """ evaluate as valid
+	if (charbefore = """" and charafter = """")
+		return, % false
+	
+	;if paranthese after evaluate as valid
+	if (charafter = "(")
+		return, % false
 		
-	;if one but not the other is a '"' evaluate as invalid
-	if (charbefore = """" or charafter = """")
-		return, % true
-		
-	;Otherwise we ACCEPT IT (false)
-	return, % false
+	;Otherwise we DENY IT (false)
+	return, % true
 }
 
 ;//ADDED BY DIGIDON ALLOW []
@@ -2770,6 +2921,9 @@ findprocessOBFspecialcomms(LOFlines, skippfirst="") {
 		if (CUR_OBFCOMM = "START_BLOCK")
 			{
 			OBF_block_numrows++
+			;reinit code content
+			OBF_block_%OBF_block_numrows%_code=
+			; msgbox block %OBF_block_numrows% %curline%
 			GlobObf_Block:=OBF_block_numrows
 			if (debug_findprocessOBFspecial=1)
 			msgbox START BLOCK GlobObf_Block %GlobObf_Block% %LOFlines%
@@ -2988,6 +3142,7 @@ oneofmyOBFs(currentvariable) {
 		;ADDED DIGIDON SYSVARS
 		} else if (ucase(substr(currentvariable, 1, 10))="OBF_SYSVAR") {
 			buildfragstr = % "%" . fragvarname . "%"
+			; msgbox fragvarname %fragvarname% fragvalue %fragvalue%
 		} else {
 			;only use 'fragvarname' if this is a function that is marked as a
 			;'isswitchfunc'
@@ -3048,6 +3203,9 @@ to compile or run the obfuscated code generated.
 		;ADDED DIGIDON SYSVARS
 		if (ucase(substr(currentvariable, 1, 10))="OBF_SYSVAR") {
 			buildfragstr .= PUT_NULLS_AROUND(%currentvariable%_frag_%randomset%_%a_index%_varname,"")
+			; msgbox %currentvariable%_frag_%randomset%_%a_index%_varname
+			; msgbox % "_varname " %currentvariable%_frag_%randomset%_%a_index%_varname
+			; msgbox % "buildfragstr " buildfragstr
 			continue		
 		}
 		
@@ -3056,6 +3214,7 @@ to compile or run the obfuscated code generated.
 			continue
 		}
 		
+		;DIGIDON COMMENT : SEEMS NOT TO HAPPEN?
 		if (a_index = 1) {
 			buildfragstr .= ADD_JUNK(%currentvariable%_frag_%randomset%_%a_index%_value, "11", "12", usejunkclass)
 			continue
@@ -3086,8 +3245,7 @@ to compile or run the obfuscated code generated.
 	return, % buildfragstr
 }
 
-PUT_NULLS_AROUND(fragvarname, nobeginlastperc="", forclass="")
-{
+PUT_NULLS_AROUND(fragvarname, nobeginlastperc="", forclass="") {
 	global
 	static OBFstring
 	
@@ -3361,8 +3519,7 @@ removeBODYcomments(ByRef LOFbodylines) {
 
 }
 
-mergeBODYcomments(byref strippedBODY)
-{
+mergeBODYcomments(byref strippedBODY) {
 		global
 	static newbody, curline, curcommentline, newbodyline, curcommentline_originline
 	local foundpos
@@ -3397,23 +3554,22 @@ mergeBODYcomments(byref strippedBODY)
 }
 
 
-savecode(varpath, byref mysectstr)
-{
+savecode(varpath, byref mysectstr) {
 	global
 	;ex: OBF_FUNC11 -->OBF_FUNC11_code
 	%varpath%_code = % mysectstr	
 }
 
 ;ADDED DIGIDON
-addtocode(varpath, byref mysectstr)
-{
+;WARNING CONTENT SHOULD BE EMPTIED THE FIRST TIME
+;Only used for blocks right now
+addtocode(varpath, byref mysectstr) {
 	global
 	
-	%varpath%_code .= mysectstr	
+	%varpath%_code .= mysectstr
 }
 
-movecurlybracesUP(ByRef LOFheaderline, ByRef LOFbodylines, LOFname)	
-{
+movecurlybracesUP(ByRef LOFheaderline, ByRef LOFbodylines, LOFname)	{
 	global
 	static canmoveit
 	
@@ -3461,8 +3617,7 @@ MOVE OF '{' CANCELLED
 }
 
 
-trimbody(byref LOFbodylines)
-{
+trimbody(byref LOFbodylines) {
 	global 
 	
 	StringSplit, curbody, LOFbodylines, `n, `r
@@ -3820,4 +3975,9 @@ replacementQUITALL:
 	exitapp
 return
 
+}
+
+isEmptyOrEndLine(char) {
+	if (char="" or char="`r" or char="`n")
+		return 1
 }

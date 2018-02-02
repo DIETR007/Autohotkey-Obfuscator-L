@@ -1,3 +1,6 @@
+v2.07
+-corrected multiple bugs
+
 v2.06
 -corrected multiple small invalid replacements
 -updated documentation to new website

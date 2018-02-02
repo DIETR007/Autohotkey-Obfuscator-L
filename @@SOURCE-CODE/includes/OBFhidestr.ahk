@@ -27,8 +27,12 @@
 	dave@dynamicobfuscator.org
 	http://davidmalia.com
 	
-	DigiDon
+	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
+	http://www.EverFastAccess.com
+	
+	See online doc at:
+	http://EverFastAccess.com/AHK-Obfuscator/
 */
 
 ;created hidestr for public open source project!

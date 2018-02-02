@@ -32,7 +32,7 @@ IsType( p_Input , p_Type ) {
 		If p_Input is %p_Type%
 			Return 1
 	Return 0
-	}
+}
 
 str_getTail(_Str, _LineNum = 1) {
 	StringReplace, _Str, _Str, `r,,All
@@ -184,4 +184,11 @@ min(exlude="",num*){
 		min := (num[A_Index] < min) ? num[A_Index] : min
 		}
 	return min
+}
+
+InStrNNull(Haystack,Needle) {
+if !Needle
+	return
+else
+	return InStr(Haystack,Needle)
 }

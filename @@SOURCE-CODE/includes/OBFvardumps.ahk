@@ -1,5 +1,5 @@
 /*
-	DYNAMIC OBFUSCATOR L FOR AUTOHOTKEY 
+	DYNAMIC OBFUSCATOR L FOR AUTOHOTKEY
 	Adapted by DigiDon
 	Based on DYNAMIC OBFUSCATOR - Copyright (C) 2011-2013 David Malia
 	
@@ -489,8 +489,17 @@ DUMPALL_FRAGSETS_FORVARTYPE(OBFvarlistpath, forclass="") {
 		dumponevar .= DUMP_ONEVAR_FRAGSET(OBFvarlistpath . "_" . a_index, forclass)
 		
 		dumpallvars .= dumponevar
+		;DIGIDON DEBUG FRAGS
+		; if (OBFvarlistpath="OBF_SYSVAR")
+		; msgbox dumponevar %dumponevar%
 	}
 	
+	
+	;DIGIDON DEBUG FRAGS : could debug in sep file with no nulls
+	; if (OBFvarlistpath="OBF_SYSVAR")
+	; msgbox dumpallvars %dumpallvars%
+	
+	;DIGIDON TESTING DISABLED scrambling
 	if (scramblefuncs) 
 		scramblemylines(dumpallvars)
 	
@@ -597,7 +606,11 @@ DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="") {
 	dumpfragsstr =		
 	loop, % %OBFvarpath%_numfragrows
 	{
-		curfragrow = % a_index			
+		curfragrow = % a_index	
+		
+	;DIDIGON DEBUG FRAGS
+	; if ((issysfunc or issysvar) and %OBFvarpath%_fragsperrow=1)
+		; msgbox 1 frag
 		loop, % %OBFvarpath%_fragsperrow
 		{
 			curfragcol = % a_index
@@ -612,14 +625,27 @@ DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="") {
 				onefragline .= hidesysfunc(%OBFvarpath%_frag_%curfragrow%_%curfragcol%_value)
 			else
 				onefragline .= ADD_JUNK_FORCLASS(%OBFvarpath%_frag_%curfragrow%_%curfragcol%_value, useclass, "12", "23") 
-				
+			
+			;Debug digidon
+			; if issysvar
+			; msgbox onefragline %onefragline%
+			; Loop, Parse, onefragline , =
+			; {
+			; if A_Index=1
+			; msgbox % %A_Loopfield%
+			; if A_Index=2
+			; msgbox % %A_Loopfield%
+			; }
+			
 				
 			onefragline .= "`r`n"
 						
 			dumpfragsstr .= onefragline
 		}
 	}
-	
+	;Debug digidon
+	; if issysvar
+	; msgbox dumpfragsstr %dumpfragsstr%
 	return, % dumpfragsstr
 }
 
@@ -627,15 +653,21 @@ hidesysfunc(sysfuncfrag) {
 	global
 	local obfstr
 	
+	
+	; DIGIDON TESTING DISABLED INSERT_RAND_COMMON_NULL
 	obfstr = % INSERT_RAND_COMMON_NULL() . INSERT_RAND_COMMON_NULL()
 	
+	; msgbox sysfuncfrag %sysfuncfrag%
 	Loop, Parse, sysfuncfrag
+		; obfstr .= a_loopfield
 		obfstr .= a_loopfield . INSERT_RAND_COMMON_NULL()
 	
 	obfstr .= INSERT_RAND_COMMON_NULL()
 	
 	;if (strlen(obfstr) > 253)
 	;	msgbox, dumping sysfuncfrags and tmess ended up greater than 253 characters - should not matter`n%obfstr%
+	
+	; msgbox obfstr %obfstr%
 		
 	return, obfstr
 }
@@ -915,8 +947,7 @@ insertanull:
 return		
 }
 
-REPLACE_ME_WITH_MASTER_COMMON(forchar, nopercents="")
-{
+REPLACE_ME_WITH_MASTER_COMMON(forchar, nopercents="") {
 	global
 	static oddcharnum
 	
@@ -931,8 +962,7 @@ REPLACE_ME_WITH_MASTER_COMMON(forchar, nopercents="")
 	return forchar
 }
 
-REPLACE_ME_WITH_RAND_COMMON(forchar, nopercents="")
-{
+REPLACE_ME_WITH_RAND_COMMON(forchar, nopercents="") {
 	global
 	static oddcharnum
 	
@@ -948,8 +978,7 @@ REPLACE_ME_WITH_RAND_COMMON(forchar, nopercents="")
 	return forchar
 }
 
-INSERT_RAND_COMMON_NULL(nopercents="")
-{
+INSERT_RAND_COMMON_NULL(nopercents="") {
 	global
 	static randnull
 	
@@ -960,8 +989,7 @@ INSERT_RAND_COMMON_NULL(nopercents="")
 		return, "%" . OBF_NULL_%randnull% . "%"
 }
 
-REPLACE_ME_WITH_RAND_FORCLASS(forchar, forclass, nopercents="")
-{
+REPLACE_ME_WITH_RAND_FORCLASS(forchar, forclass, nopercents="") {
 	global
 	static oddcharrow
 	
@@ -983,8 +1011,7 @@ REPLACE_ME_WITH_RAND_FORCLASS(forchar, forclass, nopercents="")
 	return forchar	
 }
 
-REPLACE_ME_WITH_MASTER_FORCLASS(forchar, forclass, nopercents="")
-{
+REPLACE_ME_WITH_MASTER_FORCLASS(forchar, forclass, nopercents="") {
 	global
 	static oddcharrow
 	
@@ -1005,8 +1032,7 @@ REPLACE_ME_WITH_MASTER_FORCLASS(forchar, forclass, nopercents="")
 	return forchar	
 }
 
-INSERT_RAND_NULL_FORCLASS(forclass, nopercents="")
-{
+INSERT_RAND_NULL_FORCLASS(forclass, nopercents="") {
 	global
 	static randnullrow
 	
@@ -1023,8 +1049,7 @@ INSERT_RAND_NULL_FORCLASS(forclass, nopercents="")
 		return, "%" . CLASS_%forclass%_NULL_%randnullrow%_varname . "%"
 }
 
-INSERT_MASTER_NULL_FORCLASS(forclass, nopercents="")
-{
+INSERT_MASTER_NULL_FORCLASS(forclass, nopercents="") {
 	global
 	
 	;if the class specified has no actual null defined for it, 
@@ -1039,14 +1064,12 @@ INSERT_MASTER_NULL_FORCLASS(forclass, nopercents="")
 		return, "%" . CLASS_%forclass%_NULL_MASTvarname . "%"
 }
 
-scramblemylines(byref forlines)
-{
+scramblemylines(byref forlines) {
 	Sort, forlines, Random
 }
 
 
-initDUMPactiontypes()
-{
+initDUMPactiontypes() {
 	global
 	
 	;these will not be processed by the map function but will only be processed

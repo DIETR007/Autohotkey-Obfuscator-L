@@ -225,6 +225,13 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 			label_time += A_TickCount - timestart
 			continue
 		}
+		;ADDED DIGIDON: hotkeys
+		if (CUR_OBFTRANSCOMM = def_HOTKEYS) {
+			timestart = % A_TickCount
+			add_hotkey_OBFentry()
+			label_time += A_TickCount - timestart
+			continue
+		}
 		
 		;USED TO SPECIFY THE ORDER IN WHICH FUNCTION AND LABEL
 		;CODE SECTIONS ARE TO BE DUMPED
@@ -629,7 +636,7 @@ global
 	; OBF_CONTEXTCONDITION_%OBF_CONTEXTCONDITION_numrows%_name:=OBF_CONTEXTCONDITION_numrows
 	; return OBF_CONTEXTCONDITION_numrows
 	
-	if !set_obfcreate_names() {
+	if !set_obfcreate_names("OBF_CONTEXTCONDITION") {
 	write_transtablemess("`r`n#ERROR: " . CUR_OBFTRANSCOMM 
 		. " command found but no parameters - 1 parameter, COND name, is required ")
 	return
@@ -682,11 +689,10 @@ add_func_OBFentry()
 	addnew_OBFentry("OBF_FUNC") 
 }
 
-add_label_OBFentry()
-{
+add_label_OBFentry() {
 	GLOBAL 
 	
-	if !set_obfcreate_names() {
+	if !set_obfcreate_names("OBF_LABEL") {
 		write_transtablemess("`r`n#ERROR: " . CUR_OBFTRANSCOMM 
 			. " command found but no parameters - 1 parameter, LABEL name, is required ")
 		return
@@ -697,6 +703,23 @@ add_label_OBFentry()
 	
 	OBFclass = % LABEL_class
 	addnew_OBFentry("OBF_LABEL") 
+	
+}
+
+add_hotkey_OBFentry() {
+	GLOBAL 
+	
+	if !set_obfcreate_names("OBF_LABEL") {
+		write_transtablemess("`r`n#ERROR: " . CUR_OBFTRANSCOMM 
+			. " command found but no parameters - 1 parameter, LABEL name, is required ")
+		return
+	}	
+	
+	varlistname = % "OBF_LABEL"
+	
+	OBF_numrows++
+	newrow = % ++%varlistname%_numrows
+	%varlistname%_%newrow%_name = % obfcreate_varname1
 	
 }
 
@@ -1065,6 +1088,15 @@ addnew_OBFentry(varlistname) {
 		; if (varlistname="OBF_GLOBPARTIALVAR")
 		; msgbox % "OBF_GLOBPARTIALVAR newrow " newrow " = " obfcreate_varname%a_index%
 		
+		if (varlistname = "OBF_FUNC" or varlistname = "OBF_LABEL") {
+			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
+				;Tweaked DigiDon : disabled duplication warning for SYSMETHODS because happens frequently with __Call etc.
+				if (SubStr(obfcreate_varname%a_index%,-6)="GuiSize" or SubStr(obfcreate_varname%a_index%,-7)="GuiClose" or SubStr(obfcreate_varname%a_index%,-11)="GuiDropFiles" or SubStr(obfcreate_varname%a_index%,-13)="GuiContextMenu")
+				continue
+				msgbox, 4096,, % "func or label var duplication2: '" . obfcreate_varname%a_index% . "'"
+				continue
+			}
+		}
 		;ADDED DIGIDON OBF_numrows
 		;DIGIDON : UNCOMPLETE : SHOULD PROBABLY ADD #IF CONTEXT CONDITIONS & CLASS
 		if (varlistname = "OBF_FUNC" or varlistname = "OBF_LABEL")
@@ -1234,7 +1266,8 @@ intofragstime += A_TickCount - intofragsstarttime
 	return, 0
 }
 
-set_obfcreate_names() {
+;DIGIDON TWEAKED no "," split for contextcondition
+set_obfcreate_names(OBFType="") {
 	global
 	
 	if (transCOMMparam0 < 1) 
@@ -1244,7 +1277,16 @@ set_obfcreate_names() {
 		
 	obfcreate_varname0 = 0
 	;the first parameter set will be the object names
+	if (OBFType="OBF_CONTEXTCONDITION") {
+	; msgbox transCOMMparam1 %transCOMMparam1%
+	obfcreate_varname1:=Trim(transCOMMparam1)
+	obfcreate_varname0:=1
+	} else
 	StringSplit, obfcreate_varname, transCOMMparam1, `,, %a_space%%a_tab%
+	
+	; if (OBFType="OBF_LABEL")
+	; if InStr(transCOMMparam1,"!^c")
+	; msgbox obfcreate_varname1 %obfcreate_varname1%
 	
 	if (!obfcreate_varname0)
 		{
@@ -1308,6 +1350,8 @@ getobfTRANScomm(ByRef programline)
 	
 	transCOMMparam0 = 0
 	
+	
+	
 	if (!endTRANScomm := InStr(programline, ":", false, 2))
 		return, % false
 			
@@ -1318,9 +1362,13 @@ getobfTRANScomm(ByRef programline)
 		
 	transCOMMparams = % SubStr(programline, (endTRANScomm + 1))
 	
-	;TWEAKED DIGIDON : DISABLED BECAUSE COMMAND WITH \ WAS NEVER SEEN AND PROBLEM WITH IF CONTEXT CONDITION
+	;TWEAKED DIGIDON : DISABLED BECAUSE COMMAND WITH \ PROBLEM WITH IF CONTEXT CONDITION
 	;break into command/parameters/../
 	; StringSplit, transCOMMparam, TRANScommparams, /, %A_Tab%%A_Space%
+	
+	; if InStr(programline,"!^c")
+	; msgbox programline %programline% TRANScommparams %TRANScommparams%
+	
 	transCOMMparam1:=TRANScommparams
 	transCOMMparam0:=1
 	; if transCOMMparam0!=1
@@ -1351,8 +1399,7 @@ find_messedupname(messedupname) {
 		return, false
 }
 
-markFUNCANDVARwithfuncrow()
-{
+markFUNCANDVARwithfuncrow() {
 	global
 	local myfuncname, usefuncatrow
 	
@@ -1369,8 +1416,7 @@ markFUNCANDVARwithfuncrow()
 	}
 }
 
-writetranstablemessheader()
-{
+writetranstablemessheader() {
 	global
 	local headerstr
 	
@@ -1387,8 +1433,7 @@ writetranstablemessheader()
 	write_transtablemess(headerstr)
 }
 
-write_transtablemess(writethis)
-{
+write_transtablemess(writethis){
 	GLOBAL transtablemessstr
 	
 	;decided not to create this file!
@@ -1399,8 +1444,8 @@ write_transtablemess(writethis)
 		 
 	transtablemessstr .=  "`r`n" . writethis
 }
-close_transtablemess()
-{
+
+close_transtablemess() {
 	global
 	;MODIFIED DIGIDON : REACTIVATED THIS FILE USEFULL FOR DEBUGGING AND UNDERSTANDING
 	
@@ -1412,8 +1457,7 @@ close_transtablemess()
 	FileAppend, % transtablemessstr, % transtable_messfile	
 }
 
-countparamsandLOSvars()
-{
+countparamsandLOSvars() {
 	global
 	
 	totalparams = 0

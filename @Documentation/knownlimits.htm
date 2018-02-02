@@ -31,19 +31,20 @@
 
 <div><span style="font-size: 16px;"><span style="color: rgb(222, 87, 0);"><b>**UNFORTUNATELY still some known LIMITATIONS:</b></span></span></div>
 <div><u><span style="font-size: 15px;">But much less than before !</span></u></div>
-<div><b>-INCLUDES ARE NOT PROCESSED AUTOMATICALLY.</b></div>
-<div>You have to provide to the obfuscator a special text file containing all you includes that the obfuscator will process.</div>
-<div>The includes are easier to do now in this file but I didn't have time to work on this limitation to see if we could process AHK includes directly. I think it might be a bit more complex than it seems because there are special types of includes but maybe at least the standard ones could be processed automatically.</div>
-<div><b>- TEXT IN MSGBOX OR GUI CONTAINING VAR NAMES</b> will still be obfuscated improperly.</div>
-<div>That might be solved but needs some work to detect if the call if just in param, after % &quot; &quot; or used actually as a variable. No proper time for it and minor case for now.</div>
-<div><b>- ! CLASSES and METHODS ARE STILL NOT OBFUSCATED !</b></div>
-<div>THEY MIGHT BE IN THE FUTURE BUT THAT REQUIRES CAREFUL WORK because of complex Class design and possible uses.</div>
-<div>Classes were already made recognizable. But the complex nested aspects will be quite difficult to handle. Internal methods should not be obfed (__New etc.) and all possible calls should be taken into account so that every call is obfuscated properly, otherwise it won't work. Therefore this has been delayed. NEVERTHELESS IT IS POSSIBLE TO OBFUSCATE THEIR USE by creating objects based on class, obfuscate the objects as global vars, and obfuscate important methods.</div>
-<div><b>- GUI INTERNAL LABELS (CLOSE, SIZE,CONTEXTMENU,...) SHOULD STILL BE SURROUNDED BY SPECIAL COMMANDS</b> (if not in stop_obf mode)</div>
-<div>;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: -1 before, and after:</div>
-<div>;$OBFUSCATOR: $LABELS_RESTORE_DEFAULTS:</div>
-<div>That might be solved quite easily by modifying the parameter internally for example each time the label starts with &quot;XXGui&quot; &quot;XGui&quot; or are the standard &quot;GuiClose&quot; etc. Wasn't a priority</div>
-<div><b>-Gui system functions are not dealt with</b>. That would require some work. Wasn't a priority.</div>
+<div><b>-INCLUDES ARE NOT PROCESSED AUTOMATICALLY.</b>
+<br/>You have to provide to the obfuscator a special text file containing all you includes that the obfuscator will process.
+<br/>The includes are easier to do now in this file but I didn't have time to work on this limitation to see if we could process AHK includes directly. I think it might be a bit more complex than it seems because there are special types of includes but maybe at least the standard ones could be processed automatically.</div>
+<div><b>- TEXT IN MSGBOX OR GUI CONTAINING VAR NAMES</b> will still be obfuscated improperly.
+<br/>That might be solved but needs some work to detect if the call if just in param, after % &quot; &quot; or used actually as a variable. No proper time for it and minor case for now.</div>
+<div><b>- ! CLASSES and METHODS ARE STILL NOT OBFUSCATED !</b>
+<br/>THEY MIGHT BE IN THE FUTURE BUT THAT REQUIRES CAREFUL WORK because of complex Class design and possible uses.
+<br/>Classes were already made recognizable. But the complex nested aspects will be quite difficult to handle. Internal methods should not be obfed (__New etc.) and all possible calls should be taken into account so that every call is obfuscated properly, otherwise it won't work. Therefore this has been delayed. NEVERTHELESS IT IS POSSIBLE TO OBFUSCATE THEIR USE by creating objects based on class, obfuscate the objects as global vars, and obfuscate important methods.</div>
+<div><b>- GUI INTERNAL LABELS (CLOSE, SIZE,CONTEXTMENU,...) SHOULD STILL BE SURROUNDED BY SPECIAL COMMANDS</b><br/>(if not in stop_obf mode)
+<br/>;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: -1 before, and after:
+<br/>;$OBFUSCATOR: $LABELS_RESTORE_DEFAULTS:
+<br/>That might be solved quite easily by modifying the parameter internally for example each time the label starts with &quot;XXGui&quot; &quot;XGui&quot; or are the standard &quot;GuiClose&quot; etc. Wasn't a priority</div>
+<div><b>-GUI SYSTEM FUNCTIONS ARE NOT DEALT WITH</b>. <br/>That would require some work. Wasn't a priority.</div>
+<div><b>-SPECIAL VARS LIKE +HwndVarContainingHwnd ARE NOT RECOGNIZED</b>. <br/>That would require some work. Wasn't a priority. Therefore DO NOT DECLARE VarContainingHwnd TO BE OBFUSCATED.</div>
 
 </div>
 

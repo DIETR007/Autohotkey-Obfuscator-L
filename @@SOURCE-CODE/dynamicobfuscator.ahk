@@ -1,15 +1,13 @@
 /*
 	DYNAMIC OBFUSCATOR L FOR AUTOHOTKEY
 	Adapted by DigiDon
-	Copyright (C) 2011-2013 David Malia
-
+	Based on DYNAMIC OBFUSCATOR - Copyright (C) 2011-2013 David Malia
+	
 	DYNAMIC OBFUSCATOR is an obfuscator for autohotkey scripts that
 	can obfuscate functions, autohotkey functions, labels,
 	parameters, and variables. It can automatically use the dynamic
 	variable creation features of autohotkey to create breakable
 	code sections and function path rewiring.
-
-	Copyright (C)
 
 	This program is free software: you can redistribute it and/or 
 	modify it under the terms of the GNU General Public License as
@@ -31,7 +29,10 @@
 	
 	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
+	http://www.EverFastAccess.com
 	
+	See online doc at:
+	http://EverFastAccess.com/AHK-Obfuscator/
 */
 
 
@@ -251,7 +252,9 @@ createTRANSMAP:
 	
 	createTRANSMAP()
 	;gui 10:destroy
-	Gosub, chooseOBFfunc
+	;TWEAKED DIGIDON : reload to make sure all var reset
+	reload
+	; Gosub, chooseOBFfunc
 
 	
 return
@@ -410,7 +413,9 @@ obfuscatecode:
 	
 	obfuscatecode()
 	
-	Gosub, chooseOBFfunc
+	; Gosub, chooseOBFfunc
+	;TWEAKED DIGIDON : reload to make sure all vars are reinit
+	reload
 return
 
 
