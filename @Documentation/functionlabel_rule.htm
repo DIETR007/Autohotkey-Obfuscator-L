@@ -27,14 +27,41 @@
 <iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
 </iframe>
 
+<font color="red"><b>Important rules for structuring/naming of functions and labels</b><br/></font>
+
 <h2><a name="prefuncs"></a>Prepare function sections</h2>
 <div>
-In order to correctly find and parse off functions, the obfuscator needs a few simple format rules to be followed. The first is that the function definition must start in column 1. The second is that the ending '}' for the function must be in column 1 and there cannot be any other '}' in column 1 within the function. You can still use the ending curly brace within the function for instance to terminate the truth block of an if, but that curly brace would always have to be indented, it can not be in column 1. Also, function names can only be made out of letters, numbers, and the underscore. I did not code the program to recognize more characters for function names because I never use them.
+In order to correctly find and parse off functions, the obfuscator needs a few simple format rules to be followed. The first is that <br/>
+<b>The function definition must start in column 1.</b><br/>
+The second is that <br/>
+<b>The ending brace '}' for the function and only this one must be in column 1</b><br/>
+ There cannot be any other '}' in column 1 within the function. You can still use the ending curly brace within the function for instance to terminate the truth block of an if, but that curly brace would always have to be indented, it can not be in column 1. <br/>
+ <b>Also, function names can only be made out of letters, numbers, and the underscore.</b> <br/>
+ I did not code the program to recognize more characters for function names because I never use them.
 </div>
 
 <h2><a name="prelabels"></a>Prepare Label Sections</h2>
 <div>
-A few simple format rules need to be followed in order for the obfuscator to find and parse off label sections. The first is that the label section header has to start in column 1 and be followed by ':'. The second rule is that the ending RETURN for the label section has to start in column 1. The RETURN statement can still be used within the section for instance as part of an if statement, but it would always have to be indented.  Label names can made out of only letters, numbers, and the underscore, similiar to function names.
+A few simple format rules need to be followed in order for the obfuscator to find and parse off label sections. The first is that <br/>
+<b>The label section header followed by ':' has to start in column 1.</b> <br/>
+The second rule is that <br/>
+<b>The ending RETURN for the label section and only it  has to start in column 1.</b> <br/>
+The RETURN statement can still be used within the section for instance as part of an if statement, but it would always have to be indented.  <br/>
+<b>Label names can made out of only letters, numbers, and the underscore</b>, similiar to function names.
+</div>
+
+<h2><a name="prelabels"></a>Functions and Label Names</h2>
+<div>
+<b>-DO NOT GIVE THE SAME NAME to one function and one label</b><br/>
+as the obfuscatore could assign the wrong obfuscated name<br/>
+<b>-DO NOT ASSIGN A STRING WITH THE SAME NAME AS ONE OF YOUR FUNCTION/LABEL</b><br/>
+as the obfuscator will replace the string with the obfuscated name of the function/label. This is very useful when this is intended : example : SetTime % "FunctionName" will be properly replaced.<br/>
+But if not intended the replacement can break some of your code.<br/>
+Typical example is a function which as the same name of the function it calls via a DllCall.<br/>
+<font color="blue">FunctionName() {<br/>
+DllCal("FunctionName",...<br/>
+}</font><br/>
+Will make an invalid replacement of the "FunctionName" in the DllCall
 </div>
 
 <h2><a name="nestedlabels"></a>Nested Label Headers Inside Other Label Sections and Functions</h2>
