@@ -6,44 +6,27 @@
 <meta name="Description" content="This allows you to create a layered scrambled Sandwich out of the functions and label sections of your obfuscated Autohotkey program.">
 
 <link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
-
 <style type="text/css">
 </style>
-<script>
-  function resizeIframe(obj) {
-    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
-  }
-</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="js/myscripts.js"></script> 
 </head>
-<body>
+<body onload="checkiframes()">
 
-<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" width="100%" scrolling="no"/>
 </iframe>
+
 <div id="wrapcols">
 
 <div id="mainconts">
 
 <iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
 </iframe>
-<!-- !!! TO BE IMPROVED !!!! -->
-<iframe style="border-width:0px;float:left" src="iFrames/topnote-toimprove.htm" width="100%" height="30px" scrolling="no"/></iframe>
 <h1>How this project could be improved</h1>
+<div>
 I (DigiDon) think there are still many ways this project could be improved.
 I already added many functionalites, improved the documentation, eased usage and improved automation and flexibility etc. but here is some of my thoughts on what could be improved: <br/>
-<h2>Bug fixes</h2>
-<div>
-Here is a few bugs that I would like to be fixed:<br/>
-<b>-AHK system variables obfuscation sometimes makes uncomplete replacements.</b> <br/>
-Thus A_Index for example is sometimes replaced by fragments which when debugged output A_In : the "dex" part is missing.<br/>
-For the time being I wasn't able to find the source of error.</div>
-
-<h2><a name="invalidreplacements"></a>Suggestion to Fix Invalid Replacements: New Command Comment in Dynamic Obfuscator</h2>
-<div>
-A new obfuscator command comment could be created that can be put one line before the problem statement:
-
-<br><br>;$OBFUSCATOR: $REPLACE%VARNAME%ONLY: 
-
-<br><br>This would indicate to the obfuscator that it is only to replace variables surrounded by %s in the statement on the following line. 
 </div>
 
 <h2>Clarity of code and comments</h2>
@@ -59,14 +42,15 @@ This sould be improved as this is quite messy right now. Will do at further poin
 <h2>Obfuscate Class/Methods/Properties</h2>
 <div>I already started working on this. Nevertheless as structure and calls can be quite complex this requires carreful implementation.</div>
 
-<h2>Obfuscate Gui AHK Functions </h2>
-<div>Obfuscate new GuiContextMenu() or GuiSize() functions for example</div>
-
-<h2>Recognize special variables assignments</h2>
-<div>For example +hwndVarContainingHwnd is not recognized.</div>
-
 <h2>Suggest a list of variables to obfuscate</h2>
 <div>I believe this project could easily add a new functionality that builds a list of most variables so the user could quickly add them to obfuscation. Right now the process is manual and very time consuming. A simple regex or so detecting standard assignments (like ^var/h*:?=) should already cover most.</div>
+
+<h2><a name="invalidreplacements"></a>Suggestion to Fix Invalid Replacements: New Command Comment in Dynamic Obfuscator</h2>
+<div>
+A new obfuscator command comment could be created that can be put one line before the problem statement:
+<br>;$OBFUSCATOR: $REPLACE%VARNAME%ONLY: 
+<br>This would indicate to the obfuscator that it is only to replace variables surrounded by %s in the statement on the following line. 
+</div>
 
 <h2>Add features to give great information/statistics on big scripts</h2>
 <div>As this project has developed in a huge smart parser I think it could be quite easily tweaked to provide valuable information on scripts:
@@ -76,9 +60,10 @@ Number and list of variables
 </div>
 
 </div>
-
-<div id="rightcol">
-
+<div id="rightcol" style="width:200px;float:left">
+<div class="container"></div>
+<iframe style="border-width:0px;" src="iFrames/donate_digidon.htm" height="400px" scrolling="no"></iframe>
+<iframe style="border-width:0px;" src="iFrames/donate_david.htm" height="200px" scrolling="no"></iframe>
 </div>
 
 </div>

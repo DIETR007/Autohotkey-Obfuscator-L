@@ -4,6 +4,9 @@ In the folders under this folder you will find some examples
 of autohotkey scripts that demonstrate the basic features of
 the dynamic obfuscator. 
 
+START EASY WITH "@SIMPLEST EXAMPLE" FOLDER
+AND LOOK AT THE PROCEDURE.txt file which explains the very basic proccess.
+
 The files in each folder follow some common file naming
 conventions as shown below. 
 
@@ -18,9 +21,13 @@ example_obfuscated.ahk
 example_obfuscated_nocomments.ahk
 	- obfuscated code that was output by obfuscator
 	- checked 'no comments' and 'randomize order'
-example_transMAP.txt
+example_TransMAP.txt
 	- translations map file
 	- obfuscator made this file and uses it also as input for obfuscation
+example_TransMAP_RMESS.txt
+	- translations messages
+	- obfuscator made this file for debugging purposes
+	-it contains the obfuscated names it has created for all
 
 The first file is the unobfuscated example autohotkey script.
 

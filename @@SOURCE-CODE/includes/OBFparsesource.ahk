@@ -315,8 +315,9 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 		commentsection=1
 		return, false
 		}
-	else if (foundcontinuationsection := Regexmatch(programline, "^[\s]*\("))
+	else if (foundcontinuationsection := Regexmatch(programline, "^[\s]*\(") and !Regexmatch(programline, "\)[\s]*(;.*$|$)"))
 		{
+		; msgbox continuation section %programline%
 		LOFname =
 		LOFtype = % "continuationsection_start"
 		iscontinuesect=1
@@ -481,7 +482,6 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 	found2colons := InStr(programline, "::")
 	found1colon := InStr(programline, ":")
 	MinFound:=min(0,foundleftparen,found2colons,found1colon)
-	
 	;DEBUG DIGIDON
 	; if InStr(programline, "Building_ChooseIconMenu")
 	; msgbox programline %programline% `nfoundleftparen %foundleftparen% found2colons %found2colons% found1colon %found1colon% MinFound %MinFound%
@@ -547,7 +547,7 @@ isLOFheader(programline, ByRef  LOFtype, ByRef LOFname, nestedlabelsonly = 0, ne
 			
 		;assume it is a valid function (if only valid chars are between pos 1 and "(") !
 		LOFname = % SubStr(programline, 1, (foundleftparen - 1))
-		
+		; msgbox programline %programline%
 		;DEBUG DIGIDON
 		; if InStr(programline, "Building_ChooseIconMenu")
 			; msgbox LOFname %LOFname%

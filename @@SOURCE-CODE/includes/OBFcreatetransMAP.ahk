@@ -55,7 +55,11 @@ createTRANSMAP() {
 	
 	createTRANSMAPmesswin()
 	
-	FileRead, fileslist, % myfileslistfile
+	;TWEAK DIGIDON : allow also only 1 ahk file
+	if (SubStr(myfileslistfile,-3)=".ahk")
+		fileslist:=myfileslistfile
+	else
+		FileRead, fileslist, % myfileslistfile
 		
 	FormatTime, currenttime
 	

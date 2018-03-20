@@ -51,6 +51,7 @@ initvartypes()
 	vartype5 = LOSVAR
 	vartype6 = GLOBVAR
 	vartype7 = FUNCANDVAR
+	;DIGIDON: should we add GUIFUNTCIONS?
 	vartype8 = GUILABEL
 	;ADDED DIGIDON GLOBPARTIALVARS
 	vartype9 = GLOBPARTIALVAR

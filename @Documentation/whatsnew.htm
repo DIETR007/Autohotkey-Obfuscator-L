@@ -5,16 +5,16 @@
 <title>What's new?</title>
 <meta name="Description" content="This obfuscator automatically uses the dynamic variable name creation capabilities of Autohotkey to create an obfuscation mess like never before seen.">
 
+
 <link rel="stylesheet" href="mycss/standtemp.css" type="text/css">
 
-<style type="text/css">
-</style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="js/myscripts.js"></script> 
 </head>
 <body onload="checkiframes()">
 
-<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
+
+<iframe style="border-width:0px;" src="iFrames/header.htm" width="100%" scrolling="no"/>
 </iframe>
 
 <div id="wrapcols">
@@ -184,28 +184,10 @@
 
 
 <div><span style="font-size: 16px;"><span style="color: rgb(20, 113, 145);"><b>**AND MUCH MORE!! (I did this log after so this is from memory):</br></b></span></span></div>
-</br>
-
-<div><span style="font-size: 16px;"><span style="color: rgb(222, 87, 0);"><b>**UNFORTUNATELY still some known LIMITATIONS:</b></span></span></div>
-<div><u><span style="font-size: 15px;">But much less than before !</span></u></div>
-<div><b>-INCLUDES ARE NOT PROCESSED AUTOMATICALLY.</b></div>
-<div>You have to provide to the obfuscator a special text file containing all you includes that the obfuscator will process.</div>
-<div>The includes are easier to do now in this file but I didn't have time to work on this limitation to see if we could process AHK includes directly. I think it might be a bit more complex than it seems because there are special types of includes but maybe at least the standard ones could be processed automatically.</div>
-<div><b>- TEXT IN MSGBOX OR GUI CONTAINING VAR NAMES</b> will still be obfuscated improperly.</div>
-<div>That might be solved but needs some work to detect if the call if just in param, after % &quot; &quot; or used actually as a variable. No proper time for it and minor case for now.</div>
-<div><b>- ! CLASSES and METHODS ARE STILL NOT OBFUSCATED !</b></div>
-<div>THEY MIGHT BE IN THE FUTURE BUT THAT REQUIRES CAREFUL WORK because of complex Class design and possible uses.</div>
-<div>Classes were already made recognizable. But the complex nested aspects will be quite difficult to handle. Internal methods should not be obfed (__New etc.) and all possible calls should be taken into account so that every call is obfuscated properly, otherwise it won't work. Therefore this has been delayed. NEVERTHELESS IT IS POSSIBLE TO OBFUSCATE THEIR USE by creating objects based on class, obfuscate the objects as global vars, and obfuscate important methods.</div>
-<div><b>- GUI INTERNAL LABELS (CLOSE, SIZE,CONTEXTMENU,...) SHOULD STILL BE SURROUNDED BY SPECIAL COMMANDS</b> (if not in stop_obf mode)</div>
-<div><font color="brown">;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: -1</font></div>
-<div>before, and after:</div>
-<div><font color="brown">;$OBFUSCATOR: $LABELS_RESTORE_DEFAULTS:</font></div>
-<div>That might be solved quite easily by modifying the parameter internally for example each time the label starts with &quot;XXGui&quot; &quot;XGui&quot; or are the standard &quot;GuiClose&quot; etc. Wasn't a priority</div>
-<div><b>-Gui system functions are not dealt with</b>. That would require some work. Wasn't a priority.</div>
-<br/>
 
 </div>
 
+</div>
 <div id="rightcol" style="width:200px;float:left">
 <div class="container"></div>
 <iframe style="border-width:0px;" src="iFrames/donate_digidon.htm" height="400px" scrolling="no"></iframe>

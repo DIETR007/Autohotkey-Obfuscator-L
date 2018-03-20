@@ -9,25 +9,22 @@
 
 <style type="text/css">
 </style>
-<script>
-  function resizeIframe(obj) {
-    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
-  }
-</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="js/myscripts.js"></script>
+
 </head>
 <body>
 
-<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
-</iframe>
+<iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/></iframe>
 
 <div id="wrapcols">
 
 <div id="mainconts">
 
-<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
-</iframe>
-<iframe style="border-width:0px;float:left" src="iFrames/topnote-toimprove.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
-</iframe>
+<iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/></iframe>
+<!-- <iframe style="border-width:0px;float:left" src="iFrames/topnote-toimprove.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/></iframe> -->
+<!-- !!! TO BE IMPROVED !!!! -->
+<font color="orange">This part should be improved later on...</font>
 
 <h1>Obfuscate more, obfuscate all!</h1>
 Once you have obfuscate most of your variables you will realize that there are still some left-overs which are not obfuscated that might give some clues as what the portion of code is handling.

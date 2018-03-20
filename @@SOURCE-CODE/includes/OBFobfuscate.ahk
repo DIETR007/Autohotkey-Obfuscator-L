@@ -151,6 +151,10 @@ obfuscatecode()
 		
 	writetoOBFfile(mycopyright)
 	
+	;TWEAK DIGIDON : allow also only 1 ahk file
+	if (SubStr(myfileslistfile,-3)=".ahk")
+		fileslist:=myfileslistfile
+	else
 	FileRead, fileslist, % myfileslistfile
 	
 	totalsourcelines = 0
@@ -789,7 +793,11 @@ replaceSYSPROPERTIES(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines,
 				
 			;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
 			loop 1 {
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundpropat - StartingPos)))
+				;GET NEXT LINE POS
+				nextlinepos = % instr(curline, "`n", false, foundpropat)
+				if !nextlinepos
+					nextlinepos:=StrLen(curline)
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (nextlinepos - StartingPos)))
 					ContinuationSectionStatus:=ContinuationSectionStatusTest
 				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundpropat - StartingPos)))
 				}
@@ -917,7 +925,11 @@ replaceSYSMETHODS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 				
 			;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
 			loop 1 {
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundmethodat - StartingPos)))
+				;GET NEXT LINE POS
+				nextlinepos = % instr(curline, "`n", false, foundmethodat)
+				if !nextlinepos
+					nextlinepos:=StrLen(curline)
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (nextlinepos - StartingPos)))
 					ContinuationSectionStatus:=ContinuationSectionStatusTest
 				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundmethodat - StartingPos)))
 				}
@@ -1098,7 +1110,11 @@ replaceGLOBALPARTIALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodyli
 			
 			;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
 			loop 1 {
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundGLOBat - StartingPos)))
+				;GET NEXT LINE POS
+				nextlinepos = % instr(curline, "`n", false, foundGLOBat)
+				if !nextlinepos
+					nextlinepos:=StrLen(curline)
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (nextlinepos - StartingPos)))
 					ContinuationSectionStatus:=ContinuationSectionStatusTest
 				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundGLOBat - StartingPos)))
 				}
@@ -1280,12 +1296,15 @@ replaceFUNCCALLS(funclist, ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbody
 					restoreGlobObfMode()
 					break
 					}	
-				
 				; if (lookforfunc="commonobjfrags")
 					; msgbox partialVAR_ERROR %partialVAR_ERROR% prevchar %prevchar% nextchar %nextchar%
 				;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
 				loop 1 {
-					if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundfuncat - StartingPos)))
+					;GET NEXT LINE POS
+					nextlinepos = % instr(curline, "`n", false, foundfuncat)
+					if !nextlinepos
+						nextlinepos:=StrLen(curline)
+					if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (nextlinepos - StartingPos)))
 						ContinuationSectionStatus:=ContinuationSectionStatusTest
 					findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundfuncat - StartingPos)))
 					}
@@ -1306,8 +1325,8 @@ replaceFUNCCALLS(funclist, ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbody
 					continue
 					}
 				
-				;ADDED DIGIDON to better detect GLabels
-				if (ucase(prevchar) = "G" && Instr(str_getTailf(newline),"GUI") && !IsType(nextchar,"alnum")) {
+				;ADDED DIGIDON to better detect GFunctions
+				if (ucase(prevchar) = "G" && regexmatch(str_getTailf(newline),"i)\s*GUI[\s,]") && !isitvarchar(nextchar)) {
 				;ADDED DIGIDON
 				GLabeldetected=1
 					prevchar = % SubStr(newline, -1, 1)
@@ -1424,10 +1443,10 @@ ContinuationSectionDetect(SearchLines,skippfirst="skip",debug="") {
 		
 		;test for start of 'continuation' section
 		;TWEAKED DIGIDON : allow spaces before match
-			if (Regexmatch(curline, "^[\h]*\(")) {
+			if (Regexmatch(curline, "^[\h]*\(") and !Regexmatch(curline, "\)[\s]*(;.*$|$)")) {
 				iscontinuesect = start
 				if (debug)
-				msgbox start of continuation section found iscontinuesect %iscontinuesect% `ncurline %curline%
+				msgbox start of continuation section found `n%curline%
 				continue
 			}
 	}
@@ -1495,9 +1514,13 @@ replaceSYSVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 			;ADDED DIGIDON CONTINUATION SECTION & findprocessOBFspecialcomms
 			loop 1
 			{
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundSYSat - StartingPos))) {
+				;GET NEXT LINE POS
+				nextlinepos = % instr(curline, "`n", false, foundSYSat)
+				if !nextlinepos
+					nextlinepos:=StrLen(curline)
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (nextlinepos - StartingPos)))
 					ContinuationSectionStatus:=ContinuationSectionStatusTest
-				}
+				
 				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundSYSat - StartingPos)))
 			}
 			
@@ -1516,7 +1539,7 @@ replaceSYSVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 			
 			if (partialVAR_ERROR) {
 				if (nextchar = "[") {
-					if (prevchar = "." or IsType(prevchar,"alnum") or InStrNNull(oddvarnameallowedchars_BIS, prevchar)) {
+					if (prevchar = "." or isitvarchar(prevchar)) {
 					
 					;dont do the translation
 					;TWEAKED DigiDon
@@ -1548,11 +1571,14 @@ replaceSYSVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 				else if (prevchar = "/" or nextchar = "/") 
 					;TWEAKED DigiDon
 					newline .= SubStr(curline, foundSYSat, strlen(lookforSYS))
-					
-				;do not replace variables surrounded by quotes!
-				else if (prevchar = """" and nextchar = """") 
+				
+				;MAYBE CORRECT
+				;do not replace variables surrounded by quotes (should it really? Normally no reason to be in quotes so I guess yes)
+				else if (prevchar = """" and nextchar = """") {
 					;TWEAKED DigiDon
 					newline .= SubStr(curline, foundSYSat, strlen(lookforSYS))
+					; msgbox % "skipped sys var " lookforGLOB " in quotes " str_getTailf(newline)
+					}
 					
 				;replace with triply ofuscated values
 				else 
@@ -1660,20 +1686,27 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 			nextchar = % SubStr(curline, foundGLOBat + strlen(lookforGLOB), 1)
 			nextnextchar = % SubStr(curline, foundGLOBat + strlen(lookforGLOB) + 1, 1)
 			
-			;ADDED DIGIDONTO EXCLUDE PROPS
+			;ADDED DIGIDONTO EXCLUDE PROPS (forgot what this is exactly...)
 			if (nextchar=":" and nextnextchar!="=") {
 				;DO NOT TRANSLATE
+				
 				newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
 				StartingPos = % foundGLOBat + strlen(lookforGLOB)
+				; msgbox % "skipped line PROPS " str_getTailf(newline)
 				continue
+				
 			}
 			
 			;ADDED DIGIDON CONTINUATION SECTION & findprocessOBFspecialcomms
 			loop 1
 			{
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundGLOBat - StartingPos))) {
+				;GET NEXT LINE POS
+				nextlinepos = % instr(curline, "`n", false, foundGLOBat)
+				if !nextlinepos
+					nextlinepos:=StrLen(curline)
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (nextlinepos - StartingPos)))
 					ContinuationSectionStatus:=ContinuationSectionStatusTest
-				}
+				
 				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundGLOBat - StartingPos)))
 			}
 			
@@ -1695,50 +1728,43 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 				;check for previous char = 'v' which is the format used
 				;in controls to define a variable to associate with the control
 				;TWEAKED DIGIDON to better detect vVariables (controls)
-				if (ucase(prevchar) = "V" && Instr(str_getTailf(newline),"GUI") && !IsType(nextchar,"alnum")) {
-						;ADDED DIGIDON
-						vVardetected=1
-						;backup one more character and check whether that is valid 
-						;as a variable name or not
-						prevprevchar = % SubStr(newline, -1, 1)
-						;TWEAKED DIGIDON
-						partialVAR_ERROR = % aretheyvariablechars_VvarOrGLab(prevprevchar, nextchar)
-						Vvar_case= % partialVAR_ERROR
-						;ADDED DIGIDON to better handle vVariables (controls)
-						;ADDED BY DIGIDON : TRY TO GENERATE AN OBF STRING WITH NO % at beginning or end
-						if (Vvar_case=3 or Vvar_case=4 or Vvar_case=5)
-							{
-							;do the translation
-							;TO IMPROVE : should either add dynamic obf of OBF NAME or at least straight obf of OBF NAME
-							; newline .= """ " oneofmyOBFs("OBF_GLOBVAR_" . GLOBrow) " """
-							newline .= GLOB_OBFname
-							}
-						else if (Vvar_case=2)
-							{
-							;put simple OBF name
-							newline .= GLOB_OBFname
-							}
-						else if (Vvar_case=1)
-							{
-							;do NOT do translation
-							newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
-							}
-						else {
-							;put simple OBF name
-							newline .= GLOB_OBFname
+				if (ucase(prevchar) = "V" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+					;ADDED DIGIDON
+					vVardetected=1
+					;backup one more character and check whether that is valid 
+					;as a variable name or not
+					prevprevchar = % SubStr(newline, -1, 1)
+					;TWEAKED DIGIDON
+					partialVAR_ERROR = % aretheyvariablechars_VvarOrGLab(prevprevchar, nextchar)
+					Vvar_case= % partialVAR_ERROR
+					;ADDED DIGIDON to better handle vVariables (controls)
+					;ADDED BY DIGIDON : TRY TO GENERATE AN OBF STRING WITH NO % at beginning or end
+					if (Vvar_case=3 or Vvar_case=4 or Vvar_case=5)
+						{
+						;do the translation
+						;TO IMPROVE : should either add dynamic obf of OBF NAME or at least straight obf of OBF NAME
+						; newline .= """ " oneofmyOBFs("OBF_GLOBVAR_" . GLOBrow) " """
+						newline .= GLOB_OBFname
 						}
-						; if (Vvar_case=3 or Vvar_case=4 or Vvar_case=5)
-							; {
-							;; do the translation
-							; newline .= GLOB_OBFname
-							; }
-						; else
-							; {
-							; newline .= oneofmyOBFs("OBF_GLOBVAR_" . GLOBrow)
-							; if GlobObf_Warn_RecoinLocalFctorStopMode
-							; msgbox % "WARNING lookforGLOB " lookforGLOB " was detected in " LOFtype " " LOFname "`nWhich is a local fct and/OR with stop obf activated `nIt will be obfed using straight mode"
+					else if (Vvar_case=2)
+						{
+						;put simple OBF name
+						newline .= GLOB_OBFname
+						}
+					else if (Vvar_case=1)
+						{
+						;do NOT do translation
+						newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
+						}
+					else {
+						;put simple OBF name
+						newline .= GLOB_OBFname
+					}
+				} else if (SubStr(newline, -4, 5)="+hwnd" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+						;put simple OBF name
+						newline .= GLOB_OBFname
 				} else if (nextchar = "[") {
-					if (prevchar = "." or IsType(prevchar,"alnum") or InStrNNull(oddvarnameallowedchars_BIS, prevchar)) {
+					if (prevchar = "." or isitvarchar(prevchar)) {
 					
 					;dont do the translation
 					;TWEAKED DigiDon
@@ -1769,9 +1795,13 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 					newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
 					
 				;do not replace global variables surrounded by quotes!
-				else if (prevchar = """" and nextchar = """") 
+				;EDIT : YES REPLACE BY REAL OBF NAME
+				else if (prevchar = """" and nextchar = """") {
 					;TWEAKED DigiDon
-					newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
+					; newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
+					; msgbox % "skipped golb var " lookforGLOB " in quotes " str_getTailf(newline)
+					newline.=GLOB_OBFname
+					}
 				
 				;only replace with obf with no '%'s if it's a 'guilabel'
 				else if (obf_globvar_%GLOBrow%_isguilabel)
@@ -1887,8 +1917,46 @@ replaceLOSvars(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 				partialVAR_ERROR = % aretheyvariablechars_BIS(prevchar, nextchar)
 				
 				if (partialVAR_ERROR) {
-					;TWEAKED DigiDon
-					newline .= SubStr(curline, foundLOSat, strlen(lookforGLOB))			
+					if (ucase(prevchar) = "V" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+						;ADDED DIGIDON
+						vVardetected=1
+						;backup one more character and check whether that is valid 
+						;as a variable name or not
+						prevprevchar = % SubStr(newline, -1, 1)
+						;TWEAKED DIGIDON
+						partialVAR_ERROR = % aretheyvariablechars_VvarOrGLab(prevprevchar, nextchar)
+						Vvar_case= % partialVAR_ERROR
+						;ADDED DIGIDON to better handle vVariables (controls)
+						;ADDED BY DIGIDON : TRY TO GENERATE AN OBF STRING WITH NO % at beginning or end
+						if (Vvar_case=3 or Vvar_case=4 or Vvar_case=5)
+							{
+							;do the translation
+							;TO IMPROVE : should either add dynamic obf of OBF NAME or at least straight obf of OBF NAME
+							; newline .= """ " oneofmyOBFs("OBF_GLOBVAR_" . GLOBrow) " """
+							newline .= LOS_OBFname
+							}
+						else if (Vvar_case=2)
+							{
+							;put simple OBF name
+							newline .= LOS_OBFname
+							}
+						else if (Vvar_case=1)
+							{
+							;do NOT do translation
+							newline .= SubStr(curline, foundLOSat, strlen(lookforLOS))
+							}
+						else {
+							;put simple OBF name
+							newline .= LOS_OBFname
+						}
+					} else if (SubStr(newline, -4, 5)="+hwnd" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+						;put simple OBF name
+						newline .= LOS_OBFname
+					}
+					else {
+					;DO NOT TRANSLATE
+					newline .= SubStr(curline, foundLOSat, strlen(lookforLOS))	
+					}
 				} else {
 					;DIGIDON TWEAKED : DELETE _replacementsdone PART BECAUSE VARIABLES ARE NOW NOT OBF IF LOCAL/GLOBAL/STATIC
 					;if it is the first replacement, replace with only the straight
@@ -2080,7 +2148,11 @@ replaceLABELCALLS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 			
 			;ADDED DIGIDON CONTINUATION SECTION & FINDPROCESSOBFSPECIALCOMMS
 			loop 1 {
-				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (foundLABELat - StartingPos)))
+				;GET NEXT LINE POS
+				nextlinepos = % instr(curline, "`n", false, foundLABELat)
+				if !nextlinepos
+					nextlinepos:=StrLen(curline)
+				if ContinuationSectionStatusTest:=ContinuationSectionDetect(SubStr(curline, StartingPos, (nextlinepos - StartingPos)))
 					ContinuationSectionStatus:=ContinuationSectionStatusTest
 				findprocessOBFMODEcomms(SubStr(curline, StartingPos, (foundLABELat - StartingPos)))
 				}
@@ -2106,7 +2178,7 @@ replaceLABELCALLS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 				msgbox prevchar %prevchar% lookforLABEL %lookforLABEL% newline %newline% 
 			
 			;ADDED DIGIDON to better detect GLabels
-			if (ucase(prevchar) = "G" && Instr(str_getTailf(newline),"GUI") && !IsType(nextchar,"alnum")) {
+			if (ucase(prevchar) = "G" && regexmatch(str_getTailf(newline),"i)\s*GUI[\s,]") && !isitvarchar(nextchar)) {
 			;ADDED DIGIDON
 			GLabeldetected=1
 				prevchar = % SubStr(newline, -1, 1)
@@ -2134,7 +2206,7 @@ replaceLABELCALLS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 				if (prevchar="""" and nextchar="""" and GLabeldetected!=1) {
 					replacewithLABEL = % GLOB_OBFname
 				;ADDED DIGIDON : Simply OBF Name for Nested Label
-				} else if (GLabeldetected!=1 and nextchar=":" and (!IsType(prevchar,"alnum") or !prevchar)) {
+				} else if (GLabeldetected!=1 and nextchar=":" and !isitvarchar(prevchar)) {
 					replacewithLABEL = % GLOB_OBFname
 				} else if (GLabeldetected=1) {
 					;ADDED BY DIGIDON : GLABEL OBF
@@ -2446,7 +2518,7 @@ replacePARAMETERS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 						
 				if (partialVAR_ERROR) {
 					;TWEAKED DIGIDON to better detect vVariables (controls)
-					if (ucase(prevchar) = "V" && Instr(str_getTailf(newline),"GUI") && !IsType(nextchar,"alnum")) {
+					if (ucase(prevchar) = "V" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
 						;ADDED DIGIDON
 						vVardetected=1
 						;backup one more character and check whether that is valid 
@@ -2482,9 +2554,11 @@ replacePARAMETERS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 							newline .= curparamOBF
 						}
 							
-					}
-					else if (nextchar = "[") {
-						if (prevchar = "." or IsType(prevchar,"alnum") or InStrNNull(oddvarnameallowedchars_BIS, prevchar)) {
+					} else if (SubStr(newline, -4, 5)="+hwnd" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+						;put simple OBF name
+						newline .= curparamOBF
+					} else if (nextchar = "[") {
+						if (prevchar = "." or isitvarchar(prevchar)) {
 						
 						;dont do the translation
 							;TWEAKED DigiDon
@@ -2534,6 +2608,16 @@ replacePARAMETERS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 	; TESTING DIGIDON	
 	if (Debug_Obf=1 && LOFname="CM_ChooseNotebook")
 		msgbox %LOFname% replacePARAMETERS LOFbodylines %LOFbodylines%
+}
+
+isitvarchar(char) {
+global
+if (char="")
+	return
+if char is alnum
+	return 1
+if InStr(oddvarnameallowedchars, char)
+	return 1
 }
 
 ;//ADDED BY DIGIDON FOR GLABELS

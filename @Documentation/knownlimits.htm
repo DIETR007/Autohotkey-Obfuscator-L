@@ -38,12 +38,8 @@
 <div><b>- ! CLASSES and METHODS ARE STILL NOT OBFUSCATED !</b>
 <br/>THEY MIGHT BE IN THE FUTURE BUT THAT REQUIRES CAREFUL WORK because of complex Class design and possible uses.
 <br/>Classes were already made recognizable. But the complex nested aspects will be quite difficult to handle. Internal methods should not be obfed (__New etc.) and all possible calls should be taken into account so that every call is obfuscated properly, otherwise it won't work. Therefore this has been delayed. NEVERTHELESS IT IS POSSIBLE TO OBFUSCATE THEIR USE by creating objects based on class, obfuscate the objects as global vars, and obfuscate important methods.</div>
-<div><b>- GUI INTERNAL LABELS (CLOSE, SIZE,CONTEXTMENU,...) SHOULD STILL BE SURROUNDED BY SPECIAL COMMANDS</b><br/>(if not in stop_obf mode)
-<br/>;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: -1 before, and after:
-<br/>;$OBFUSCATOR: $LABELS_RESTORE_DEFAULTS:
+<div><b>- GUI INTERNAL LABELS (CLOSE, SIZE,CONTEXTMENU,...) SHOULD STILL BE SURROUNDED BY SPECIAL COMMANDS</b>
 <br/>That might be solved quite easily by modifying the parameter internally for example each time the label starts with &quot;XXGui&quot; &quot;XGui&quot; or are the standard &quot;GuiClose&quot; etc. Wasn't a priority</div>
-<div><b>-GUI SYSTEM FUNCTIONS ARE NOT DEALT WITH</b>. <br/>That would require some work. Wasn't a priority.</div>
-<div><b>-SPECIAL VARS LIKE +HwndVarContainingHwnd ARE NOT RECOGNIZED</b>. <br/>That would require some work. Wasn't a priority. Therefore DO NOT DECLARE VarContainingHwnd TO BE OBFUSCATED.</div>
 
 </div>
 

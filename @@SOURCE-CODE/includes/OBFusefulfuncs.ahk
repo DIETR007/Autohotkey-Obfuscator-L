@@ -168,18 +168,18 @@ ListItemsWithLinesIfExist(items*) {
 	return list
 }
 
-max(exlude="",num*){
+max(num*){
 	max := -9223372036854775807
 	Loop % num.MaxIndex()
 		max := (num[A_Index] > max) ? num[A_Index] : max
 	return max
 }
 
-min(exlude="",num*){
+min(MinToRetain="",num*){
 	min := 9223372036854775807
 	Loop % num.MaxIndex()
 		{
-		if (num[A_Index]<=exlude)
+		if (num[A_Index]<=MinToRetain)
 		continue
 		min := (num[A_Index] < min) ? num[A_Index] : min
 		}

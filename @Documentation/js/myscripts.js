@@ -1,6 +1,17 @@
   function resizeIframe(obj) {
 	  // alert("Oh yes, it does exist!");
-    obj.style.height = obj.contentWindow.document.body.scrollHeight + 20 + 'px';
+	  
+	// alert('size ');
+	// alert('size ' + obj.contentWindow.document.body.scrollHeight);
+    // obj.style.height =  '100px';
+    obj.style.height = obj.contentWindow.document.body.offsetHeight + 20 + 'px';
+	// alert('size ' + obj.style.height);
+  }  
+  
+  function resizeIframeSmall(obj) {
+	  // alert("Oh yes, it does exist!");
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+	// alert('height ' + obj.style.height);
   }
   
   function checkiframes()
@@ -10,7 +21,7 @@
 	request.onreadystatechange = function(){
 		if (request.readyState === 4){
 			if (request.status === 404) {  
-				<!-- alert("Oh no, it does not exist!"); --><!-- alert("Oh no, it does not exist!"); -->
+				<!-- alert("Oh no, it does not exist!"); -->
 			}  
 			else {
 			<!-- alert("Oh yes, it does exist!"); -->

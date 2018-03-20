@@ -74,9 +74,9 @@ Variables surrounded with %'s in controls will be replaced, nothing extra by you
 </font>
 </div>
 
-<h2><a name="guilabel"></a>The GUI +label????? Clause</h2>
+<h2><a name="guilabel"></a>The GUI +LabelPrefix Command</h2>
 <div>
-If you are using the GUI +Label???? clause to set a handler for the closing of a window, you will have to apply some special steps to avoid erros.
+If you are using the GUI +LabelPrefix Command to set a handler for the closing of a window, you will have to apply some special steps to avoid erros.
 
 <br><br>Use the DEFGUILAB command comment anywhere in your source code and add the name of GUI +Label:
 e.g. configwin if this was GUI +Labelconfigwin
@@ -85,8 +85,14 @@ e.g. configwin if this was GUI +Labelconfigwin
 &emsp;</br>;$OBFUSCATOR: $DEFCLOSEGUILAB: (list of GUI labels)</font>
 </br><font color="green">NEW</font>
 </br><font color="brown">;$OBFUSCATOR: $DEFGUILAB: (list of GUI labels)</font>
+<br><br>The gui statement will come out looking like this:
+<br><font color="blue">GUI, +Labelf@kfk#fffffffkk#fkk#kffk
+</font>
 
-</br></br>Turn off normal label obfuscation encoding for these actual GUI label sections. You do this by surrounding these sections of code with the change defaults command and the restore defaults command:
+</br>
+</br>
+<h3>Turn off Obfuscation for GUI Labels</h2>
+Turn off normal label obfuscation encoding for these actual GUI label sections. You do this by surrounding these sections of code with the change defaults command and the restore defaults command:
 
 <br><br><font color="brown">;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: -1</font>
 <br><font color="blue">configwinClose:
@@ -116,9 +122,39 @@ e.g. configwin if this was GUI +Labelconfigwin
 <br>f@kfk#fffffffkk#fkk#kffkEscape:
 </font>
 
-<br><br>The gui statement will come out looking like this:
+</br>
+</br>
+<h3>Turn off Obfuscation for GUI Functions</h2>
+Turn off normal label obfuscation encoding for these actual GUI function sections. You do this by surrounding these sections of code with the change defaults command and the restore defaults command:
 
-<br><br><font color="blue">GUI, +Labelf@kfk#fffffffkk#fkk#kffk
+<br><br><font color="brown">;$OBFUSCATOR: $FUNCTIONS_CHANGE_DEFAULTS: -1</font>
+<br><font color="blue">configwinClose(...) {
+<br> ;program statements here
+<br>}
+<br>
+<br>configwinEscape(...) {
+<br> ;program statements here
+<br>}
+<br><br>configwinContextmenu(...) {
+<br> ;program statements here
+<br>}
+<br><br>configwinDropFiles(...) {
+<br> ;program statements here
+<br>}
+<br><br>configwinSize(...) {
+<br> ;program statements here
+<br>}</font>
+<br><font color="brown">;$OBFUSCATOR: $FUNCTIONS_RESTORE_DEFAULTS:</font>
+
+<br><br>The -1 in the CHANGE DEFAULTS command turns off obfuscation for function objects that follow and the restore defaults command restores the obfuscation defaults to whatever they previously were.
+
+</br>Both the label header and the GUI, +LabelPrefix statement will be obfuscated
+
+<br><br>The functions headers will come out looking like this, with the CLOSE, ESCAPE, DROPFILES, etc. part still present:
+
+<font color="blue">
+<br><br>f@kfk#fffffffkk#fkk#kffkClose(...)
+<br>f@kfk#fffffffkk#fkk#kffkEscape(...)
 </font>
 
 </div>

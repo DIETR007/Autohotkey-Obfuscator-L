@@ -1,3 +1,16 @@
+v2.10
+-Possible to obfuscate directly a single file
+-Recognize +Hwnd
+-Gui label functions handling
+-Documentation improvement
+-Slightly better auto-naming
+-Minor improvements
+-MANY NEW EXAMPLES
+
+v2.08
+-Improved continuation section detection
+-OBFUSCATED VARIABLES IN QUOTES ARE RECOGNIZED !
+
 v2.07
 -corrected multiple bugs
 

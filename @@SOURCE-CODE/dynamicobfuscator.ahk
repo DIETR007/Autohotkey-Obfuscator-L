@@ -37,7 +37,7 @@
 
 
 #SingleInstance force
-Glb_VersionNum := 2.04
+Glb_VersionNum := 2.09
 
 OnExit, savelastfiles
 
@@ -94,7 +94,7 @@ chooseOBFfunc() {
 	gui, add, text, xm y+2, Obfuscator for Autohotkey Scripts written in Autohotkey
 		
 	gui, font, %scl_h2font% norm
-	gui, add, text, xm y+28, Choose Obfuscater Function	
+	gui, add, text, xm y+28, Choose Obfuscator Function	
 	
 	gui, font, %scl_basefont%  norm
 	gui, add, button, xm y+40 GcreateTRANSMAPfilenames vcreateTRANSMAPfilenames_v, Create Translations Map
@@ -213,7 +213,7 @@ createTRANSMAPfilenames() {
 	gui, font, %scl_h2font%  bold
 	gui, add, text, xm y+16, Source Code Files
 	gui, font, %scl_basefont%  norm
-	gui, add, text, xm y+2, Choose the 'include map' file that contains your list `nof source code files to process
+	gui, add, text, xm y+2, Choose the 'include map' file that contains your list `nof source code files to process OR a single AHK file to obfuscate
 	
 	editwidth = % "W" . (spacewidthW * 100)
 	gui, add, edit, xm y+2 Vfileslistfile %editwidth% r3, % lastincludemap 
@@ -246,8 +246,9 @@ createTRANSMAP:
 	;save in case changed
 	lastincludemap:= myfileslistfile
 	lasttransmap:= myMAPfilename
+	
 	if (lastoutobffile_BK!="")
-	lastoutobffile:=lastoutobffile_BK
+		lastoutobffile:=lastoutobffile_BK
 	
 	
 	createTRANSMAP()
@@ -299,7 +300,7 @@ getOBFfilenames() {
 	gui, font, %scl_h2font%  bold
 	gui, add, text, xm y+8, Source Code Files
 	gui, font, %scl_basefont%  norm
-	gui, add, text, xm y+4, Choose the 'include map' file that contains your list `nof source code files to process
+	gui, add, text, xm y+4, Choose the 'include map' file that contains your list `nof source code files to process OR the single AHK file to obfuscate
 	editwidth = % "W" . (spacewidthW * 100)
 	gui, add, edit, xm y+4 Vfileslistfile %editwidth%
 		, % lastincludemap
@@ -426,29 +427,35 @@ return
 choosesourcecodefile:
 	Gui +OwnDialogs 
 	
-	FileSelectFile, filechoosen, 35, c:\, Choose the file that contains`nyour list of source code files
+	FileSelectFile, filechoosen, 35, , Choose the file that contains`nyour list of source code files
 	
 	if (filechoosen = "")
 		return
 	
 	GuiControl,, fileslistfile, % filechoosen
 	
-	;ADDED DIGIDON : AUTO NAME OBF & TRANSMAP FILE
-	if (FoundPos := InStr(filechoosen, "_", false, 0))
-	filechoosenBase:=SubStr(filechoosen,1,FoundPos)
-	else
-	filechoosenBase:=filechoosen
+	; SplitPath, filechoosen,, , , filechoosenBase_NameNoExt
+	SplitPath, filechoosen, filechoosenBase_FileName, filechoosenBase_Dir, filechoosenBase_Ext, filechoosenBase_NameNoExt
+	; SplitPath, filechoosenBase, filechoosenBase_FileName, filechoosenBase_Dir, filechoosenBase_Ext, filechoosenBase_NameNoExt
 	
-	SplitPath, filechoosenBase, filechoosenBase_FileName, filechoosenBase_Dir, filechoosenBase_Ext, filechoosenBase_NameNoExt
+	;ADDED DIGIDON : AUTO NAME OBF & TRANSMAP FILE
+	; msgbox filechoosenBase_NameNoExt %filechoosenBase_NameNoExt%
+	if !InStr(filechoosenBase_NameNoExt, "_")
+		filechoosenBase_NameNoExt.= "_"
+	
+	FoundPos := InStr(filechoosenBase_NameNoExt, "_", false, 0)
+	filechoosenBase_NameNoExt:=SubStr(filechoosenBase_NameNoExt,1,FoundPos)
+		
+	; msgbox filechoosenBase_NameNoExt %filechoosenBase_NameNoExt%
 	
 	try
 	GuiControl,, outfilename, % filechoosenBase_NameNoExt . "TransMAP.txt"
 	try
-	GuiControl,, OBFtranscommsfile, % filechoosenBase_FileName . "TransMAP.txt"
+	GuiControl,, OBFtranscommsfile, % filechoosenBase_NameNoExt . "TransMAP.txt"
 	try
-	GuiControl,, obf_outfilename, % filechoosenBase_FileName . "obfuscated.ahk"
+	GuiControl,, obf_outfilename, % filechoosenBase_NameNoExt . "obfuscated.ahk"
 	
-	lastoutobffile_BK:=filechoosenBase_FileName . "obfuscated.ahk"
+	lastoutobffile_BK:=filechoosenBase_NameNoExt . "obfuscated.ahk"
 	
 	;Added DigiDon : Automatic selection
 	GuiControl,-default, choosesourcecodefile_v

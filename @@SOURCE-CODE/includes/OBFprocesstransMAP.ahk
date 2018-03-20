@@ -92,7 +92,7 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 	;ADDED DIGIDON SYSPROPERTIES
 	SYSPROPERTIES_time = 0
 	;ADDED DIGIDON SYSVARS
-	SYSVAR_time = 0
+	SYSVAR_time		= 0
 	FUNC_time 		= 0	
 	LABEL_time 		= 0
 	PARAM_time 		= 0
@@ -250,8 +250,6 @@ processTRANSmap(ByRef replacemap)	;$OBF_StartDefault
 		;SPECIAL CASE when the gui, +Label????? is used with a gui
 		if (CUR_OBFTRANSCOMM 	= "DEFGUILAB") {
 			add_GUIlabel_entry()
-			;DIGIDON UNCOMPLETE GUIFCT
-			; add_GUIfunc_entry()
 			continue	
 		}
 		if (CUR_OBFTRANSCOMM = def_PARAMS) {
@@ -494,7 +492,7 @@ add_SYSVAR_OBFentry() {
 		return
 	}	
 	set_obfcreate_params(12)	
-	OBFclass = % SYSvar_class
+	OBFclass = % SYSVAR_class
 	addnew_OBFentry("OBF_SYSVAR") 
 }
 
@@ -723,93 +721,9 @@ add_hotkey_OBFentry() {
 	
 }
 
-;DIGIDON MAYBE CREATE SPECIAL LABELS FOR GUIFUNC
-add_GUIfunc_entry()
-{
-;PROPOSED DIGIDON;UNCOMPLETE : SHOULD MODIFY IT IF WE WANT TO OBFUSCATE GUI SPECIAL LABEL FCT
-	GLOBAL 
-	if !set_obfcreate_names() {
-		write_transtablemess("`r`n#ERROR: " . CUR_OBFTRANSCOMM 
-			. " command found but no parameters - 1 parameter, GUIFCT name, is required ")
-		return
-	}	
 	
-	;'8' stands for vartype of 'Special GUI Labels/FCT ??'
-	set_obfcreate_params(8)
-	
-	OBFclass = % "" ;LABEL_class
-	
-	if (!OBF_GUILABEL_numrows)
-		OBF_GUILABEL_numrows = 0
-	
-	;loop thru the list of names to create
-	
-	loop, % obfcreate_varname0
-	{			
-		AA_Index:=A_Index
-		temp2 = % obfcreate_varname%a_index%
-		obfcreate_varname%a_index% = %temp2%
-		if (!obfcreate_varname%a_index%)
-			continue
-		SpecialLabels_List:="Close|Escape|Size|ContextMenu|DropFiles"
-		Loop, parse, SpecialLabels_List, |
-		gui%A_Loopfield%Label= % obfcreate_varname%AA_Index% . A_Loopfield
-		; guiCLOSElabel 	= % obfcreate_varname%a_index% . "Close"
-		; guiESCAPElabel 	= % obfcreate_varname%a_index% . "Escape"
-		guilabellabel 	= % "Label" . obfcreate_varname%a_index%
-		
-		;check for dup definition of this guilabel var in the globvar section		
-		if FIND_VARROW("OBF_GLOBVAR", guilabellabel) {
-			msgbox, 4096,, % "GUILABEL def duplication: '" . obfcreate_varname%a_index% . "'"
-			continue
-		}
-		
-		;check for dup definition of this guilabel var in the label section		
-		;TWEAKED BY DIGIDON : AND ONE FOR 'ESCAPE' AND ONE FOR THE OTHERS
-		if (FIND_VARROW("OBF_LABEL", guiCLOSElabel) or FIND_VARROW("OBF_LABEL", guiESCAPElabel) or FIND_VARROW("OBF_LABEL", guiSIZElabel) or FIND_VARROW("OBF_LABEL", guiCONTEXTMENUlabel) or FIND_VARROW("OBF_LABEL", guiDROPFILESlabel)) {
-			msgbox, 4096,, % "GUILABEL def duplication: '" . obfcreate_varname%a_index% . "'"
-			continue
-		}
-							
-		if (obf_sizemax < obf_sizemin)
-			obf_sizemax = % obf_sizemin	
-			
-		guilabelOBF = % randomOBFname(obf_sizemin, obf_sizemax)
-		
-		;CREATE NEW ROW IN 'GLOBVAR' for +Label
-		;ADDED DIGIDON OBF_numrows
-		OBF_numrows++
-		newrow = % ++obf_globvar_numrows
-		obf_globvar_%newrow%_name = % "Label" . obfcreate_varname%a_index%
-		obf_globvar_%newrow%_OBFname = % "Label" . guilabelOBF
-		;necessary hack so that the 'NEW_replaceGLOBALVARs(' function
-		;will not add extra %s
-		obf_globvar_%newrow%_isguilabel = % true
-		obf_globvar_%newrow%_classname = % OBFclass
-		obf_globvar_%newrow%_numfragrows = 0
-		
-		;CREATE NEW ROWS IN LABEL SECTION, ONE FOR 'CLOSE' 
-		;TWEAKED BY DIGIDON : AND ONE FOR 'ESCAPE' AND ONE FOR THE OTHERS
-		SpecialLabels_List:="Close|Escape|Size|ContextMenu|DropFiles"
-		Loop, parse, SpecialLabels_List, |
-			{
-			;ADDED DIGIDON OBF_numrows
-			OBF_numrows++
-			newrow = % ++obf_func_numrows
-			obf_func_%newrow%_name = % obfcreate_varname%a_index% . A_LoopField
-			obf_func_%newrow%_OBFname = % guifuncOBF . A_LoopField
-			obf_func_%newrow%_classname = % OBFclass
-			obf_func_%newrow%_numfragrows = 0
-			}
-		
-		write_transtablemess("`r`n#FOUND: " . CUR_OBFTRANSCOMM 
-			. " Name: " . obfcreate_varname%a_index% 
-			. "`r`n    Created obfuscated name: " . guifuncOBF)
-	}
-}
-	
-add_GUIlabel_entry()
-{
+;DIGIDON TWEAKED: CREATE ALL SPECIAL GUI LABELS FUNCTIONS OR LABELS
+add_GUIlabel_entry() {
 	GLOBAL 
 	
 	if !set_obfcreate_names() {
@@ -821,11 +735,12 @@ add_GUIlabel_entry()
 	;'8' stands for vartype of 'LABEL'
 	set_obfcreate_params(8)
 	
-	OBFclass = % "" ;LABEL_class
+	;SHOUD IT REALLY BE EMPTY? AND NOT LABEL_class/FUNC_class?
+	OBFclass = % "" ;
 	
 	if (!OBF_GUILABEL_numrows)
 		OBF_GUILABEL_numrows = 0
-	
+		
 	;loop thru the list of names to create
 	
 	loop, % obfcreate_varname0
@@ -853,7 +768,11 @@ add_GUIlabel_entry()
 		;check for dup definition of this guilabel var in the label section		
 		;TWEAKED BY DIGIDON : AND ONE FOR 'ESCAPE' AND ONE FOR THE OTHERS
 		if (FIND_VARROW("OBF_LABEL", guiCLOSElabel) or FIND_VARROW("OBF_LABEL", guiESCAPElabel) or FIND_VARROW("OBF_LABEL", guiSIZElabel) or FIND_VARROW("OBF_LABEL", guiCONTEXTMENUlabel) or FIND_VARROW("OBF_LABEL", guiDROPFILESlabel)) {
-			msgbox, 4096,, % "GUILABEL def duplication: '" . obfcreate_varname%a_index% . "'"
+			msgbox, 4096,, % "GUILABEL LABEL duplication: '" . obfcreate_varname%a_index% . "'"
+			continue
+		}		
+		if (FIND_VARROW("OBF_FUNC", guiCLOSElabel) or FIND_VARROW("OBF_FUNC", guiESCAPElabel) or FIND_VARROW("OBF_FUNC", guiSIZElabel) or FIND_VARROW("OBF_FUNC", guiCONTEXTMENUlabel) or FIND_VARROW("OBF_FUNC", guiDROPFILESlabel)) {
+			msgbox, 4096,, % "GUILABEL FUNC duplication: '" . obfcreate_varname%a_index% . "'"
 			continue
 		}		
 		if (obf_sizemax < obf_sizemin)
@@ -878,12 +797,19 @@ add_GUIlabel_entry()
 		Loop, parse, SpecialLabels_List, |
 			{
 			newrow = % ++obf_label_numrows
+			newrow = % ++obf_func_numrows
 			;ADDED DIGIDON OBF_numrows
 			OBF_numrows++
+			OBF_numrows++
+			
 			obf_label_%newrow%_name = % obfcreate_varname%AA_index% . A_LoopField
+			obf_func_%newrow%_name = % obfcreate_varname%AA_index% . A_LoopField
 			obf_label_%newrow%_OBFname = % guilabelOBF . A_LoopField
+			obf_func_%newrow%_OBFname = % guilabelOBF . A_LoopField
 			obf_label_%newrow%_classname = % OBFclass
+			obf_func_%newrow%_classname = % OBFclass
 			obf_label_%newrow%_numfragrows = 0
+			obf_func_%newrow%_numfragrows = 0
 			; msgbox % "obf_label_" newrow "_name = " obf_label_%newrow%_name " obf_label_" newrow "_OBFname = " obf_label_%newrow%_OBFname
 			}
 		
@@ -1090,8 +1016,8 @@ addnew_OBFentry(varlistname) {
 		
 		if (varlistname = "OBF_FUNC" or varlistname = "OBF_LABEL") {
 			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
-				;Tweaked DigiDon : disabled duplication warning for SYSMETHODS because happens frequently with __Call etc.
-				if (SubStr(obfcreate_varname%a_index%,-6)="GuiSize" or SubStr(obfcreate_varname%a_index%,-7)="GuiClose" or SubStr(obfcreate_varname%a_index%,-11)="GuiDropFiles" or SubStr(obfcreate_varname%a_index%,-13)="GuiContextMenu")
+				; if (SubStr(obfcreate_varname%a_index%,-6)="GuiSize" or SubStr(obfcreate_varname%a_index%,-7)="GuiClose" or SubStr(obfcreate_varname%a_index%,-11)="GuiDropFiles" or SubStr(obfcreate_varname%a_index%,-13)="GuiContextMenu")
+				if (SubStr(obfcreate_varname%a_index%,-3)="Size" or SubStr(obfcreate_varname%a_index%,-4)="Close" or SubStr(obfcreate_varname%a_index%,-8)="DropFiles" or SubStr(obfcreate_varname%a_index%,-10)="ContextMenu")
 				continue
 				msgbox, 4096,, % "func or label var duplication2: '" . obfcreate_varname%a_index% . "'"
 				continue
@@ -1296,8 +1222,7 @@ set_obfcreate_names(OBFType="") {
 	return, % true
 }
 
-set_obfcreate_params(vartypenum)
-{
+set_obfcreate_params(vartypenum) {
 	global
 	static curvartype, curproperty
 	

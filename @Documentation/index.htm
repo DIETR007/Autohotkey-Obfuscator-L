@@ -47,17 +47,18 @@ Use this free open source program written in Autohotkey to obfuscate your Autoho
 </div>
 
 <div class="indexwrap">
-<a href="#basic_concept">Basic concept</a>
-<a href="#basic_obf">Understanding Obfuscation</a>
-<a href="#hidestr">Hide Sensitive Strings With hidestr()</a>
-<a href="#scramble">Scramble the Order of Functions and Label Sections</a>
-<a href="#strip">Strip comments and whitespaces</a>
-<a href="#doesntdo">What This Program Doesn't Do</a>
-<a href="#fast">This Autohotkey Obfuscator is Blazing Fast!</a>
+<a href="#basic_concept">Basic concept</a></br>
+<a href="#doesntdo">What This Program Doesn't Do</a></br>
+<a href="#obfcommands">Obfuscation Commands</a></br>
+<a href="#basic_obf">Understanding Obfuscation</a></br>
+<a href="#hidestr">Hide Sensitive Strings With hidestr()</a></br>
+<a href="#scramble">Scramble the Order of Functions and Label Sections</a></br>
+<a href="#strip">Strip comments and whitespaces</a></br>
+<a href="#fast">This Autohotkey Obfuscator is Blazing Fast!</a></br>
 </div>
 
 <h2><a name="basic_concept"></a>Basic concept</h2>
-<div>This programs offer several functionalies to make your source code unreadable to anyone. </br>
+<div><b>This programs offer several functionalies to make your source code unreadable to anyone. </b></br>
 This prevents users / some hackers to understand how the code works, to see your security controls, and to modify or reuse your code without permission.</br>
 For example a function can look like this (See Example section for longer code example):</br>
 </br>
@@ -70,20 +71,41 @@ return, % %kff@fkkfkfkffkf@k#kf%%fkkffffkfff@f@fff@k#%%f@fkfkk#fffkk#f@k#%</br>
 } </br>
 </font>
 </br>
-It does that by: </br>
+<b>It does that by: </br>
 --><font color="green">"Obfuscating" your code </font></br>
 AND optionally: </br>
 --><font color="green">Removing all your comments</font></br>
 --><font color="green">Stripping all whitespaces and empty lines</font></br>
---><font color="green">Scrambling all your code</font> together so that there is no logical order.</br>
-The main focus of this program as its name indicates is though Obfuscation.</br></br>
+--><font color="green">Scrambling all your code</font></b> together so that there is no logical order.</br>
+</br>The main focus of this program as its name indicates is though Obfuscation.</br></br>
 For obfuscation to work correctly, you will have to add a few obfuscator commands to your code.</br>
 Some are mandatory, some optional.</br>
+</div>
+
+<h2><a name="doesntdo"></a>What This Program Doesn't Do</h2>
+<div><b>This program does not obfuscate everything automatically.</b> Nor is it able to fully obfuscate all.</br>
+There are many parts where you should tell him the list of what to encrypt.</br>
+The main thing is that the program does not obfuscate automatically your variables. You need to specify them to it. </br>
+For methods and classes you can also manually tell the program to support some obfuscation of their calls, but it does not support yet their full encryption.</br>
+You can encrypt your string with manual calls.</br></br>
+<b>Nevertheless the program does automatically obfuscate your functions, their parameters, and labels.</b>
+</br>We did it this way to save time building this program. Also it reduces the risk of mistakes. And usually not everything needs to be encrypted.
+</br></br><b>The program does not automatically process all the #include &lt;file&gt;' commands in your code.</b>
+</br>You need to perform a few steps and create an include text file for the obfuscator which will indicate all your includes !
+
+</br></br><b>For variables, methods/properties and system functions you must add obfuscator command</b> comments to your source code so that variables will be obfuscated. 
+You can list as many variables as you want in each command comment.
+</div>
+
+<h2><a name="obfcommands"></a>Obfuscation Commands</h2>
+<div>
+The Obfuscation comment Commands are comments you put inside your code to give various instructions to the obfuscator.</br>
 The commands will be highlighted in brown in this documentation all along. These commands look like :</br>
 <font color="brown">;$OBFUSCATOR: COMMAND : OPTIONAL PARAMETER(S)</font></br>
-They are called comment commands because they all start with a comment sign for your code to still run correctly. Also they MUST contain a semicolon even if they have no parameters.</br>
+They are called comment commands because they all start with a comment sign for your code to still run correctly. Also they MUST contain a semicolon even if they have no parameters and they MUST START AT CHARACTER 1 POSITION.</br>
 Code examples will be highlighted in blue.</br>
-Example of a command that has no parameters :&emsp;<font color="blue">;$OBFUSCATOR: $START_BLOCK:</font>
+Example of a command that has no parameters :
+</br><font color="blue">;$OBFUSCATOR: $START_BLOCK:</font>
 </div>
 
 <h2><a name="basic_obf"></a>Understanding Obfuscation</h2>
@@ -92,42 +114,49 @@ The first step is to rename all functions,labels,variables etc. to complicated a
 For example myfunction() will become ffk@fkfkk()</br>
 This program only uses "fk@#" characters to make up new names that ressembles the others, creating extra-confusion.</br>
 </br>
-<font color="green"><b>There are 2 major types of obfuscation:</b></br>
-Straight obfuscation and dynamic obfuscation</br></font></br>
-<b>Straight obfuscation</b> means no dynamic variables are really use to disguise a name.</br>
+<font color="green"><b>There are 2 major types of obfuscation:
+Straight obfuscation &amp; Dynamic obfuscation</br></b></font></br>
+<b>Straight obfuscation</b> means no dynamic variables are really use to disguise a name, the name is just changed to something random.</br></br>
+<font color="purple">
 E.g. myfunction() if renamed by the program to ffk@fkfkk() will always be called by ffk@fkfkk() but it will still add some fake dynamic empty variables in between.</br>
-For example it will call ffk@%fffkf%fk%ffkf%fkk() : if you take out %fffkf% %ffkf% which are empty wou will find ffk@fkfkk() and then be able to find back the function that was used.</br>
+For example it will call ffk@%fffkf%fk%ffkf%fkk() : if you take out %fffkf% %ffkf% which are empty wou will find ffk@fkfkk() and then be able to find back the function that was used.</br></br>
+</font>
 So even if straight obfuscation already makes the code quite hard to understand this is a quite limited obfuscation.</br></br>
 
 <b>Dynamic Obfuscation</b> means a lot of small global variables will be created so that each call to myfunction() will look completely different.</br>
 It will create many variables that will be equals to the three characters to create obfuscated names "fk@#" thus creating many possibilities to call a same name.</br>
 It will also create global obfuscated variables to split the name in 2 or more, and assign these parts to new obfuscated variables.</br>
-Finally it still can add empty variables in the middle.</br>
+Finally it still can add empty variables in the middle.</br></br>
+<font color="purple">
 For example if myfunction() became ffk@fkfkk()</br>
 The program have created some characters var : f@fff:="f" @kkkf:="k"</br>
 and have split ffk@fkfkk in several parts fkfkf:="ffk@" fkfkfkfk:="fk" kkfkfk:="fkk"</br>
 So we can now use some of these parts by calling the variables and either leave some remaining "fk@#" or call one of their replacements.</br>
 E.g We have thus ffk@fkfkk() = %fkfkf%%fkfkfkfk%%kkfkfk%() = %fkfkf%f%@kkkf%%kkfkfk%() = %fkfkf%%f@fff%k%kkfkfk%()</br>
 Finally we can add this non-assigned empty vars for example @@fff@ @kkk@ (which are ="")</br>
-We have then ffk@fkfkk() = %fkfkf%f%@kkkf%%kkfkfk%() = %fkfkf%%@@fff@%%f@fff%k%@kkk@%%kkfkfk%()</br>
+We have then ffk@fkfkk() = %fkfkf%f%@kkkf%%kkfkfk%() = %fkfkf%%@@fff@%%f@fff%k%@kkk@%%kkfkfk%()</br></br>
+</font>
 Thus each call of myfunction() will be very very hard to find.</br>
-More over dynamic obfuscation allows more complex uses that you can lean on in <b>"Dynamic Obfuscation"</b> section</br>
+Moreover dynamic obfuscation allows more complex uses that you can lean on in <b>"Dynamic Obfuscation"</b> section</br>
 </div>
 
 <h2><a name="hidestr"></a>Hide Sensitive Strings With hidestr()</h2>
 <div>
 This program allows you to obfuscate any sensitive strings in your autohotkey scripts by surrounding them with the hidestr() function. You can surround sensitive literal strings with 'hidestr()' any place you use them like in variable assignments, in function calls, in statement parameters, and in expressions. You can do stuff like this:
+<font color="blue">
 </br></br>var1:= hidestr("some sensitive string") 
 </br>somefunc(hidestr("some sensitive string"), parameter2) 
-
+</font>
 </br></br>When this program obfuscates your program it will replace any literal strings passed as parameters to the hidestr() function with an obfuscated literal string. It will then replace the hidestr() function call itself with a call to the decode_hidestr() function and then it will obfuscate that.</br>
+<font color="purple">
 </br>E.g the above mentioned will be converted first to something like:
 </br>var1:= decode_hidestr("8a4b6645d5s4545145d494a45b4564d5d45c562d1d") 
 </br>somefunc(decode_hidestr("7a456b45c46b45d645a465f32118ff48fa48b54c8d"), parameter2)
 </br>And then the decode_hidestr() function will be obfuscated as well leading to something like:
 </br>var1:= %fkfkf%f%@kkkf%#%fkfkfkfk%%kkfkfk%("8a4b6645d5s4af48545145d494a45b4564d5d45c562d1d") 
 </br>somefunc(%fkfkf%%@@fff@%%f@fff%k%@kkk@%%kkfkfk%("7a456b45c46b4ab125d645a465f32118ff48fa48b54c8d"), parameter2) 
-</br>Then of course somefunc() and parameter2 can be obfuscated as well leading to a fully obfuscated line!
+</font>
+</br>Then of course somefunc() will also be obfuscated and var1 and parameter2 can be obfuscated as well, leading to a fully obfuscated line!
 </br>
 </br>To protect sensitive strings, this program uses a variant of the <b>Vigenere cipher</b>. 
 </br>Your string is encoded into another smaller alphabet (e.g. hexadecimal) each character being coded to 2 characters and shifted by some random numbers being hidden at some position in the encoded string.
@@ -135,7 +164,7 @@ This program allows you to obfuscate any sensitive strings in your autohotkey sc
 </div>
 <h2><a name="scramble"></a>Scramble the Order of Functions and Label Sections</h2>
 <div>
-This is a function that you can check or uncheck on the obfuscator interface. It will randonize the order that your function and label sections will appear in the obfuscated code. 
+This is a function that you can check or uncheck on the obfuscator interface. It will randomize the order that your function and label sections will appear in the obfuscated code. 
 
 </br></br> You can choose to randomize all your function and label sections together or you can choose to apply a custom scrambling template.
 
@@ -150,17 +179,6 @@ This is a function that you can check or uncheck on the obfuscator interface. It
 <div>This is a function that you can check or uncheck on the obfuscator interface. When obfuscating each function, the obfuscator will remove all extra spaces in each line and remove all comments and all comments sections surrounded by /* and */.
 </br>You can preserve some specific comment parts by simply surrounding the portions of code where comments are to be preserved by simple obfuscator commands.
 </br><b>The obfuscator will be able to process the standard #CommentFlag and #EschapeChar</b>.
-</div>
-
-<h2><a name="doesntdo"></a>What This Program Doesn't Do</h2>
-<div>This program does not automatically obfuscate global variables or static or local variables. 
-It does automatically obfuscate your functions, parameters, and labels, but not variables, classes or methods or standard functions.
-</br>I did it this way to save time building this program, I believe doing it this way saved me a year!
-</br>Also this program does not automatically process all the #include &lt;file&gt;' commands in your code.
-</br>You need to perform a few steps and create an include text file for the obfuscator which will indicate all your includes !
-
-</br></br><b>For variables, methods/properties and system functions you must add obfuscator command</b> comments to your source code so that variables will be obfuscated. 
-You can list as many variables as you want in each command comment.
 </div>
 
 <h2><a name="fast"></a>This Autohotkey Obfuscator is Blazing Fast!</h2>
