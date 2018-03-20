@@ -44,13 +44,12 @@ In order to have them obfuscated, you specify their names in the define global v
 <br><br>Use the DEFGLOBVARS command as well for your Objects
 
 <br><br>It does not matter where you put these statements in the source code. They do not need to be put before your usage of the global variables or in the section that the variables are used in.
-
 <br><br>HOWEVER FOR CLARITY AND MAINTAINABILITY 
 <br><b>IT IS RECOMMANDED THAT YOU DECLARE ALL YOUR VARIABLES IN YOUR MAIN SCRIPT AT THE VERY BEGINNING 
 <br>AND SPLIT THE DECLARATION IN SEVERAL LINES WITH COMMENTS</b>
+<font color="blue">
 <br>
 <br>EXEMPLE :
-<font color="blue">
 <br>;********************************
 <br>;			SUPER GLOBALS
 <br>;********************************
@@ -125,7 +124,6 @@ You should list them with the new:
 
 <h2><a name="decl_sysvar"></a>Use the DEFSYSVARS to obfuscate your properties and methods</h2>
 <div>
-<b>DIGIDON: </b><font color="red">For the time being DO NOT USE as I encountered some unsolved problems with it (sometimes not all the fragments seem to be inserted)...</font></br>
 You should list them with the new:
 <br><br><font color="brown">;$OBFUSCATOR: $DEFSYSVARS: (list of ahk built-in variables)</font> 
 </br></br>Due to the variables being built-in is only their uses which will be ofuscated. Just like System functions, their original names will not and cannot be changed.
