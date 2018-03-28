@@ -1728,7 +1728,7 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 				;check for previous char = 'v' which is the format used
 				;in controls to define a variable to associate with the control
 				;TWEAKED DIGIDON to better detect vVariables (controls)
-				if (ucase(prevchar) = "V" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+				if (ucase(prevchar) = "V" && regexmatch(str_getTailf(newline),"i)\s*GUI[\s,]") && !isitvarchar(nextchar)) {
 					;ADDED DIGIDON
 					vVardetected=1
 					;backup one more character and check whether that is valid 
@@ -1760,7 +1760,7 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 						;put simple OBF name
 						newline .= GLOB_OBFname
 					}
-				} else if (SubStr(newline, -4, 5)="+hwnd" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+				} else if (SubStr(newline, -3, 4)="hwnd" && !isitvarchar(SubStr(newline, -4, 1)) && regexmatch(str_getTailf(newline),"i)\s*GUI[\s,]") && !isitvarchar(nextchar)) {
 						;put simple OBF name
 						newline .= GLOB_OBFname
 				} else if (nextchar = "[") {
@@ -1917,7 +1917,7 @@ replaceLOSvars(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 				partialVAR_ERROR = % aretheyvariablechars_BIS(prevchar, nextchar)
 				
 				if (partialVAR_ERROR) {
-					if (ucase(prevchar) = "V" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+					if (ucase(prevchar) = "V" && regexmatch(str_getTailf(newline),"i)\s*GUI[\s,]") && !isitvarchar(nextchar)) {
 						;ADDED DIGIDON
 						vVardetected=1
 						;backup one more character and check whether that is valid 
@@ -1949,7 +1949,7 @@ replaceLOSvars(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 							;put simple OBF name
 							newline .= LOS_OBFname
 						}
-					} else if (SubStr(newline, -4, 5)="+hwnd" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+					} else if (SubStr(newline, -3, 4)="hwnd" && !isitvarchar(SubStr(newline, -4, 1)) && regexmatch(str_getTailf(newline),"i)\s*GUI[\s,]") && !isitvarchar(nextchar)) {
 						;put simple OBF name
 						newline .= LOS_OBFname
 					}
@@ -2518,7 +2518,7 @@ replacePARAMETERS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 						
 				if (partialVAR_ERROR) {
 					;TWEAKED DIGIDON to better detect vVariables (controls)
-					if (ucase(prevchar) = "V" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+					if (ucase(prevchar) = "V" && regexmatch(str_getTailf(newline),"i)\s*GUI[\s,]") && !isitvarchar(nextchar)) {
 						;ADDED DIGIDON
 						vVardetected=1
 						;backup one more character and check whether that is valid 
@@ -2554,7 +2554,7 @@ replacePARAMETERS(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 							newline .= curparamOBF
 						}
 							
-					} else if (SubStr(newline, -4, 5)="+hwnd" && Instr(str_getTailf(newline),"GUI") && !isitvarchar(nextchar)) {
+					} else if (SubStr(newline, -3, 4)="hwnd" && !isitvarchar(SubStr(newline, -4, 1)) && regexmatch(str_getTailf(newline),"i)\s*GUI[\s,]") && !isitvarchar(nextchar)) {
 						;put simple OBF name
 						newline .= curparamOBF
 					} else if (nextchar = "[") {

@@ -2,12 +2,13 @@ body { margin-left:30px;}
 /* #wrapcols { width:72em; } */
 #wrapcols { width:100%; }
 
-#mainconts { width:70%; float:left; margin-bottom:4em; }
+#mainconts { width:70%; float:left; margin-bottom:4em; word-wrap: break-word; display: inline-block; }
 #rightcol { width:30%; float:right; }
 
 #mainconts h1 { margin-top:0.7em; margin-bottom:0.5em; color:#cd853f; }
 #mainconts h2 { margin-bottom:0.1em;font-size:1.25em; }
 #mainconts h3 { margin-top:0.5em;margin-bottom:0.1em;font-size:1.1em; }
+pre, span { display: inline; }
 
 .supportwrapper td { padding-left:10px; }
 

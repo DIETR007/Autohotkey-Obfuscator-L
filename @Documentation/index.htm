@@ -30,13 +30,12 @@
 
 <h2>Table Of Content</h2>
 <div>
-<a href="index.htm">Introduction</a> is this index of documentation. Read first to have an overview.
-</br><a href="obfuscationprocess.htm">Obfuscation Process</a> contains the concrete process to follow to obfuscate your program sucessfully.
+<a href="index.htm">Introduction</a> offers an overview of the principles and features of the Obfuscator.
+</br><b><a href="obfuscationprocess.htm">Obfuscation Process</a> contains the concrete process to follow to obfuscate your program sucessfully.</b>
 </br><a href="documentation.htm">User Manual</a> contains the complete documentation index with all details.
 </br>-
-</br><a href="downloadobfuscator.htm">Download</a> has links to last versions
+</br><a href="downloadobfuscator.htm">Download</a> has links to the last version of the Obfuscator
 </br><a href="whatsnew.htm">Whats new</a> indicates major changes since brought by Dynamic Obfuscator L vs original version.
-</br><a href="obfuscationtypes.htm">Dynamic Obfuscation</a> explains in more details the 2 available modes: Dynamic vs Straight Obfuscation
 </br><a href="autohotkeyscript.htm">Example</a> contains a snippet of an actual program obfuscated by AHK Dynamic Obfuscator.
 </div>
 
@@ -72,7 +71,7 @@ return, % %kff@fkkfkfkffkf@k#kf%%fkkffffkfff@f@fff@k#%%f@fkfkk#fffkk#f@k#%</br>
 </font>
 </br>
 <b>It does that by: </br>
---><font color="green">"Obfuscating" your code </font></br>
+--><font color="green">Obfuscating your code </font></br>
 AND optionally: </br>
 --><font color="green">Removing all your comments</font></br>
 --><font color="green">Stripping all whitespaces and empty lines</font></br>
@@ -84,18 +83,19 @@ Some are mandatory, some optional.</br>
 
 <h2><a name="doesntdo"></a>What This Program Doesn't Do</h2>
 <div><b>This program does not obfuscate everything automatically.</b> Nor is it able to fully obfuscate all.</br>
-There are many parts where you should tell him the list of what to encrypt.</br>
+<b>There are many parts where you should tell him the list of what to encrypt.</b></br>
 The main thing is that the program does not obfuscate automatically your variables. You need to specify them to it. </br>
-For methods and classes you can also manually tell the program to support some obfuscation of their calls, but it does not support yet their full encryption.</br>
-You can encrypt your string with manual calls.</br></br>
-<b>Nevertheless the program does automatically obfuscate your functions, their parameters, and labels.</b>
-</br>We did it this way to save time building this program. Also it reduces the risk of mistakes. And usually not everything needs to be encrypted.
+We did it this way to save time building this program. Also it reduces the risk of mistakes. And usually not everything needs to be obfuscated.
+</br><b>Nevertheless the program does automatically obfuscate your functions, their parameters, and labels.</b>
+
 </br></br><b>The program does not automatically process all the #include &lt;file&gt;' commands in your code.</b>
 </br>You need to perform a few steps and create an include text file for the obfuscator which will indicate all your includes !
-
-</br></br><b>For variables, methods/properties and system functions you must add obfuscator command</b> comments to your source code so that variables will be obfuscated. 
-You can list as many variables as you want in each command comment.
+</br><b>For variables, methods/properties and system functions you must add obfuscator command</b> comments to your source code so that variables will be obfuscated. 
+</br><b>For strings you must add special hidestr() functions</b> so that your sensitive strings will appear encrypted.
 </div>
+
+</br><h2><font color="green">DO NOT HESITATE TO LOOK AT AND PLAY WITH EXAMPLES</font></h2>
+<div>They are provided in 'example-obfuscated-programs' folder of the Obfuscator files.</br></div>
 
 <h2><a name="obfcommands"></a>Obfuscation Commands</h2>
 <div>
@@ -137,7 +137,8 @@ Finally we can add this non-assigned empty vars for example @@fff@ @kkk@ (which 
 We have then ffk@fkfkk() = %fkfkf%f%@kkkf%%kkfkfk%() = %fkfkf%%@@fff@%%f@fff%k%@kkk@%%kkfkfk%()</br></br>
 </font>
 Thus each call of myfunction() will be very very hard to find.</br>
-Moreover dynamic obfuscation allows more complex uses that you can lean on in <b>"Dynamic Obfuscation"</b> section</br>
+Moreover dynamic obfuscation allows more complex uses. 
+</br>Learn more in <a href="obfuscationtypes.htm">Difference Between Dynamic and Straight Obfuscation</a> page.</br>
 </div>
 
 <h2><a name="hidestr"></a>Hide Sensitive Strings With hidestr()</h2>
@@ -160,7 +161,8 @@ This program allows you to obfuscate any sensitive strings in your autohotkey sc
 </br>
 </br>To protect sensitive strings, this program uses a variant of the <b>Vigenere cipher</b>. 
 </br>Your string is encoded into another smaller alphabet (e.g. hexadecimal) each character being coded to 2 characters and shifted by some random numbers being hidden at some position in the encoded string.
-</br>
+</br>You can have multiple hidestr functions for different level of protection and you should customize your own functions. 
+</br>Learn more in <a href="sensitivestrings.htm">Use 'hidestr()' to Hide Sensitive Literal Strings in Your Script</a> in User Manual.</br>
 </div>
 <h2><a name="scramble"></a>Scramble the Order of Functions and Label Sections</h2>
 <div>
@@ -173,12 +175,14 @@ This is a function that you can check or uncheck on the obfuscator interface. It
 </br></br>The custom scrambling template allows you to organize scramblings into groups of classes. All the functions and label sections of all the classes you assign to a specific group will be randomized together and dumped into the obfuscated source code file together. You can also control the order that the groups will be dumped allowing you to create layered scrambled sandwiches of functions and label sections.
 
 </br></br>If you have some errors with your obfuscated code, turning this function off may make debugging your obfuscated code easier.
+</br>Learn more in <a href="randomizeorder.htm">Scrambling the Order of Your Whole code</a> page.</br>
 </div>
 
 <h2><a name="strip"></a>Strip comments and whitespaces</h2>
 <div>This is a function that you can check or uncheck on the obfuscator interface. When obfuscating each function, the obfuscator will remove all extra spaces in each line and remove all comments and all comments sections surrounded by /* and */.
 </br>You can preserve some specific comment parts by simply surrounding the portions of code where comments are to be preserved by simple obfuscator commands.
 </br><b>The obfuscator will be able to process the standard #CommentFlag and #EschapeChar</b>.
+</br>Learn more in <a href="stripcomms.htm">Remove Whitespaces and Comments except specific blocks</a> page.</br>
 </div>
 
 <h2><a name="fast"></a>This Autohotkey Obfuscator is Blazing Fast!</h2>

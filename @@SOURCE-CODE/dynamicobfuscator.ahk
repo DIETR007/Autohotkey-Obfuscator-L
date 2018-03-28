@@ -37,7 +37,7 @@
 
 
 #SingleInstance force
-Glb_VersionNum := 2.09
+Glb_VersionNum := 2.10
 
 OnExit, savelastfiles
 
