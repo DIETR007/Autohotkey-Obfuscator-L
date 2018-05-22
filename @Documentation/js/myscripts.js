@@ -4,7 +4,7 @@
 	// alert('size ');
 	// alert('size ' + obj.contentWindow.document.body.scrollHeight);
     // obj.style.height =  '100px';
-    obj.style.height = obj.contentWindow.document.body.offsetHeight + 20 + 'px';
+    obj.style.height = obj.contentWindow.document.body.offsetHeight + 30 + 'px';
 	// alert('size ' + obj.style.height);
   }  
   
