@@ -29,8 +29,8 @@
 	
 	Modified by DigiDon
 	https://autohotkey.com/boards/memberlist.php?mode=viewprofile&u=59397
-	http://www.EverFastAccess.com
+	https://www.EverFastAccess.com
 	
 	See online doc at:
-	http://EverFastAccess.com/AHK-Obfuscator/
+	https://www.EverFastAccess.com/AHK-Obfuscator/
 */
