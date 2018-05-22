@@ -670,8 +670,7 @@ global
 	%varlistname%_%newrow%_name = % obfcreate_varname1
 }
 
-add_func_OBFentry()
-{
+add_func_OBFentry() {
 	GLOBAL
 	
 	if !set_obfcreate_names() {
@@ -961,6 +960,14 @@ addnew_OBFentry(varlistname) {
 	{
 		temp2 = % obfcreate_varname%a_index%
 		obfcreate_varname%a_index% = %temp2%
+		
+		;2.013: We skip functions and labels that look like GUI labels/functions
+		if (varlistname="OBF_FUNC" or varlistname="OBF_LABEL") {
+			if regexmatch(obfcreate_varname%a_index%,"i)\dGui(Close|Escape|Size|ContextMenu|DropFiles)") {
+				continue
+			}
+		}
+
 		if (!obfcreate_varname%a_index%)
 			continue
 			
@@ -1016,7 +1023,6 @@ addnew_OBFentry(varlistname) {
 		
 		if (varlistname = "OBF_FUNC" or varlistname = "OBF_LABEL") {
 			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
-				; if (SubStr(obfcreate_varname%a_index%,-6)="GuiSize" or SubStr(obfcreate_varname%a_index%,-7)="GuiClose" or SubStr(obfcreate_varname%a_index%,-11)="GuiDropFiles" or SubStr(obfcreate_varname%a_index%,-13)="GuiContextMenu")
 				if (SubStr(obfcreate_varname%a_index%,-3)="Size" or SubStr(obfcreate_varname%a_index%,-4)="Close" or SubStr(obfcreate_varname%a_index%,-8)="DropFiles" or SubStr(obfcreate_varname%a_index%,-10)="ContextMenu")
 				continue
 				msgbox, 4096,, % "func or label var duplication2: '" . obfcreate_varname%a_index% . "'"

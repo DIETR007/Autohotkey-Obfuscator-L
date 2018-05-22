@@ -162,12 +162,14 @@ createTRANSMAP() {
 ParseIncludeList(fileslist) {
 	global curfilenum
 	global CancelTransMap, CancelObfuscation, processcodesection, obfDir
+	; local AA_LoopField
 	
 	SetWorkingDir %obfDir%
 	
 	AA_Index=0
 	Loop, parse, fileslist, `n, `r
 	{
+	AA_LoopField:=A_LoopField
 		;ADDED DIGIDON CANCEL TRANSMAP
 		if (CancelTransMap=1 and processcodesection="MAPcodesection") {
 			CancelTransMap=
@@ -184,74 +186,77 @@ ParseIncludeList(fileslist) {
 			tooltip
 			exit
 		}
-		;ADDED DIGIDON BETTER INCLUDEFILE
-		if Trim(A_LoopField="")
+		;ADDED DIGIDON: IGNORE #Include 
+		AA_LoopField:=StrReplace(AA_LoopField,"#include ")
+		;ADDED DIGIDON: REPLACE %A_ScriptDir%\ with obfDir
+		AA_LoopField:=StrReplace(AA_LoopField,"%A_ScriptDir%",obfDir)
+		;ADDED DIGIDON: TRIM LINES
+		AA_LoopField:=Trim(AA_LoopField)
+		;ADDED DIGIDON: SKIP EMPTY LINES
+		if !AA_LoopField
 			continue
-		
-		if (SubStr(A_LoopField,1,1)=";")
+		;ADDED DIGIDON: SKIP COMMENTS
+		if (SubStr(AA_LoopField,1,1)=";")
 			{
 			continue
 			}
 		
-		SplitPath, A_LoopField , OutFileName, OutDir, OutExtension
+		SplitPath, AA_LoopField , OutFileName, OutDir, OutExtension
 		if (OutExtension!="ahk") {
-		; msgbox OutExtension %OutExtension%
-		Filetype:="dir"
+			; msgbox OutExtension %OutExtension%
+			Filetype:="dir"
 		}
 		else
-		Filetype:="ahkfile"
+			Filetype:="ahkfile"
 		
-		If !FileExist(A_LoopField)
+		If !FileExist(AA_LoopField)
 			{
 			
 			if (Filetype="dir") {
-				If FileExist(obfDir . A_LoopField) {
-				SetWorkingDir, % obfDir . A_LoopField
-				continue
+				If FileExist(obfDir . AA_LoopField) {
+					SetWorkingDir, % obfDir . AA_LoopField
+					continue
 				}
-				else If FileExist(obfDir . "\" . A_LoopField) {
-				SetWorkingDir, % obfDir . "\" . A_LoopField
-				continue
+				else If FileExist(obfDir . "\" . AA_LoopField) {
+					SetWorkingDir, % obfDir . "\" . AA_LoopField
+					continue
 				}
 			}
-			else If (FileExist(obfDir . A_LoopField) or FileExist(obfDir . "\" . A_LoopField))
-			SetWorkingDir, % obfDir
+			else If (FileExist(obfDir . AA_LoopField) or FileExist(obfDir . "\" . AA_LoopField))
+				SetWorkingDir, % obfDir
 			}
 			
-			If !FileExist(A_LoopField) {
-			
-			
-			TrimLoopField=%A_LoopField%
-			if A_Index=1
-				msgbox,
-				(LTrim
-				"%TrimLoopField%"
-				in Include file cannot be found or is not a valid filepath.
-				
-				Make sure you selected a custom-made file (call it "scriptname_includemap.txt" for example) with the list of the files to obfuscate, starting with your main script and continuing with your include files. 
-				See documentation if needed.
-				)
-			else
-				msgbox,
-				(LTrim
-				"%TrimLoopField%"
-				in Include file cannot be found or is not a valid filepath. obfDir %obfDir%
-				
-				Please correct in your includeMAP file.
-				)
-			gui 10:destroy
-			createTRANSMAPfilenames()
-			exit
+			If !FileExist(AA_LoopField) {
+				if A_Index=1
+					msgbox,
+					(LTrim
+					"%AA_LoopField%"
+					in Include file cannot be found or is not a valid filepath.
+					
+					Make sure you selected a custom-made file (call it "scriptname_includemap.txt" for example) with the list of the files to obfuscate, starting with your main script and continuing with your include files. 
+					See documentation if needed.
+					)
+				else
+					msgbox,
+					(LTrim
+					"%AA_LoopField%"
+					in Include file cannot be found or is not a valid filepath. obfDir %obfDir%
+					
+					Please correct in your includeMAP file.
+					)
+				gui 10:destroy
+				createTRANSMAPfilenames()
+				exit
 			}
-		if InStr(FileExist(A_LoopField), "D")
+		if InStr(FileExist(AA_LoopField), "D")
 			{
-			SetWorkingDir, %A_LoopField%
+			SetWorkingDir, %AA_LoopField%
 			continue
 			}
 		AA_Index++
 		curfilenum = %  AA_Index
 		;file name and the number it is in the list
-		parse_onefile(A_LoopField, AA_Index)				
+		parse_onefile(AA_LoopField, AA_Index)				
 	}
 	SetWorkingDir %obfDir%
 }

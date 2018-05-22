@@ -16,9 +16,9 @@
 </script>
 </head>
 <body>
-
 <iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
 </iframe>
+
 
 <div id="wrapcols">
 
@@ -29,10 +29,19 @@
 
 <h1>List of All Obfuscator Command Comments for Autohotkey Scripts</h1>
 
-<h2><a href="autoexec.htm" class="titlelink">Use to Signal the End of Your Autoexecute Section</a></h2>
+<h2>START UP</h2>
+<h3><a href="autoexec.htm" class="titlelink">Use to Signal the End of Your Autoexecute Section</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $END_AUTOEXECUTE:
+</font>
+</div>
+
+<h3><a href="includefiles.htm" class="titlelink">Prepare Your Include Files</a></h3>
+<div>
+<font color="brown">
+;$OBFUSCATOR: $IGNORE_BEFORE_THIS:
+<br>;$OBFUSCATOR: $IGNORE_AFTER_THIS:
 </font>
 </div>
 
@@ -48,17 +57,16 @@ straight/dynamic mode
 </br>;$OBFUSCATOR: $STOP_OBF:
 </br>;$OBFUSCATOR: $RESUME_OBF:
 </font>
-</div>
-
-<h2><a href="includefiles.htm" class="titlelink">Prepare Your Include Files</a></h2>
-<div>
+</br>Stop/resume obfuscation for specific type
 <font color="brown">
-;$OBFUSCATOR: $IGNORE_BEFORE_THIS:
-<br>;$OBFUSCATOR: $IGNORE_AFTER_THIS:
+</br>;$OBFUSCATOR: $[Type]_CHANGE_DEFAULTS: -1
+</br>;$OBFUSCATOR: $[Type]_RESTORE_DEFAULTS: -1
 </font>
 </div>
 
-<h2><a href="functionlabel_rule.htm" class="titlelink">Functions</a></h2>
+
+<h2>AUTOMATIC OBFUSCATION</h2>
+<h3><a href="functionlabel_rule.htm" class="titlelink">Functions</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $FUNCS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
@@ -68,7 +76,7 @@ straight/dynamic mode
 </font>
 </div>
 
-<h2><a href="funcandlbl_autoobf.htm" class="titlelink">Parameters</a></h2>
+<h3><a href="funcandlbl_autoobf.htm" class="titlelink">Parameters</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $PARAMS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
@@ -77,7 +85,7 @@ straight/dynamic mode
 </font>
 </div>
 
-<h2><a href="functionlabel_rule.htm" class="titlelink">Labels</a></h2>
+<h3><a href="functionlabel_rule.htm" class="titlelink">Labels</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $LABELS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
@@ -87,15 +95,27 @@ straight/dynamic mode
 </font>
 </div>
 
-<h2><a href="guicontrols.htm#guilabel" class="titlelink">Special for GUI controls</a></h2>
+<h2>DECLARE ALL</h2>
+
+<h3><a href="declareall.htm" class="titlelink">Methods (partial obfuscation)</a></h3>
 <div>
-SPECIAL CASE when the gui, +label????? is used with a gui 
-</br><font color="red">[modified DigiDon]&nbsp;</font>
-</br><font color="brown">$OBFUSCATOR: $DEFGUILAB: (list of labels)
+<font color="brown">;$OBFUSCATOR: $SYSMETHODS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
+<br>;$OBFUSCATOR: $SYSMETHODS_RESTORE_DEFAULTS: 
+<br>;$OBFUSCATOR: $DEFSYSMETHODS: (methods) { / <a href="standardparam.htm">Standard Parameter Set</a> }
+<br>;$OBFUSCATOR: $SYSMETHODSFRAGS_DUMPALL:
 </font>
 </div>
 
-<h2><a href="declareall.htm" class="titlelink">Global Variables, objects, ...</a></h2>
+<h3><a href="declareall.htm" class="titlelink">Properties (partial obfuscation)</a></h3>
+<div>
+<font color="brown">;$OBFUSCATOR: $SYSPROPERTIES_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
+<br>;$OBFUSCATOR: $SYSPROPERTIES_RESTORE_DEFAULTS:
+<br>;$OBFUSCATOR: $DEFSYSPROPERTIES: (properties) { / <a href="standardparam.htm">Standard Parameter Set</a> }
+<br>;$OBFUSCATOR: $SYSPROPERTIESFRAGS_DUMPALL:
+</font>
+</div>
+
+<h3><a href="declareall.htm" class="titlelink">Global Variables, objects, ...</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $GLOBVARS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
@@ -105,7 +125,7 @@ SPECIAL CASE when the gui, +label????? is used with a gui
 </font>
 </div>
 
-<h2><a href="declareall.htm" class="titlelink">Local and Static Variables</a></h2>
+<h3><a href="declareall.htm" class="titlelink">Local and Static Variables</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $LOSVARS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
@@ -115,7 +135,7 @@ SPECIAL CASE when the gui, +label????? is used with a gui
 </font>
 </div>
 
-<h2><a href="declareall.htm" class="titlelink">Partial Global Variables</a></h2>
+<h3><a href="declareall.htm" class="titlelink">Partial Global Variables</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $GLOBPARTIALVARS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
@@ -125,7 +145,7 @@ SPECIAL CASE when the gui, +label????? is used with a gui
 </font>
 </div>
 
-<h2><a href="declareall.htm" class="titlelink">System Variables</a></h2>
+<h3><a href="declareall.htm" class="titlelink">System Variables</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $SYSVARS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
@@ -135,62 +155,61 @@ SPECIAL CASE when the gui, +label????? is used with a gui
 </font>
 </div>
 
-<h2><a href="mandatdyndumps.htm" class="titlelink">Mandatory Fragment Dumps</a></h2>
+<h3><a href="autohotkeyfunctions.htm" class="titlelink">Built in Autohotkey Functions</a></h3>
+<div>
+<font color="brown">
+;$OBFUSCATOR: $SYSFUNCS_CHANGE_DEFAULTS: <a href="standardparam.htm">Standard Parameter Set</a>
+<br>;$OBFUSCATOR: $SYSFUNCS_RESTORE_DEFAULTS: 
+<br>;$OBFUSCATOR: $DEFSYSFUNCS: (functions) { / <a href="standardparam.htm">Standard Parameter Set</a> }
+<br>;$OBFUSCATOR: $SYSFUNCFRAGS_DUMPALL:
+</font>
+</div>
+
+<h2>SPECIAL COMMANDS</h2>
+<h3><a href="guicontrols.htm#guilabel" class="titlelink">Special for GUI controls</a></h3>
+<div>
+SPECIAL CASE when the GUI, +LabelPrefix is used with a gui 
+</br><font color="red">[modified DigiDon]&nbsp;</font>
+</br><font color="brown">$OBFUSCATOR: $DEFGUILAB: (list of labels)
+</font>
+</div>
+
+<h2>DUMPS</h2>
+<h3><a href="mandatdyndumps.htm" class="titlelink">Mandatory Fragment Dumps</a></h3>
 <div>
 <font color="brown">;$OBFUSCATOR: $ALLFRAGS_DUMPALL:
 </font>
 </div>
 
-<h2><a href="mandatdyndumps.htm" class="titlelink">Mandatory unclassed Dumps</a></h2>
+<h3><a href="mandatdyndumps.htm" class="titlelink">Mandatory unclassed Dumps</a></h3>
 <div>
 <font color="brown">;$OBFUSCATOR: $FUNCFRAGS_DUMPCLASS: unclassed<br/>
 ;$OBFUSCATOR: $LABELFRAGS_DUMPCLASS: unclassed
 </font>
 </div>
 
-<h2><a href="mandatdyndumps.htm" class="titlelink">Mandatory unsecured Dumps</a></h2>
+<h3><a href="mandatdyndumps.htm" class="titlelink">Mandatory unsecured Dumps</a></h3>
 <div>
 <font color="brown">;$OBFUSCATOR: $FUNCFRAGS_DUMPCLASS: unsecclasses<br/>
 ;$OBFUSCATOR: $LABELFRAGS_DUMPCLASS: unsecclasses 
 </font>
 </div>
 
-<h2><a href="declareall.htm" class="titlelink">Methods (partial obfuscation)</a></h2>
-<div>
-<font color="brown">;$OBFUSCATOR: $DEFSYSMETHODS: (methods) { / <a href="standardparam.htm">Standard Parameter Set</a> }
-<br>;$OBFUSCATOR: $SYSMETHODSFRAGS_DUMPALL:
-</font>
-</div>
-
-<h2><a href="declareall.htm" class="titlelink">Properties (partial obfuscation)</a></h2>
-<div>
-<font color="brown">;$OBFUSCATOR: $DEFSYSPROPERTIES: (properties) { / <a href="standardparam.htm">Standard Parameter Set</a> }
-<br>;$OBFUSCATOR: $SYSPROPERTIESFRAGS_DUMPALL:
-</font>
-</div>
-
-<h2><a href="autohotkeyfunctions.htm" class="titlelink">Built in Autohotkey Functions</a></h2>
-<div>
-<font color="brown">
-;$OBFUSCATOR: $DEFSYSFUNCS: (functions) { / <a href="standardparam.htm">Standard Parameter Set</a> }
-<br>;$OBFUSCATOR: $SYSFUNCFRAGS_DUMPALL:
-</font>
-</div>
-
-<h2><a href="addtoclass.htm" class="titlelink">Functions and Labels That are Members of a Class</a></h2>
+<h2>ADVANCED</h2>
+<h3><a href="addtoclass.htm" class="titlelink">Functions and Labels That are Members of a Class</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $ADDFOLLOWING_TOCLASS: (classname)
 <br>;$OBFUSCATOR: $ADDFOLLOWING_TOCLASS:
 <br>;$OBFUSCATOR: $CREATEOBJCLASS: (classname)
 <br>;$OBFUSCATOR: $DUMP_SECFRAGS_FORCLASSES: (list of classes)
-<br>;$OBFUSCATOR: $DUMPPOISENED_SECFRAGS_FORCLASSES: (list of classes)
+<br>;$OBFUSCATOR: $DUMPPOISONED_SECFRAGS_FORCLASSES: (list of classes)
 <br>;$OBFUSCATOR: $DUMP_TMESSFRAGS_FORCLASSES: (list of classes)
 <br>;$OBFUSCATOR: $DUMPFRAGS_FORCLASSES: (list of classes)
 </font>
 </div>
 
-<h2><a href="rewire.htm" class="titlelink">'Rewire' a Function to Go to a Different Function</a></h2>
+<h3><a href="rewire.htm" class="titlelink">'Rewire' a Function to Go to a Different Function</a></h3>
 <div>
 <font color="brown">
 ;$OBFUSCATOR: $DUMP_REWIREFUNCPATH: funcname, DECOY_funcname
@@ -198,7 +217,8 @@ SPECIAL CASE when the gui, +label????? is used with a gui
 </font>
 </div>
 
-<h2><a href="randomizeorder.htm" class="titlelink">Scramble your code</a></h2>
+<h2>MAIN ADDITIONAL FEATURES</h2>
+<h3><a href="randomizeorder.htm" class="titlelink">Scramble your code</a></h3>
 <div>
 Custom Function and Label Scrambling Pallette
 </br><font color="red">[modified DigiDon]&nbsp;</font>
@@ -210,7 +230,7 @@ Custom Function and Label Scrambling Pallette
 </font>
 </div>
 
-<h2><a href="stripcomms.htm" class="titlelink">Strip comments and whitespaces</a></h2>
+<h3><a href="stripcomms.htm" class="titlelink">Strip comments and whitespaces</a></h3>
 <div>
 Preserve some comment blocks
 <font color="brown">

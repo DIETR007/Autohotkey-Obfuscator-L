@@ -168,7 +168,7 @@ DUMP_SECFRAGS_FORCOMMON()
 }
 
 ;dump for every class including 'common'
-DUMPPOISENED_SECFRAGS_FORCLASSES()
+DUMPPOISONED_SECFRAGS_FORCLASSES()
 {
 	global ;CUR_COMMPARAMS
 	
@@ -193,7 +193,7 @@ DUMPPOISENED_SECFRAGS_FORCLASSES()
 			continue
 			
 		if (curclass = "common") {
-			;dump 'poisened' not allowed for class 'common'
+			;dump 'poisoned' not allowed for class 'common'
 			dumpsecclassvar .= DUMP_SECFRAGS_FORCOMMON()
 			continue
 		}
@@ -204,18 +204,18 @@ DUMPPOISENED_SECFRAGS_FORCLASSES()
 			poisenoddchar = % substr(mySWoddchars, a_index, 1)
 			
 			onesecclassvar = % A_Tab 
-				. ";POISENED SECURITY CLASS FRAG: for class: " . curclass 
+				. ";POISONED SECURITY CLASS FRAG: for class: " . curclass 
 					
 			;do the left side of the equals first
 			;the null will be on the left side of the equals
 			if (curoddchar = "0") {
-				onesecclassvar .= " for char: " . "NULL" . " =poisened char: " . ((poisenoddchar)? poisenoddchar : "NULL")
+				onesecclassvar .= " for char: " . "NULL" . " =poisoned char: " . ((poisenoddchar)? poisenoddchar : "NULL")
 					. "`r`n" . A_Tab
 					. ADD_COMMON_JUNK(CLASS_%curclass%__NULL_MASTvarname, "12", "23") 
 					. ":=" 
 			
 			} else {
-				onesecclassvar .= " for char: " . curoddchar . " =poisened char: " . ((poisenoddchar)? poisenoddchar : "NULL") 
+				onesecclassvar .= " for char: " . curoddchar . " =poisoned char: " . ((poisenoddchar)? poisenoddchar : "NULL") 
 					. "`r`n" . A_Tab
 					. ADD_COMMON_JUNK(CLASS_%curclass%_replace%curoddchar%_MASTvarname, "12", "23") 
 					. ":=" 			

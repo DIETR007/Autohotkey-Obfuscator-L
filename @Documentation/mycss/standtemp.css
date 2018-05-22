@@ -1,14 +1,41 @@
-body { margin-left:30px;}
+body { 
+margin-left:30px;
+line-height: 1.5em;
+}
 /* #wrapcols { width:72em; } */
 #wrapcols { width:100%; }
 
 #mainconts { width:70%; float:left; margin-bottom:4em; word-wrap: break-word; display: inline-block; }
 #rightcol { width:30%; float:right; }
 
-#mainconts h1 { margin-top:0.7em; margin-bottom:0.5em; color:#cd853f; }
-#mainconts h2 { margin-bottom:0.1em;font-size:1.25em; }
-#mainconts h3 { margin-top:0.5em;margin-bottom:0.1em;font-size:1.1em; }
-pre, span { display: inline; }
+#mainconts h1 { margin-top:0.7em; margin-bottom:0.5em; color:#cd853f; font-size:1.70em;}
+#mainconts h2 { margin-top:1.5em;margin-bottom:0.1em;font-size:1.40em; text-decoration: underline; color:#006666;}
+#mainconts h3 { margin-top:1em;margin-bottom:0.1em;font-size:1.25em; color:#009999;}
+#mainconts h4 { margin-top:1em;margin-bottom:0.1em;font-size:1.1em;font-style: italic; color:#009999;}
+/* font-style: italic;  */
+/* pre, span { display: inline; } */
+
+pre {
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	line-height: 1.5em;
+	font-size: 0.8em;
+	padding: 1em;
+	margin: .5em 0;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.highlight {
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	color: #000000;
+	background: #f5f2f0;
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
 
 .supportwrapper td { padding-left:10px; }
 
@@ -18,7 +45,7 @@ pre, span { display: inline; }
 
 .logotd { width:547px; }
 .headerspacer { padding-left:2em; }
-.authorinfo { font-size:1.1em; width:32em;}
+.authorinfo { font-size:1em; width:32em; line-height: 1.2em;}
 .toplinks { font-size:1.2em; text-align: center; }
 .toplinks a { border-right:7px #fff solid; border-left:7px #fff solid; border-bottom:0px #fff solid; }
 .toplinks .selnav { background-color:#eee; border:2px #777 solid; border-bottom:0 #fff solid; }
@@ -64,6 +91,7 @@ h2.toplevel { background-color:#ddd; padding:6px 0px 2px 4px;color:#070; border:
 .circular-text {
 	width: 170px;
 	text-align: center;
+	margin: auto;  
 	/* margin: 20px 10px 0px 30px; */
 	font-size:18px;
 }

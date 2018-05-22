@@ -355,15 +355,15 @@ OBFcodesection(preLOFlines, LOFheaderline, LOFbodylines, LOFtype, LOFname) {
 				LOFHeaderObf=1
 				}
 				
+			replaceLABELCALLS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
+				; msgbox replaceLABELCALLS DONE `n%LOFtype% %LOFname% `nstrippedLOFbodylines %strippedLOFbodylines%
+				
 			;check body of label for calls to functions, replace with obf
 			replaceFUNCCALLS("OBF_FUNC", preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 			replaceFUNCCALLS("OBF_SYSFUNC", preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
 				; msgbox replaceFUNCCALLS DONE `n%LOFtype% %LOFname% `nstrippedLOFbodylines %strippedLOFbodylines%
 				
-			replaceLABELCALLS(preLOFlines, LOFheaderline, strippedLOFbodylines, LOFtype, LOFname)
-				; msgbox replaceLABELCALLS DONE `n%LOFtype% %LOFname% `nstrippedLOFbodylines %strippedLOFbodylines%
-				
-			;ADDED DIGIDON : if NO OBF COMM THEN STOP HERE
+			;ADDED DIGIDON : if STOP OBF COMM THEN STOP HERE
 			if (GlobObf_Stop=1)
 				{
 				; MSGBOX STOP OBF LOFheaderline %LOFheaderline%
@@ -1334,7 +1334,7 @@ replaceFUNCCALLS(funclist, ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbody
 					GLabeldetected_case= % partialVAR_ERROR
 				} else {
 					; partialVAR_ERROR = % aretheyvariablecharsLABELS(prevchar, nextchar)
-					partialVAR_ERROR = % aretheyvariablecharsFUNCCALLS(prevchar, nextchar)
+					partialVAR_ERROR = % aretheyvariablecharsFUNCCALLS(prevchar, nextchar,lookforfunc)
 					GLabeldetected=0
 				}
 				
@@ -2816,7 +2816,7 @@ aretheyvariablecharsMETHODCALLS(charbefore, charafter = "") {
 	return, % false
 }
 
-aretheyvariablecharsFUNCCALLS(charbefore, charafter = "") {
+aretheyvariablecharsFUNCCALLS(charbefore, charafter = "",funcvar="") {
 	global
 	
 	if (charbefore!="") {
@@ -2846,7 +2846,16 @@ aretheyvariablecharsFUNCCALLS(charbefore, charafter = "") {
 	if (charafter = "(")
 		return, % false
 		
-	;Otherwise we DENY IT (false)
+	;Tried to recognize function without () : abandonned for now only allow between ""
+	; if ((charbefore = "," or charbefore = "(" or RegexMatch(charbefore,"\h+")) and (charafter=")" or charafter="," or RegexMatch(charafter,"\h"))) {
+		; RegexMatch(charafter,"\s+(?!\s*,)"))
+		; msgbox funcvar %funcvar% charbefore %charbefore% charafter %charafter%
+		; if (charafter ="`r" or charafter ="`n" or charafter ="`t")
+			; msgbox space after
+		; return, % false
+		; }
+		
+	;Otherwise we DENY IT (true)
 	return, % true
 }
 
@@ -3081,8 +3090,9 @@ findprocessOBFDUMPcomms(ByRef LOFbodylines) {
 			else if (CUR_OBFCOMM = "DUMP_SECFRAGS_FORCLASSES")
 				curline = % DUMP_SECFRAGS_FORCLASSES()
 				
-			else if (CUR_OBFCOMM = "DUMPPOISENED_SECFRAGS_FORCLASSES")
-				curline = % DUMPPOISENED_SECFRAGS_FORCLASSES()	
+			;DigiDon changed DUMPPOISENED to DUMPPOISONED (D Malia typo)
+			else if (CUR_OBFCOMM = "DUMPPOISONED_SECFRAGS_FORCLASSES" or CUR_OBFCOMM = "DUMPPOISENED_SECFRAGS_FORCLASSES")
+				curline = % DUMPPOISONED_SECFRAGS_FORCLASSES()	
 				
 			else if (CUR_OBFCOMM = "DUMP_TMESSFRAGS_FORCLASSES")
 				curline = % DUMP_TMESSFRAGS_FORCLASSES()

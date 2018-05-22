@@ -13,9 +13,9 @@
 <script src="js/myscripts.js"></script> 
 </head>
 <body onload="checkiframes()">
-
 <iframe style="border-width:0px;" src="iFrames/header.htm" onload="resizeIframe(this)" width="100%" scrolling="no"/>
 </iframe>
+
 
 <div id="wrapcols">
 
@@ -23,13 +23,11 @@
 
 <iframe style="border-width:0px;float:left" src="iFrames/toplinks.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
 </iframe>
-<iframe style="border-width:0px;float:left" src="iFrames/topnote-updated.htm" width="100%" onload="resizeIframe(this)" scrolling="no"/>
-</iframe>
 
 <h1>User Manual for Free Autohotkey Script Obfuscator</h1>
 
 <div class="indexwrapdoc">
-<b>GENERAL OBFUSCATION PROCESS</b></br>
+<h2>GENERAL OBFUSCATION PROCESS</h2>
 <a href="obfuscationprocess.htm">The Obfuscation Process for Autohotkey Scripts</a></br>
 <a class="indentindex">Prepare Your Source Code</a></br>
 <a class="indentindex">Straight Obfuscation Steps</a></br>
@@ -38,7 +36,7 @@
 <a class="indentindex">Run the Obfuscate Function</a></br>
 <a class="indentindex">Debugging</a></br>
 </br>
-</br><b>OBFUSCATION PREPARATION AND RULES</b></br>
+<h2>OBFUSCATION PREPARATION AND RULES</h2>
 <a href="commandcomments.htm">Command Comments Rule</a></br>
 </br>
 <a href="obfmode.htm">Obfuscation Mode Commands</a></br>
@@ -53,16 +51,17 @@
 </br>
 <a href="functionlabel_rule.htm">Functions and Labels rule</a></br>
 <a class="indentindex">Prepare Function Sections</a></br>
+<a class="indentindex">Function names used without "()"</a></br>
 <a class="indentindex">Prepare Label Sections</a></br>
 <a class="indentindex">Nested Label Headers Inside Other Label Sections and Functions</a></br>
-<a class="indentindex">Special Rule For Labels Referred to in the GUI, +Label???? Statement</a></br>
+<a class="indentindex">Special Rule For Labels Referred to in the GUI +LabelPrefix Statement</a></br>
 </br>
 <a href="guicontrols.htm">Gui Controls and labels rule</a></br>
 <a class="indentindex">Gosub Labels in Gui Controls that Start with a 'G'</a></br>
 <a class="indentindex">Global Variables in GUI Controls that Start with a 'V'</a></br>
-<a class="indentindex">The GUI +label??? Clause</a></br>
+<a class="indentindex">The GUI +LabelPrefix Clause</a></br>
 </br>
-</br><b>OBFUSCATION FUNCTIONALITIES</b></br>
+<h2>OBFUSCATION FUNCTIONALITIES</h2>
 <a href="funcandlbl_autoobf.htm">Obfuscation of function & label names, and parameters is automatic</a></br>
 </br>
 <a href="declareall.htm">Obfuscating all your variables, objects, properties, methods, ...</a></br>
@@ -78,7 +77,7 @@
 <a class="indentindex">$DEFSYSVARS Command to obfuscate built-in variables in expressions</a></br>
 </br>
 <a href="sensitivestrings.htm">Use 'hidestr()' to Hide Sensitive Literal Strings in Your Script</a></br>
-<a class="indentindex">Place Dummy ihidestr Functions in Your Source Autohotkey Script</a></br>
+<a class="indentindex">Place Dummy 'hidestr()' Functions in Your Source Autohotkey Script</a></br>
 <a class="indentindex">The Obfuscator Function Used to Encode Your Sensitive Literal Strings</a></br>
 <a class="indentindex">Put the Function to Decode the Obfuscated Strings in Your Autohotkey Script</a></br>
 <a class="indentindex">Create Your Own Versions of These Functions for Greater Security</a></br>
@@ -99,14 +98,14 @@
 <a class="indentindex">Let the program scramble the order itself and keep some parts together</a></br>
 <a class="indentindex">Create a Custom Layered Scrambled Sandwich</a></br>
 </br>
-</br><b>ADVANCED DYNAMIC OBFUSCATION FUNCTIONALITIES</b></br>
+<h2>ADVANCED DYNAMIC OBFUSCATION FUNCTIONALITIES</h2>
 <a href="addtoclass.htm">Add Sections of Code to an Obfuscation Class</a></br>
 <a class="indentindex">Create a Secured Obfuscation Class</a></br>
 </br>
 <a href="rewire.htm">BREAK / REWIRE Sensitive functions</a></br>
 <a class="indentindex">DUMP to 'Rewire' Where Functions Go To</a></br>
 </br>
-</br><b>ISSUES & LIMITATIONS</b></br>
+<h2>ISSUES & LIMITATIONS</h2>
 <a href="knownproblems.htm">Known Issues with this Program</a></br>
 <a class="indentindex">Words in GUI Text/MsgBox in Script Are Being Replaced by Obfuscations</a></br>
 <a class="indentindex">Using Single Letter Object Names Can Cause Invalid Obfuscator Replacements</a></br>
@@ -116,7 +115,7 @@
 </br>
 <a href="knownlimits.htm">Known limitations</a></br>
 </br>
-</br><b>MORE INFO</b></br>
+<h2>MORE INFO</h2>
 <a href="standardparam.htm">Understanding the Standard Parameter Set That is Used in Many Command Comments</a></br>
 </br>
 <a href="changedefaults.htm">Changing Your Obfuscation Encoding Defaults</a></br>
@@ -133,7 +132,7 @@
 <div id="rightcol" style="width:200px;float:left">
 <div class="container"></div>
 <iframe style="border-width:0px;" src="iFrames/donate_digidon.htm" height="400px" scrolling="no"></iframe>
-<iframe style="border-width:0px;" src="iFrames/donate_david.htm" height="200px" scrolling="no"></iframe>
+
 </div>
 
 </div>
