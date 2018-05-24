@@ -1,3 +1,8 @@
+v2.12
+-Corrected few bugs
+* Warning of 'did not find ' gui labels
+* Invalid non-replacement of vars followed or preceeded by '/'
+
 v2.11
 -Huge documentation revamp
 -Include file can now contain "#include " and "%A_ScriptDir%\" which are ignored

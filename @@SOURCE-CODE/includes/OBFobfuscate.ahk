@@ -697,6 +697,10 @@ global
 					; msgbox OBFtype %OBFtype% foundatrow %foundatrow% `nmysectstr %mysectstr%
 				;SAVECODE()
 				}
+			;DigiDon: If Gui special label just add it to the file without warning
+			;DEV COULD BE IMPROVED SO THEY ARE CONSIDERED NORMALLY
+			else if regexmatch(LOFname,"i)\dGui(Close|Escape|Size|ContextMenu|DropFiles)")
+				writetoOBFfile(mysectstr)
 			else {
 				;label not found error condition, fall back to just adding it to the file
 				; msgbox did not find row of OBFtype %OBFtype% LOFname %LOFname%
@@ -1566,11 +1570,12 @@ replaceSYSVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LOFty
 					newline .= SubStr(curline, foundSYSat, strlen(lookforSYS))
 					}
 					
-				;ADDED DIGIDON
-				;do not replace variables surrounded by "/"!
-				else if (prevchar = "/" or nextchar = "/") 
+				;DIGIDON : do not replace global variables surrounded by "/" : WHY? Disabled because was causing issues
+				; else if (prevchar = "/" or nextchar = "/") {
 					;TWEAKED DigiDon
-					newline .= SubStr(curline, foundSYSat, strlen(lookforSYS))
+					; newline .= SubStr(curline, foundSYSat, strlen(lookforSYS))
+					; msgbox % str_getTailf(newline)
+					; }
 				
 				;MAYBE CORRECT
 				;do not replace variables surrounded by quotes (should it really? Normally no reason to be in quotes so I guess yes)
@@ -1788,11 +1793,12 @@ replaceGLOBALVARs(ByRef preLOFlines, ByRef LOFheaderline, ByRef LOFbodylines, LO
 					newline .= PUT_NULLS_AROUND(GLOB_OBFname, "nofirstlastperc")
 					}
 					
-				;ADDED DIGIDON
-				;do not replace global variables surrounded by "/"!
-				else if (prevchar = "/" or nextchar = "/") 
+				;DIGIDON : do not replace global variables surrounded by "/" : WHY? Disabled because was causing issues
+				; else if (prevchar = "/" or nextchar = "/") {
 					;TWEAKED DigiDon
-					newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
+					; newline .= SubStr(curline, foundGLOBat, strlen(lookforGLOB))
+					; msgbox % str_getTailf(newline)
+				; }
 					
 				;do not replace global variables surrounded by quotes!
 				;EDIT : YES REPLACE BY REAL OBF NAME

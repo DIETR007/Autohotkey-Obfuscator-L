@@ -961,7 +961,8 @@ addnew_OBFentry(varlistname) {
 		temp2 = % obfcreate_varname%a_index%
 		obfcreate_varname%a_index% = %temp2%
 		
-		;2.013: We skip functions and labels that look like GUI labels/functions
+		;DigiDon: 2.013: We skip functions and labels that look like GUI labels/functions
+		;DEV COULD BE IMPROVED SO THEY ARE CONSIDERED NORMALLY
 		if (varlistname="OBF_FUNC" or varlistname="OBF_LABEL") {
 			if regexmatch(obfcreate_varname%a_index%,"i)\dGui(Close|Escape|Size|ContextMenu|DropFiles)") {
 				continue
