@@ -595,13 +595,13 @@ DUMP_ONEVAR_FRAGSET(OBFvarpath, useclass="") {
 	;ADDED DIGIDON SYSPROPERTIES, SYSVARS, SYSMETHODS
 	isSYSPROPERTIES = % false
 	isSYSMETHODS = % false
-	issysvar = % false
+	isSYSVAR = % false
 	if (substr(OBFvarpath, 1, 17) = "OBF_SYSPROPERTIES") 
 		isSYSPROPERTIES = % true
 	else if (substr(OBFvarpath, 1, 14) = "OBF_SYSMETHODS") 
 		isSYSMETHODS = % true
 	else if (substr(OBFvarpath, 1, 10) = "OBF_SYSVAR") 
-		issysvar = % true
+		isSYSVAR = % true
 	
 	dumpfragsstr =		
 	loop, % %OBFvarpath%_numfragrows
