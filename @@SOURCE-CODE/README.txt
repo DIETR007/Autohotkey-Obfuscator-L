@@ -33,6 +33,9 @@
 	
 	See online doc at:
 	http://EverFastAccess.com/AHK-Obfuscator/
+
+	AHK Forum thread
+	https://autohotkey.com/boards/viewtopic.php?f=6&t=49887
 */
 
 Licensed under the GNU GENERAL PUBLIC LICENSE (see LICENSE.TXT)

@@ -1,6 +1,6 @@
 /*
 	DYNAMIC OBFUSCATOR L FOR AUTOHOTKEY
-	Adapted by DigiDon
+	By DigiDon
 	Based on DYNAMIC OBFUSCATOR - Copyright (C) 2011-2013 David Malia
 	
 	DYNAMIC OBFUSCATOR is an obfuscator for autohotkey scripts that
@@ -1570,15 +1570,15 @@ showobfstats() {
 	;ADDED DIGIDON counttotalMAPlines,countTOTALlines
 	(LTrim
 	counttotalMAPlines (approx): %counttotalMAPlines%
-	countTOTALlines (approx): %countTOTALlines%
 	messedupnames_recs: %messedupnames_recs%   already used: %numalreadyused%
-	
+	*****************************
+	Total lines of code: %countTOTALlines%
+	*****************************
 	HERE IS WHAT WAS FOUND:
 	FUNCTIONS: %OBF_FUNC_numrows%
-	SYSTEM FUNCTIONS: %OBF_SYSFUNC_numrows%
 	LABEL HEADERS: %OBF_LABEL_numrows%
 	PARAMETERS: %totalparams%
-	
+	*****************************
 	HERE IS WHAT WAS DECLARED:
 	LOS vars: %totalLOSvars%
 	GLOBAL vars: %OBF_GLOBVAR_numrows%
@@ -1586,7 +1586,8 @@ showobfstats() {
 	SYSTEM vars: %OBF_SYSVAR_numrows%
 	SYSPROPERTIES vars: %OBF_SYSPROPERTIES_numrows%
 	SYSMETHODS vars: %OBF_SYSMETHODS_numrows%
-	
+	SYSTEM FUNCTIONS: %OBF_SYSFUNC_numrows%
+	*****************************
 	DUMP CLASSES: %dumpcode_numrows%
 	
 	%myshowswitched%

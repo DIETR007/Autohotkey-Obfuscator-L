@@ -50,7 +50,7 @@ Try to modify the encode/decode procedure:
 
 /*
 	DYNAMIC OBFUSCATOR L FOR AUTOHOTKEY
-	Adapted by DigiDon
+	By DigiDon
 	Based on DYNAMIC OBFUSCATOR - Copyright (C) 2011-2013 David Malia
 	
 	DYNAMIC OBFUSCATOR is an obfuscator for autohotkey scripts that

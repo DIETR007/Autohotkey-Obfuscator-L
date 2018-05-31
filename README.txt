@@ -33,4 +33,7 @@
 	
 	See online doc at:
 	https://www.EverFastAccess.com/AHK-Obfuscator/
+
+	AHK Forum thread
+	https://autohotkey.com/boards/viewtopic.php?f=6&t=49887
 */

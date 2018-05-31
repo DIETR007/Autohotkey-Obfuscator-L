@@ -2,7 +2,7 @@
 obf_copyright := "                                                "
 obf_copyright := " THE FOLLOWING AUTOHOTKEY SCRIPT WAS OBFUSCATED "
 obf_copyright := " BY DYNAMIC OBFUSCATOR L FOR AUTOHOTKEY         "
-obf_copyright := " Adapted by DigiDon                             "
+obf_copyright := " By DigiDon									  "
 obf_copyright := "                                                "
 obf_copyright := " Based on DYNAMIC OBFUSCATOR                    "
 obf_copyright := " Copyright (C) 2011-2013  David Malia           "
