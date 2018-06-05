@@ -699,7 +699,8 @@ global
 				}
 			;DigiDon: If Gui special label just add it to the file without warning
 			;DEV COULD BE IMPROVED SO THEY ARE CONSIDERED NORMALLY
-			else if regexmatch(LOFname,"i)\dGui(Close|Escape|Size|ContextMenu|DropFiles)")
+			; else if (regexmatch(LOFname,"i)^Gui(Close|Escape|Size|ContextMenu|DropFiles)$") or regexmatch(LOFname,"i)\dGui(Close|Escape|Size|ContextMenu|DropFiles)$"))
+			else if (regexmatch(LOFname,"i)Gui(Close|Escape|Size|ContextMenu|DropFiles)$"))
 				writetoOBFfile(mysectstr)
 			else {
 				;label not found error condition, fall back to just adding it to the file

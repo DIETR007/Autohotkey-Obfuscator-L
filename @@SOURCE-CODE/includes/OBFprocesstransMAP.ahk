@@ -964,7 +964,8 @@ addnew_OBFentry(varlistname) {
 		;DigiDon: 2.013: We skip functions and labels that look like GUI labels/functions
 		;DEV COULD BE IMPROVED SO THEY ARE CONSIDERED NORMALLY
 		if (varlistname="OBF_FUNC" or varlistname="OBF_LABEL") {
-			if regexmatch(obfcreate_varname%a_index%,"i)\dGui(Close|Escape|Size|ContextMenu|DropFiles)") {
+			; if (regexmatch(obfcreate_varname%a_index%,"i)^Gui(Close|Escape|Size|ContextMenu|DropFiles)$") or regexmatch(obfcreate_varname%a_index%,"i)\dGui(Close|Escape|Size|ContextMenu|DropFiles)$")) {
+			if (regexmatch(obfcreate_varname%a_index%,"i)Gui(Close|Escape|Size|ContextMenu|DropFiles)$")) {
 				continue
 			}
 		}
@@ -1025,6 +1026,7 @@ addnew_OBFentry(varlistname) {
 		if (varlistname = "OBF_FUNC" or varlistname = "OBF_LABEL") {
 			if FIND_VARROW(varlistname, obfcreate_varname%a_index%) {
 				if (SubStr(obfcreate_varname%a_index%,-3)="Size" or SubStr(obfcreate_varname%a_index%,-4)="Close" or SubStr(obfcreate_varname%a_index%,-8)="DropFiles" or SubStr(obfcreate_varname%a_index%,-10)="ContextMenu")
+				; if (regexmatch(obfcreate_varname%a_index%,"i)Gui(Close|Escape|Size|ContextMenu|DropFiles)$"))
 				continue
 				msgbox, 4096,, % "func or label var duplication2: '" . obfcreate_varname%a_index% . "'"
 				continue

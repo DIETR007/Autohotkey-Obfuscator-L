@@ -1,3 +1,6 @@
+v2.14
+-No obfuscation for labels ending with Guiclose, GuiEscape etc.
+
 v2.13
 -SYSVARS bug indication
 
